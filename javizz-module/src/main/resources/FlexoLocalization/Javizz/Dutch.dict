@@ -1,10 +1,10 @@
 configure_project=configure_project
 configure_requirement=Configure requirement
-create_new_formose_project=Create new formose project
+create_new_javizz_project=Create new javizz project
 identify_requirement=Identify requirement
 it_is_recommanded_to_describe_requirement=It is recommanded to describe requirement
 it_is_recommanded_to_describe_your_new_project=it_is_recommanded_to_describe_your_new_project
-load_formose_viewpoint=Load formose viewpoint
+load_javizz_viewpoint=Load javizz viewpoint
 opening_module_view_for_object=opening_module_view_for_object
 you_must_choose_docx_file_describing_requirements=You must choose docx file describing requirements
 you_should_provide_a_name_for_the_new_requirement=You should provide a name for the new requirement
