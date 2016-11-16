@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Panel layout="gridbag" border="empty" protectContent="false"
+       dataClassName="org.openflexo.module.formose.controller.action.IdentifyRequirementWizard$ConfigureRequirementIdentification"
+       controllerClassName="org.openflexo.view.controller.FlexoFIBController">
+	<Label label="requirement_name" align="right"
+	       constraints="gridbag(insetsLeft=20;insetsRight=10;gridHeight=1;padY=0;padX=0;anchor=east;gridY=-1;gridX=-1;index=1;gridWidth=1;insetsTop=0;insetsBottom=0;weightY=0.0;fill=none;weightX=0.0)"
+	       readOnly="false" manageDynamicModel="false"/>
+	<TextField passwd="false" manageDynamicModel="false"
+		useScrollBar="false" data="data.name" columns="40"
+		name="NameTextField" text="TextField" index="2" localize="true"
+		constraints="gridbag(insetsLeft=0;insetsRight=20;gridHeight=1;padY=0;padX=0;anchor=center;gridY=-1;gridX=-1;index=2;gridWidth=0;insetsTop=0;insetsBottom=0;weightY=0.0;fill=horizontal;weightX=1.0)"
+		readOnly="false" validateOnReturn="false" />
+	<Label id="5" manageDynamicModel="false" useScrollBar="false" index="12" localize="true" align="right"
+	       constraints="gridbag(anchor=north_east;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=12;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+	       label="requirement_description" readOnly="false"/>
+	<TextArea id="6" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" manageDynamicModel="false" useScrollBar="true"
+	          constraints="gridbag(insetsLeft=0;insetsRight=20;gridHeight=1;padY=0;padX=0;anchor=center;gridY=-1;gridX=-1;index=2;gridWidth=0;insetsTop=0;insetsBottom=0;weightY=1.0;fill=both;weightX=1.0)"
+	          data="data.description" columns="6" text="TextArea" index="13" localize="true"
+	          rows="5" readOnly="false" validateOnReturn="false" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"/>
+	<LocalizedDictionary>
+	</LocalizedDictionary>
+</Panel>

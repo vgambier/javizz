@@ -1,0 +1,68 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.openflexo</groupId>
+		<artifactId>openflexo-modules</artifactId>
+		<version>1.8.0-SNAPSHOT</version>
+	</parent>
+
+	<groupId>org.openflexo.module</groupId>
+	<artifactId>javizz-module</artifactId>
+
+	<name>javizz-module</name>
+	<description>Javizz module</description>
+
+	<properties>
+		<flexocore.version>1.8.0-SNAPSHOT</flexocore.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.openflexo</groupId>
+			<artifactId>flexo-foundation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openflexo</groupId>
+			<artifactId>flexo-ui</artifactId>
+		</dependency>
+				
+	</dependencies>
+	
+	<profiles>
+		<!-- overriding profile in this context -->
+		<profile>
+			<id>build-installers</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>create-package</id>
+								<phase>install</phase>
+								<configuration combine.self="override">
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>deploy-package</id>
+								<phase>deploy</phase>
+								<configuration combine.self="override">
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
+</project>
