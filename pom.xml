@@ -6,7 +6,7 @@
           	<version>0.4-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>formose</artifactId>
+	<artifactId>javizz</artifactId>
 	<name>Javizz</name>
 	<packaging>pom</packaging>
 	<modules>

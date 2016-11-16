@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VirtualModel id="0" modelVersion="1.0" version="0.1" userID="FLX" name="LogicModel" flexoID="4">
+  <Inspector id="1" userID="FLX" inspectorTitle="LogicModel" flexoID="1" />
+  <PrimitiveRole id="2" cardinality="One" cloningStrategy="Clone" userID="FLX" name="name" primitiveType="String" flexoID="12" />
+  <FlexoConcept id="3" userID="FLX" name="JavaClass" flexoID="11">
+    <Inspector id="4" userID="FLX" inspectorTitle="JavaClass" flexoID="6" />
+    <PrimitiveRole id="5" cardinality="ZeroOne" cloningStrategy="Clone" userID="FLX" name="name" primitiveType="String" flexoID="41" />
+    <CreationScheme id="6" label="create" userID="FLX" name="create" width="800" height="600" flexoID="9">
+      <BehaviourControlGraph_AssignationAction id="7" assign="name" userID="FLX" flexoID="43">
+        <AssignableAction_ExpressionAction id="8" expression="parameters.name" userID="FLX" flexoID="42" />
+      </BehaviourControlGraph_AssignationAction>
+      <GenericBehaviourParameter id="9" isRequired="true" widget="TEXT_FIELD" type="java.lang.String" userID="FLX" name="name" flexoID="47" />
+    </CreationScheme>
+    <DeletionScheme id="10" label="deletion" userID="FLX" name="deletion" width="800" height="600" flexoID="10">
+      <BehaviourControlGraph_EmptyControlGraph id="11" userID="FLX" flexoID="14" />
+    </DeletionScheme>
+  </FlexoConcept>
+  <FlexoConcept id="12" userID="FLX" name="JavaRelation" flexoID="20">
+    <Inspector id="13" userID="FLX" inspectorTitle="JavaRelation" flexoID="21" />
+    <FlexoConceptInstanceRole id="14" virtualModelInstance="virtualModelInstance" flexoConceptTypeURI="http://javizz.org/Javizz.viewpoint/LogicModel#JavaClass" cardinality="ZeroOne" cloningStrategy="Reference" userID="FLX" name="first" flexoID="28" />
+    <FlexoConceptInstanceRole id="15" virtualModelInstance="virtualModelInstance" flexoConceptTypeURI="http://javizz.org/Javizz.viewpoint/LogicModel#JavaClass" cardinality="ZeroOne" cloningStrategy="Reference" userID="FLX" name="second" flexoID="29" />
+    <CreationScheme id="16" label="create" userID="FLX" name="create" width="800" height="600" flexoID="24">
+      <BehaviourControlGraph_Sequence id="17" userID="FLX" flexoID="34">
+        <ControlGraph2_AssignationAction id="18" assign="second" ownerContext="controlGraph2" userID="FLX" flexoID="33">
+          <AssignableAction_ExpressionAction id="19" expression="parameters.second" userID="FLX" flexoID="32" />
+        </ControlGraph2_AssignationAction>
+        <ControlGraph1_AssignationAction id="20" assign="first" ownerContext="controlGraph1" userID="FLX" flexoID="31">
+          <AssignableAction_ExpressionAction id="21" expression="parameters.first" userID="FLX" flexoID="30" />
+        </ControlGraph1_AssignationAction>
+      </BehaviourControlGraph_Sequence>
+      <GenericBehaviourParameter id="22" isRequired="true" widget="CUSTOM_WIDGET" type="org.openflexo.foundation.fml.FlexoConceptInstanceType&lt;http://javizz.org/Javizz.viewpoint/LogicModel#JavaClass&gt;" userID="FLX" name="first" flexoID="35" />
+      <GenericBehaviourParameter id="23" isRequired="true" widget="CUSTOM_WIDGET" type="org.openflexo.foundation.fml.FlexoConceptInstanceType&lt;http://javizz.org/Javizz.viewpoint/LogicModel#JavaClass&gt;" userID="FLX" name="second" flexoID="36" />
+    </CreationScheme>
+    <DeletionScheme id="24" label="deletion" userID="FLX" name="deletion" width="800" height="600" flexoID="25">
+      <BehaviourControlGraph_EmptyControlGraph id="25" userID="FLX" flexoID="27" />
+    </DeletionScheme>
+  </FlexoConcept>
+  <CreationScheme id="26" label="create" userID="FLX" name="create" width="800" height="600" flexoID="15">
+    <BehaviourControlGraph_AssignationAction id="27" assign="virtualModelInstance.name" userID="FLX" flexoID="19">
+      <AssignableAction_ExpressionAction id="28" expression="parameters.name" userID="FLX" flexoID="18" />
+    </BehaviourControlGraph_AssignationAction>
+    <GenericBehaviourParameter id="29" isRequired="true" widget="TEXT_FIELD" type="java.lang.String" userID="FLX" name="name" flexoID="17" />
+  </CreationScheme>
+  <ActionScheme id="30" label="createJavaClass" userID="FLX" name="createJavaClass" width="800" height="600" flexoID="37">
+    <BehaviourControlGraph_AddFlexoConceptInstance id="31" creationSchemeURI="http://javizz.org/Javizz.viewpoint/LogicModel#JavaClass.create" virtualModelInstance="virtualModelInstance" userID="FLX" flexoID="45">
+      <AddFlexoConceptInstanceParameter id="32" userID="FLX" paramName="name" value="parameters.name" flexoID="46" />
+    </BehaviourControlGraph_AddFlexoConceptInstance>
+  </ActionScheme>
+  <ActionScheme id="33" label="createJavaRelation" userID="FLX" name="createJavaRelation" width="800" height="600" flexoID="49">
+    <GenericBehaviourParameter id="34" isRequired="true" widget="CUSTOM_WIDGET" type="org.openflexo.foundation.fml.FlexoConceptInstanceType&lt;http://javizz.org/Javizz.viewpoint/LogicModel#JavaClass&gt;" userID="FLX" name="class1" flexoID="50" />
+    <GenericBehaviourParameter id="35" widget="CUSTOM_WIDGET" type="org.openflexo.foundation.fml.FlexoConceptInstanceType&lt;http://javizz.org/Javizz.viewpoint/LogicModel#JavaClass&gt;" userID="FLX" name="class2" flexoID="51" />
+  </ActionScheme>
+</VirtualModel>
