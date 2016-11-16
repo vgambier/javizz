@@ -11,5 +11,6 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>javizz-module</module>
+		<module>javizz-rc</module>
 	</modules>	
 </project>
