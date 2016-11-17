@@ -1,9 +1,8 @@
 /**
  * 
- * Copyright (c) 2014, Openflexo
+ * Copyright (c) 2016, Openflexo
  * 
- * This file is part of Javizz prototype, a component of the software infrastructure 
- * developed at Openflexo.
+ * This file is part of Javizz, a java application visualization.
  * 
  * 
  * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
@@ -69,10 +68,10 @@ public class ConvertToJavizzProjectInitializer extends ActionInitializer<Convert
 		return new FlexoActionInitializer<ConvertToJavizzProject>() {
 			@Override
 			public boolean run(EventObject e, ConvertToJavizzProject action) {
-				final JavizzProjectNature formoseNature = action.getServiceManager().getProjectNatureService()
+				final JavizzProjectNature javizzNature = action.getServiceManager().getProjectNatureService()
 						.getProjectNature(JavizzProjectNature.class);
 
-				if (formoseNature.authorizeInit(action.getFocusedObject())) {
+				if (javizzNature.authorizeInit(action.getFocusedObject())) {
 					Wizard wizard = new ConvertToJavizzProjectWizard(action, getController());
 					WizardDialog dialog = new WizardDialog(wizard, getController());
 					dialog.showDialog();

@@ -1,9 +1,8 @@
 /**
  * 
- * Copyright (c) 2014-2015, Openflexo
+ * Copyright (c) 2016, Openflexo
  * 
- * This file is part of Javizz prototype, a component of the software infrastructure 
- * developed at Openflexo.
+ * This file is part of Javizz, a java application visualization.
  * 
  * 
  * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
@@ -61,7 +60,7 @@ import org.openflexo.view.menu.FlexoMenuBar;
 /**
  * Javizz-module specific FlexoController.
  * 
- * @author sylvain
+ * @author fdagnat
  */
 public class JVController extends FlexoController {
 
