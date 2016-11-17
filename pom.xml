@@ -12,5 +12,7 @@
 	<modules>
 		<module>javizz-module</module>
 		<module>javizz-rc</module>
+		<module>javaconnector</module>
+		<module>javaconnector-ui</module>
 	</modules>	
 </project>
