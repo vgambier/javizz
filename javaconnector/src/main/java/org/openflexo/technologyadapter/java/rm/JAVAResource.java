@@ -22,7 +22,7 @@ package org.openflexo.technologyadapter.java.rm;
 
 import java.io.File;
 
-import org.openflexo.foundation.resource.FlexoResource;
+import org.openflexo.foundation.resource.PamelaResource;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -30,23 +30,26 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 import org.openflexo.technologyadapter.java.JAVATechnologyContextManager;
+import org.openflexo.technologyadapter.java.model.JAVAFactory;
 import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 
 @ModelEntity
 @ImplementationClass(JAVAResourceImpl.class)
-public abstract interface JAVAResource extends FlexoResource<JAVAFileModel>,
-		TechnologyAdapterResource<JAVAFileModel, JAVATechnologyAdapter> {
+public abstract interface JAVAResource
+		extends TechnologyAdapterResource<JAVAFileModel, JAVATechnologyAdapter>, PamelaResource<JAVAFileModel, JAVAFactory> {
 
 	public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
 
 	public static final String TECHNOLOGY_ADAPTER = "technologyAdapter";
 
+	@Override
 	@Getter(value = TECHNOLOGY_CONTEXT_MANAGER, ignoreType = true)
 	public JAVATechnologyContextManager getTechnologyContextManager();
 
 	@Setter(value = TECHNOLOGY_CONTEXT_MANAGER)
 	public void setTechnologyContextManager(JAVATechnologyContextManager paramJAVATechnologyContextManager);
 
+	@Override
 	@Getter(value = TECHNOLOGY_ADAPTER, ignoreType = true)
 	public JAVATechnologyAdapter getTechnologyAdapter();
 

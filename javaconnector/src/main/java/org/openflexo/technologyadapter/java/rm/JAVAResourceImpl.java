@@ -29,18 +29,15 @@ import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
-import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FileWritingLock;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
-import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
-import org.openflexo.technologyadapter.java.JAVATechnologyContextManager;
 import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 import org.openflexo.technologyadapter.java.model.JAVAFileModelImpl;
 import org.openflexo.toolbox.IProgress;
@@ -73,14 +70,14 @@ public abstract class JAVAResourceImpl extends FlexoResourceImpl<JAVAFileModel> 
 	 * @param technologyContextManager
 	 * @return
 	 */
-	public static JAVAResource makeJAVAResource(String modelURI, File modelFile, JAVATechnologyContextManager technologyContextManager) {
+	/*public static JAVAResource makeJAVAResource(String modelURI, File modelFile, JAVATechnologyContextManager technologyContextManager) {
 		try {
 			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(JAVAResource.class,
 					FileFlexoIODelegate.class));
 			JAVAResourceImpl returned = (JAVAResourceImpl) factory.newInstance(JAVAResource.class);
 			returned.setName(modelFile.getName());
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-
+	
 			returned.setURI(modelURI);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			returned.setTechnologyAdapter((JAVATechnologyAdapter) technologyContextManager.getTechnologyAdapter());
@@ -92,14 +89,14 @@ public abstract class JAVAResourceImpl extends FlexoResourceImpl<JAVAFileModel> 
 			LOGGER.log(Level.SEVERE, msg, e);
 		}
 		return null;
-	}
+	}*/
 
 	/**
 	 * @param modelFile
 	 * @param technologyContextManager
 	 * @return
 	 */
-	public static JAVAResource retrieveJAVAResource(File modelFile, JAVATechnologyContextManager technologyContextManager) {
+	/*public static JAVAResource retrieveJAVAResource(File modelFile, JAVATechnologyContextManager technologyContextManager) {
 		try {
 			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(JAVAResource.class,
 					FileFlexoIODelegate.class));
@@ -117,7 +114,7 @@ public abstract class JAVAResourceImpl extends FlexoResourceImpl<JAVAFileModel> 
 			LOGGER.log(Level.SEVERE, msg, e);
 		}
 		return null;
-	}
+	}*/
 
 	@Getter(value = TECHNOLOGY_ADAPTER, ignoreType = true)
 	@Override
@@ -129,8 +126,8 @@ public abstract class JAVAResourceImpl extends FlexoResourceImpl<JAVAFileModel> 
 	}
 
 	@Override
-	public JAVAFileModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FileNotFoundException,
-			FlexoException {
+	public JAVAFileModel loadResourceData(IProgress progress)
+			throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
 
 		final JAVAFileModelImpl javaFile = (JAVAFileModelImpl) MODEL_FACTORY.newInstance(JAVAFileModel.class);
 		resourceFile = ((FileFlexoIODelegate) getFlexoIODelegate()).getFile();

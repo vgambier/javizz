@@ -22,7 +22,7 @@ public class TestJavaResource extends OpenflexoTestCase {
 		resourceCenter = (DirectoryResourceCenter) applicationContext.getResourceCenterService().getResourceCenters().get(0);
 		Assume.assumeNotNull(applicationContext, adapter, resourceCenter);
 
-		JAVAResourceRepository javaResourceRepository = resourceCenter.getRepository(JAVAResourceRepository.class, adapter);
+		JAVAResourceRepository javaResourceRepository = adapter.getJAVAResourceRepository(resourceCenter);
 		Collection<JAVAResource> javaResources = javaResourceRepository.getAllResources();
 
 	}

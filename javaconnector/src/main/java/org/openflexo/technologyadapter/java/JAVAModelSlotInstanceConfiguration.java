@@ -20,7 +20,8 @@
 
 package org.openflexo.technologyadapter.java;
 
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 
@@ -30,8 +31,9 @@ import org.openflexo.technologyadapter.java.model.JAVAFileModel;
  */
 public class JAVAModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<JAVAFileModel, JAVAModelSlot> {
 
-	protected JAVAModelSlotInstanceConfiguration(JAVAModelSlot ms, CreateVirtualModelInstance<?> action) {
-		super(ms, action);
+	protected JAVAModelSlotInstanceConfiguration(JAVAModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
+			FlexoResourceCenter<?> resourceCenter) {
+		super(ms, virtualModelInstance, resourceCenter);
 	}
 
 	@Override

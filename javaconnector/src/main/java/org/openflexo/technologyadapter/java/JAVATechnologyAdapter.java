@@ -20,24 +20,18 @@
 
 package org.openflexo.technologyadapter.java;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
+import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
-import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
-import org.openflexo.technologyadapter.java.rm.JAVAResource;
-import org.openflexo.technologyadapter.java.rm.JAVAResourceImpl;
 import org.openflexo.technologyadapter.java.rm.JAVAResourceRepository;
+import org.openflexo.technologyadapter.java.rm.JAVAResourceFactory;
 
 /**
  * This class defines and implements the JAVA technology adapter
@@ -48,6 +42,7 @@ import org.openflexo.technologyadapter.java.rm.JAVAResourceRepository;
 
 @DeclareModelSlots({ JAVAModelSlot.class })
 @DeclareRepositoryType({ JAVAResourceRepository.class })
+@DeclareResourceTypes({ JAVAResourceFactory.class })
 public class JAVATechnologyAdapter extends TechnologyAdapter {
 
 	private static final Logger LOGGER = Logger.getLogger(JAVATechnologyAdapter.class.getPackage().getName());
@@ -58,6 +53,11 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 	@Override
 	public String getName() {
 		return new String("JAVA Technology Adapter");
+	}
+
+	@Override
+	public String getLocalizationDirectory() {
+		return "FlexoLocalization/JAVATechnologyAdapter";
 	}
 
 	@Override
@@ -77,25 +77,127 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
+	public <I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public <I> JAVAResourceRepository<I> getJAVAResourceRepository(FlexoResourceCenter<I> resourceCenter) {
+		JAVAResourceRepository<I> returned = resourceCenter.retrieveRepository(JAVAResourceRepository.class, this);
+		if (returned == null) {
+			returned = new JAVAResourceRepository<I>(this, resourceCenter);
+			resourceCenter.registerRepository(returned, JAVAResourceRepository.class, this);
+		}
+		return returned;
+	}
+
+	/**
+	 * Create a new {@link DocXDocumentResource} using supplied configuration options<br>
+	 * 
+	 * @param project
+	 * @param filename
+	 * @param modelUri
+	 * @param createEmptyDocument
+	 *            a flag indicating if created resource should encodes an empty (but existing) document or if resource data should remain
+	 *            empty
+	 * @return
+	 */
+	/*@Deprecated
+	public DocXDocumentResource createNewDocXDocumentResource(FlexoResourceCenter<?> rc, String filename, boolean createEmptyDocument,
+			IdentifierManagementStrategy idStrategy) {
+	
+		if (rc instanceof FileSystemBasedResourceCenter) {
+			return createNewDocXDocumentResource((FileSystemBasedResourceCenter) rc, File.separator + "DocX", filename, createEmptyDocument,
+					idStrategy);
+		}
+		else {
+			logger.warning(
+					"INVESTIGATE: not implemented yet, not able to create a DocX file in a Rc that is not fileBased: " + rc.toString());
+			return null;
+		}
+	
+	}*/
+
+	/**
+	 * Create a new {@link DocXDocumentResource} using supplied configuration options<br>
+	 * 
+	 * @param resourceCenter
+	 * @param relativePath
+	 * @param filename
+	 * @param createEmptyDocument
+	 *            a flag indicating if created resource should encodes an empty (but existing) document or if resource data should remain
+	 *            empty
+	 * @return
+	 */
+	/*@Deprecated
+	public DocXDocumentResource createNewDocXDocumentResource(FileSystemBasedResourceCenter resourceCenter, String relativePath,
+			String filename, boolean createEmptyDocument, IdentifierManagementStrategy idStrategy) {
+	
+		if (!relativePath.startsWith(File.separator)) {
+			relativePath = File.separator + relativePath;
+		}
+	
+		File docXFile = new File(resourceCenter.getDirectory() + relativePath, filename);
+	
+		DocXDocumentResource docXDocumentResource = null;
+		try {
+			docXDocumentResource = getDocXDocumentResourceFactory().makeResource(docXFile, resourceCenter, getTechnologyContextManager(),
+					true);
+		} catch (SaveResourceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ModelDefinitionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		// DocXDocumentResource docXDocumentResource = DocXDocumentResourceImpl.makeDocXDocumentResource(docXFile,
+		// getTechnologyContextManager(), resourceCenter, idStrategy);
+	
+		// referenceResource(docXDocumentResource, resourceCenter);
+	
+		return docXDocumentResource;
+	}*/
+
+	/*@Override
+	public void initFMLModelFactory(FMLModelFactory fMLModelFactory) {
+		super.initFMLModelFactory(fMLModelFactory);
+	
+		fMLModelFactory.addConverter(new DocXFragmentConverter());
+		fMLModelFactory.addConverter(new DocXElementConverter());
+	}*/
+
+	@Override
+	public String getIdentifier() {
+		return "JAVA";
+	}
+
+	public JAVAResourceFactory getJavaResourceFactory() {
+		return getResourceFactory(JAVAResourceFactory.class);
+	}
+
+	//
+
+	/*@Override
 	public <I> void initializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
 		JAVAResourceRepository currentRepository = resourceCenter.getRepository(JAVAResourceRepository.class, this);
 		if (currentRepository == null) {
 			currentRepository = this.createNewJAVARepository(resourceCenter);
 		}
-
+	
 		Iterator<I> it = resourceCenter.iterator();
-
+	
 		while (it.hasNext()) {
 			I item = it.next();
 			JAVAResource javaRes = tryToLookupJAVAFile(resourceCenter, item);
-
+	
 		}
-
+	
 		// Call it to update the current repositories
 		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
-
+	
 	}
-
+	
 	protected JAVAResource tryToLookupJAVAFile(FlexoResourceCenter<?> resourceCenter, Object candidateElement) {
 		if (isValidateJAVAFile(candidateElement, resourceCenter.getName())) {
 			JAVAResource javaRes = retrieveJAVAResource(candidateElement);
@@ -114,9 +216,9 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 		}
 		return null;
 	}
-
+	
 	public JAVAResource retrieveJAVAResource(Object javaFile) {
-
+	
 		JAVAResource returned = getTechnologyContextManager().getJAVAResource(javaFile);
 		if (returned == null) {
 			if (javaFile instanceof File) {
@@ -129,16 +231,10 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 				LOGGER.warning("Cannot retrieve JAVAFile resource for " + javaFile);
 			}
 		}
-
+	
 		return returned;
 	}
-
-	/**
-	 * Register file if it is a JAVA file, and reference resource to <code>this</code>
-	 * 
-	 * @param resourceCenter
-	 * @param candidateFile
-	 */
+	
 	private <I> void initializeJAVAFile(final FlexoResourceCenter<I> resourceCenter, final File candidateFile) {
 		final JAVAResourceImpl javaResourceFile = (JAVAResourceImpl) JAVAResourceImpl.retrieveJAVAResource(candidateFile,
 				this.getTechnologyContextManager());
@@ -154,20 +250,15 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 			}
 		}
 	}
-
-	@Override
-	public <I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
-		return false;
-	}
-
+	
 	@Override
 	public <I> void contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
 		if (contents instanceof File) {
 			this.initializeJAVAFile(resourceCenter, (File) contents);
 		}
-
+	
 	}
-
+	
 	@Override
 	public <I> void contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
 		if (contents instanceof File) {
@@ -175,7 +266,7 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 			this.deleteJAVAFile(resourceCenter, candidateFile);
 		}
 	}
-
+	
 	private <I> void deleteJAVAFile(final FlexoResourceCenter<I> resourceCenter, final File candidateFile) {
 		final JAVAResourceRepository resourceRepository = resourceCenter.getRepository(JAVAResourceRepository.class, this);
 		for (JAVAResource javaResource : resourceRepository.getAllResources()) {
@@ -185,9 +276,9 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 				}
 			}
 		}
-
+	
 	}
-
+	
 	public JAVAResource createNewJAVAModel(FlexoProject project, String filename, String modelUri) {
 		final File file = new File(FlexoProject.getProjectSpecificModelsDirectory(project), filename);
 		final JAVAResourceImpl javaResourceFile = (JAVAResourceImpl) JAVAResourceImpl.makeJAVAResource(modelUri, file,
@@ -195,19 +286,13 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 		this.getTechnologyContextManager().registerResource(javaResourceFile);
 		return javaResourceFile;
 	}
-
-	/**
-	 * Create a new JAVAResourceRepository and register it in the given resource center.
-	 * 
-	 * @param resourceCenter
-	 * @return the repository
-	 */
+	
 	private JAVAResourceRepository createNewJAVARepository(final FlexoResourceCenter<?> resourceCenter) {
 		final JAVAResourceRepository repo = new JAVAResourceRepository(this, resourceCenter);
 		resourceCenter.registerRepository(repo, JAVAResourceRepository.class, this);
 		return repo;
 	}
-
+	
 	private boolean isValidateJAVAFile(Object candidateElement, String resourceCenter) {
 		if (candidateElement instanceof File && isValidateJAVAFileName(((File) candidateElement).getName())
 				&& isValidateJAVAFile(((File) candidateElement), resourceCenter)) {
@@ -215,7 +300,7 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 		}
 		return false;
 	}
-
+	
 	private boolean isValidateJAVAFile(File file, String resourceCenter) {
 		// vérifier que les fichiers ne sont pas des fichiers binaire
 		if (file.isHidden() || "target".equals(file.getName()) || "build".equals(file.getName())) {
@@ -228,11 +313,11 @@ public class JAVATechnologyAdapter extends TechnologyAdapter {
 			return isValidateJAVAFile(file.getParentFile(), resourceCenter);
 		}
 	}
-
+	
 	private boolean isValidateJAVAFileName(String fileName) {
 		// pour l'instant, les fichers .java sont considérés comme JAVAResource
 		// si ajouter d'autres fichiers comme JAVAResource, ajouter ||fileName.endsWith("")
 		return fileName.endsWith(".java");
-	}
+	}*/
 
 }

@@ -26,7 +26,8 @@ import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -43,7 +44,7 @@ import org.openflexo.technologyadapter.java.model.JAVAFileModel;
  */
 @DeclareFlexoRoles({ JAVAFileRole.class })
 @DeclareEditionActions({ // All edition actions available through this model
-// slot
+		// slot
 })
 @DeclareFetchRequests({ // All requests available through this model slot
 })
@@ -65,10 +66,10 @@ public interface JAVAModelSlot extends FreeModelSlot<JAVAFileModel> {
 		/**
 		 * Instanciate a new model slot instance configuration for this model slot
 		 */
-		@SuppressWarnings("rawtypes")
 		@Override
-		public JAVAModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
-			return new JAVAModelSlotInstanceConfiguration(this, action);
+		public JAVAModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
+				FlexoResourceCenter<?> rc) {
+			return new JAVAModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
 		}
 
 		@Override

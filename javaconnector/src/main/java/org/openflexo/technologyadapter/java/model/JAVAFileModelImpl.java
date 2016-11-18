@@ -20,8 +20,6 @@
 
 package org.openflexo.technologyadapter.java.model;
 
-import japa.parser.ast.body.ClassOrInterfaceDeclaration;
-
 import java.io.File;
 
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
@@ -30,6 +28,8 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 import org.openflexo.technologyadapter.java.utils.JAVAFileParser;
+
+import japa.parser.ast.body.ClassOrInterfaceDeclaration;
 
 /**
  * Represents an JAVA file
@@ -110,7 +110,7 @@ public abstract class JAVAFileModelImpl extends FlexoObjectImpl implements JAVAF
 	@Override
 	public void setName(String name) {
 		if (getResource() != null) {
-			getResource().setName(name);
+			getResource().initName(name);
 			modifyFileName(name);
 			getResource().setResourceData(this);
 		}

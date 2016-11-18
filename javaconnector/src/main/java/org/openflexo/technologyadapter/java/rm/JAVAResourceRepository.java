@@ -21,7 +21,7 @@
 package org.openflexo.technologyadapter.java.rm;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterFileResourceRepository;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
 import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 
@@ -31,17 +31,17 @@ import org.openflexo.technologyadapter.java.model.JAVAFileModel;
  * @author wei
  *
  */
-public class JAVAResourceRepository extends TechnologyAdapterFileResourceRepository<JAVAResource, JAVATechnologyAdapter, JAVAFileModel> {
+public class JAVAResourceRepository<I> extends TechnologyAdapterResourceRepository<JAVAResource, JAVATechnologyAdapter, JAVAFileModel, I> {
 
-	public JAVAResourceRepository(JAVATechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
+	public JAVAResourceRepository(JAVATechnologyAdapter adapter, FlexoResourceCenter<I> resourceCenter) {
 		super(adapter, resourceCenter);
 	}
 
-	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/JAVATechnologyAdapter/JAVAFileModels";
-
+	/*private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/JAVATechnologyAdapter/JAVAFileModels";
+	
 	@Override
 	public String getDefaultBaseURI() {
 		return DEFAULT_BASE_URI;
-	}
+	}*/
 
 }

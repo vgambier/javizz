@@ -46,7 +46,7 @@ public interface JAVAFileModel extends TechnologyObject<JAVATechnologyAdapter>, 
 	@Setter(value = CLASS_ITEM_KEY)
 	public void setJavaClass(JAVAClassOrInterfaceModel javaClass);
 
-	@Getter(value = CLASS_ITEM_KEY, ignoreType = true)
+	@Getter(value = CLASS_ITEM_KEY)
 	public JAVAClassOrInterfaceModel getJavaClass();
 
 	public String getName();
