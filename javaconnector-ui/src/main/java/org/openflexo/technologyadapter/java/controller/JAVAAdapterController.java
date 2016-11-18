@@ -24,15 +24,13 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.foundation.resource.RepositoryFolder;
+import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.rm.ResourceLocator;
+import org.openflexo.gina.utils.InspectorGroup;
 import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 import org.openflexo.technologyadapter.java.library.JAVAIconLibrary;
 import org.openflexo.technologyadapter.java.model.JAVAFileModel;
-import org.openflexo.technologyadapter.java.rm.JAVAResource;
 import org.openflexo.technologyadapter.java.view.JAVAFileView;
-import org.openflexo.technologyadapter.java.view.JAVARepositoryView;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
@@ -45,6 +43,8 @@ public class JAVAAdapterController extends TechnologyAdapterController<JAVATechn
 
 	static final Logger LOGGER = Logger.getLogger(JAVAAdapterController.class.getPackage().getName());
 
+	private InspectorGroup javaInspectorGroup;
+
 	@Override
 	public Class<JAVATechnologyAdapter> getTechnologyAdapterClass() {
 		return JAVATechnologyAdapter.class;
@@ -52,7 +52,18 @@ public class JAVAAdapterController extends TechnologyAdapterController<JAVATechn
 
 	@Override
 	public void initializeActions(ControllerActionInitializer actionInitializer) {
-		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/JAVA"));
+		// actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/JAVA"));
+	}
+
+	@Override
+	protected void initializeInspectors(FlexoController controller) {
+		javaInspectorGroup = controller.loadInspectorGroup("Java", getTechnologyAdapter().getLocales(),
+				getFMLTechnologyAdapterInspectorGroup());
+	}
+
+	@Override
+	public InspectorGroup getTechnologyAdapterInspectorGroup() {
+		return javaInspectorGroup;
 	}
 
 	@Override
@@ -81,36 +92,43 @@ public class JAVAAdapterController extends TechnologyAdapterController<JAVATechn
 	}
 
 	@Override
+	public boolean hasModuleViewForObject(TechnologyObject<JAVATechnologyAdapter> object, FlexoController controller) {
+		if (object instanceof JAVAFileModel) {
+			return true;
+		}
+		// TODO: handle java folder
+		return false;
+	}
+
+	@Override
 	public ModuleView<?> createModuleViewForObject(final TechnologyObject<JAVATechnologyAdapter> object, final FlexoController controller,
 			final FlexoPerspective perspective) {
 		if (object instanceof JAVAFileModel) {
 			return new JAVAFileView((JAVAFileModel) object, controller, perspective);
 		}
+		// TODO: handle java folder
 		return new EmptyPanel<TechnologyObject<JAVATechnologyAdapter>>(controller, perspective, object);
 	}
 
-	public ModuleView<?> createModuleViewForRepository(final RepositoryFolder<JAVAResource> object, final FlexoController controller,
+	/*public ModuleView<?> createModuleViewForRepository(final RepositoryFolder<JAVAResource> object, final FlexoController controller,
 			final FlexoPerspective perspective) {
 		if (object instanceof RepositoryFolder<?>) {
 			return new JAVARepositoryView(object, controller, perspective);
 		}
 		return new EmptyPanel<RepositoryFolder<JAVAResource>>(controller, perspective, object);
-	}
+	}*/
 
 	@Override
-	public ImageIcon getIconForPatternRole(Class<? extends org.openflexo.foundation.fml.FlexoRole<?>> arg0) {
+	public ImageIcon getIconForFlexoRole(Class<? extends FlexoRole<?>> role) {
 		return JAVAIconLibrary.JAVA_TECHNOLOGY_ICON;
 	}
 
 	@Override
 	public String getWindowTitleforObject(TechnologyObject<JAVATechnologyAdapter> obj, FlexoController controller) {
-		// TODO Auto-generated method stub
+		if (obj instanceof JAVAFileModel) {
+			return ((JAVAFileModel) obj).getName();
+		}
 		return "";
-	}
-
-	@Override
-	public boolean hasModuleViewForObject(TechnologyObject<JAVATechnologyAdapter> obj, FlexoController controller) {
-		return obj instanceof JAVAFileModel;
 	}
 
 	@Override
@@ -118,10 +136,6 @@ public class JAVAAdapterController extends TechnologyAdapterController<JAVATechn
 		JAVATechnologyPerspective returned = new JAVATechnologyPerspective(getTechnologyAdapter(), controller);
 		getTechnologyPerspectives().put(controller, returned);
 		return returned;
-	}
-
-	public boolean hasModuleViewForObject(RepositoryFolder<JAVAResource> object, FlexoController controller) {
-		return object instanceof RepositoryFolder<?>;
 	}
 
 }

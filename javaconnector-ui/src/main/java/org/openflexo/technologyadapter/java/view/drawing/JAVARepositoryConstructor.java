@@ -21,11 +21,11 @@ public class JAVARepositoryConstructor {
 
 	private static final Logger LOGGER = Logger.getLogger(JAVARepositoryConstructor.class.getPackage().getName());
 
-	private RepositoryFolder<JAVAResource> resourceRepository;
+	private final RepositoryFolder<JAVAResource, ?> resourceRepository;
 
-	private JAVARepositoryView repositoryView;
+	private final JAVARepositoryView repositoryView;
 
-	public JAVARepositoryConstructor(RepositoryFolder<JAVAResource> resourceRepository, JAVARepositoryView repositoryView) {
+	public JAVARepositoryConstructor(RepositoryFolder<JAVAResource, ?> resourceRepository, JAVARepositoryView repositoryView) {
 		this.resourceRepository = resourceRepository;
 		this.repositoryView = repositoryView;
 	}
@@ -51,7 +51,7 @@ public class JAVARepositoryConstructor {
 		} catch (ModelDefinitionException e) {
 			e.printStackTrace();
 		}
-		List<RepositoryFolder<JAVAResource>> repositoryList = new ArrayList<RepositoryFolder<JAVAResource>>();
+		List<RepositoryFolder<JAVAResource, ?>> repositoryList = new ArrayList<RepositoryFolder<JAVAResource, ?>>();
 		List<JAVANode> graphNodeList = new ArrayList<JAVANode>();
 		JAVAGraph graph = new JAVAGraph();
 		JAVANode node = new JAVANode(resourceRepository.getName(), graph, resourceRepository);
@@ -63,19 +63,19 @@ public class JAVARepositoryConstructor {
 		return circularDrawing;
 	}
 
-	private void completeDrawing(JAVAGraph graph, List<JAVANode> graphNodeList, List<RepositoryFolder<JAVAResource>> repositoryList,
+	private void completeDrawing(JAVAGraph graph, List<JAVANode> graphNodeList, List<RepositoryFolder<JAVAResource, ?>> repositoryList,
 			int size, int height) {
 
-		List<RepositoryFolder<JAVAResource>> newRepositoryList = new ArrayList<RepositoryFolder<JAVAResource>>();
+		List<RepositoryFolder<JAVAResource, ?>> newRepositoryList = new ArrayList<RepositoryFolder<JAVAResource, ?>>();
 		List<JAVANode> newGraphNodeList = new ArrayList<JAVANode>();
 
 		if (size > 0 && height < 2) {
 			for (int i = 0; i < size; i++) {
 				JAVANode parent = graphNodeList.get(i);
-				RepositoryFolder<JAVAResource> repository = repositoryList.get(i);
+				RepositoryFolder<JAVAResource, ?> repository = repositoryList.get(i);
 				for (JAVAResource resource : repository.getResources()) {
 					try {
-						JAVAFileModel fileModel = (JAVAFileModel) resource.getResourceData(null);
+						JAVAFileModel fileModel = resource.getResourceData(null);
 						JAVANode node = new JAVANode(resource.getName(), graph, fileModel);
 						parent.connectTo(node);
 					} catch (Exception e) {
@@ -84,7 +84,7 @@ public class JAVARepositoryConstructor {
 					}
 
 				}
-				for (RepositoryFolder<JAVAResource> folder : repository.getChildren()) {
+				for (RepositoryFolder<JAVAResource, ?> folder : repository.getChildren()) {
 					JAVANode node = new JAVANode(folder.getName(), graph, folder);
 					parent.connectTo(node);
 					newGraphNodeList.add(node);

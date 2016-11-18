@@ -1,7 +1,7 @@
 package org.openflexo.technologyadapter.java.tests;
 
 import org.junit.Test;
-import org.openflexo.fib.utils.GenericFIBTestCase;
+import org.openflexo.gina.utils.GenericFIBTestCase;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.ResourceLocator;
 

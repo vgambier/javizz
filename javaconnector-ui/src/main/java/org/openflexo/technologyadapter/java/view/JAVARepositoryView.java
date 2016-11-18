@@ -30,15 +30,15 @@ import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
 @SuppressWarnings("serial")
-public class JAVARepositoryView extends JTabbedPane implements ModuleView<RepositoryFolder<JAVAResource>> {
+public class JAVARepositoryView extends JTabbedPane implements ModuleView<RepositoryFolder<JAVAResource, ?>> {
 
 	private final FlexoController controller;
 
-	private final RepositoryFolder<JAVAResource> repository;
+	private final RepositoryFolder<JAVAResource, ?> repository;
 
 	private final FlexoPerspective perspective;
 
-	public JAVARepositoryView(RepositoryFolder<JAVAResource> repository, FlexoController controller, FlexoPerspective perspective) {
+	public JAVARepositoryView(RepositoryFolder<JAVAResource, ?> repository, FlexoController controller, FlexoPerspective perspective) {
 		this.controller = controller;
 		this.repository = repository;
 		this.perspective = perspective;
@@ -47,7 +47,7 @@ public class JAVARepositoryView extends JTabbedPane implements ModuleView<Reposi
 	}
 
 	@Override
-	public RepositoryFolder<JAVAResource> getRepresentedObject() {
+	public RepositoryFolder<JAVAResource, ?> getRepresentedObject() {
 		return this.repository;
 	}
 

@@ -15,7 +15,7 @@ public class JAVAMouseClickControl implements MouseClickControl<JAVADrawingContr
 
 	private static final Logger LOGGER = Logger.getLogger(JAVAMouseClickControl.class.getPackage().getName());
 
-	private JAVARepositoryView repositoryView;
+	private final JAVARepositoryView repositoryView;
 
 	public JAVAMouseClickControl(JAVARepositoryView repositoryView) {
 		this.repositoryView = repositoryView;
@@ -25,8 +25,8 @@ public class JAVAMouseClickControl implements MouseClickControl<JAVADrawingContr
 	public boolean isApplicable(DrawingTreeNode<?, ?> node, JAVADrawingController controller, MouseControlContext context) {
 		if (context.isControlDown()) {
 			Object obj = ((JAVANode) node.getDrawable()).getModel();
-			if (obj instanceof RepositoryFolder<?>) {
-				RepositoryFolder<JAVAResource> repository = (RepositoryFolder<JAVAResource>) obj;
+			if (obj instanceof RepositoryFolder) {
+				RepositoryFolder<JAVAResource, ?> repository = (RepositoryFolder<JAVAResource, ?>) obj;
 				JAVARepositoryConstructor constructor = new JAVARepositoryConstructor(repository, repositoryView);
 				repositoryView.addTab(repository.getName(), constructor.createPanel());
 			}

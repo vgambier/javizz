@@ -1,30 +1,11 @@
 package org.openflexo.technologyadapter.java.controller;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoObject;
-import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.FlexoConceptNature;
-import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fml.ViewPointNature;
-import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModelNature;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstanceNature;
-import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.foundation.fml.rt.ViewNature;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstanceNature;
-import org.openflexo.foundation.nature.ProjectNature;
-import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.technologyadapter.java.JAVATechnologyAdapter;
 import org.openflexo.technologyadapter.java.model.JAVAFileModel;
-import org.openflexo.technologyadapter.java.rm.JAVAResource;
-import org.openflexo.view.EmptyPanel;
-import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.TechnologyAdapterControllerService;
 import org.openflexo.view.controller.TechnologyPerspective;
@@ -50,22 +31,22 @@ public class JAVATechnologyPerspective extends TechnologyPerspective<JAVATechnol
 			JAVAAdapterController tac = tacService.getTechnologyAdapterController(getTechnologyAdapter());
 			return tac.hasModuleViewForObject((TechnologyObject<JAVATechnologyAdapter>) object, getController());
 		}
-		else if (object instanceof RepositoryFolder<?>) {
+		/*else if (object instanceof RepositoryFolder<?>) {
 			TechnologyAdapterControllerService tacService = getController().getApplicationContext().getTechnologyAdapterControllerService();
 			JAVAAdapterController tac = tacService.getTechnologyAdapterController(getTechnologyAdapter());
 			return tac.hasModuleViewForObject((RepositoryFolder<JAVAResource>) object, getController());
-		}
+		}*/
 		return false;
 	}
 
-	public final ModuleView<?> getModuleViewForRepositoryFolder(RepositoryFolder<JAVAResource> object) {
+	/*public final ModuleView<?> getModuleViewForRepositoryFolder(RepositoryFolder<JAVAResource> object) {
 		TechnologyAdapterControllerService tacService = getController().getApplicationContext().getTechnologyAdapterControllerService();
 		JAVAAdapterController tac = tacService.getTechnologyAdapterController(getTechnologyAdapter());
 		if (tac != null) {
 			return tac.createModuleViewForRepository(object, getController(), this);
 		}
 		return null;
-	}
+	}*/
 
 	@Override
 	public String getWindowTitleforObject(FlexoObject object, FlexoController controller) {
@@ -73,10 +54,10 @@ public class JAVATechnologyPerspective extends TechnologyPerspective<JAVATechnol
 			JAVAFileModel fileModel = (JAVAFileModel) object;
 			return fileModel.getName();
 		}
-		if (object instanceof RepositoryFolder<?>) {
+		/*if (object instanceof RepositoryFolder<?>) {
 			RepositoryFolder<JAVAResource> repository = (RepositoryFolder<JAVAResource>) object;
 			return repository.getName();
-		}
+		}*/
 		if (object != null) {
 			return object.toString();
 		}
@@ -84,9 +65,10 @@ public class JAVATechnologyPerspective extends TechnologyPerspective<JAVATechnol
 		return null;
 	}
 
+	/*@Override
 	@SuppressWarnings("unchecked")
 	public ModuleView<?> createModuleViewForObject(FlexoObject object) {
-
+	
 		if (object instanceof FlexoProject) {
 			FlexoProject project = (FlexoProject) object;
 			List<ProjectNature> availableNatures = getSpecificNaturesForProject(project);
@@ -151,6 +133,6 @@ public class JAVATechnologyPerspective extends TechnologyPerspective<JAVATechnol
 			return getModuleViewForRepositoryFolder((RepositoryFolder<JAVAResource>) object);
 		}
 		return new EmptyPanel<FlexoObject>(getController(), this, object);
-	}
+	}*/
 
 }

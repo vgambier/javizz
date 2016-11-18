@@ -91,7 +91,7 @@ public class CircularDrawing extends DrawingImpl<JAVAGraph> {
 	private ShapeGraphicalRepresentation fieldRepresentation;
 	private ConnectorGraphicalRepresentation edgeRepresentation;
 	private GeometricGraphicalRepresentation circle1GR;
-	private JAVAMouseClickControl mouseClickControl;
+	private final JAVAMouseClickControl mouseClickControl;
 
 	public CircularDrawing(JAVAGraph graph, FGEModelFactory factory, JAVARepositoryView repositoryView) {
 		super(graph, factory, PersistenceMode.SharedGraphicalRepresentations);
@@ -182,7 +182,7 @@ public class CircularDrawing extends DrawingImpl<JAVAGraph> {
 			@Override
 			public ShapeGraphicalRepresentation provideGR(JAVANode drawable, FGEModelFactory factory) {
 				final Object model = drawable.getModel();
-				if (model instanceof RepositoryFolder<?>)
+				if (model instanceof RepositoryFolder)
 					return folderRepresentation;
 				else if (model instanceof JAVAFileModel) {
 					final JAVAFileModel fileModel = (JAVAFileModel) model;

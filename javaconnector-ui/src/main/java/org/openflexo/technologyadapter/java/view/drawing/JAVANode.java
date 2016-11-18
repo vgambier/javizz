@@ -38,8 +38,6 @@
 
 package org.openflexo.technologyadapter.java.view.drawing;
 
-import japa.parser.ParseException;
-
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
@@ -53,6 +51,8 @@ import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.technologyadapter.java.model.JAVAFileModel;
 import org.openflexo.technologyadapter.java.rm.JAVAResource;
 import org.openflexo.toolbox.HasPropertyChangeSupport;
+
+import japa.parser.ParseException;
 
 public class JAVANode implements HasPropertyChangeSupport {
 
@@ -72,7 +72,7 @@ public class JAVANode implements HasPropertyChangeSupport {
 	private static final double CENTER_Y = 300;
 	private static final double RADIUS = 130;
 
-	private PropertyChangeSupport pcSupport;
+	private final PropertyChangeSupport pcSupport;
 
 	public JAVANode(String name, JAVAGraph graph, Object model) {
 		pcSupport = new PropertyChangeSupport(this);
@@ -273,9 +273,9 @@ public class JAVANode implements HasPropertyChangeSupport {
 
 	private void moveObject(JAVANode from, JAVANode to) {
 		Object newParentObj = to.getModel();
-		RepositoryFolder<JAVAResource> parentRepository = (RepositoryFolder<JAVAResource>) newParentObj;
+		RepositoryFolder<JAVAResource, ?> parentRepository = (RepositoryFolder<JAVAResource, ?>) newParentObj;
 		JAVAFileModel fileModel = (JAVAFileModel) model;
-		File parentRepo = parentRepository.getFile();
+		File parentRepo = (File) parentRepository.getSerializationArtefact();
 		File file = fileModel.getFileModel();
 		fileModel.setFileModel(new File(parentRepo.getAbsolutePath() + "/" + file.getName()));
 		JAVAEdge edge = this.getInputEdges().get(0);
