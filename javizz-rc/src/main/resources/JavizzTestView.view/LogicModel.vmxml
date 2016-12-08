@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<VirtualModelInstance id="0" modelVersion="1.0" title="logicModel" version="0.1" virtualModelURI="http://javizz.org/Javizz.viewpoint/LogicModel" userID="FLX" flexoConceptURI="http://javizz.org/Javizz.viewpoint/LogicModel" flexoID="1">
-  <FlexoConceptInstance id="1" userID="FLX" flexoConceptURI="http://javizz.org/Javizz.viewpoint/LogicModel#JavaClass" flexoID="3" />
-  <FlexoConceptInstance id="2" userID="FLX" flexoConceptURI="http://javizz.org/Javizz.viewpoint/LogicModel#JavaClass" flexoID="4" />
-  <FlexoConceptInstance id="3" userID="FLX" flexoConceptURI="http://javizz.org/Javizz.viewpoint/LogicModel#JavaClass" flexoID="5" />
-  <PrimitiveActorReference id="4" userID="FLX" valueAsString="logi1" roleName="name" flexoID="2" />
-</VirtualModelInstance>

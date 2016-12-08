@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VirtualModel id="0" modelVersion="1.0" description="This model is used to represents the actual files (and folders) which are part of a Java project." version="0.1" userID="FLX" name="ProjectFilesModel" flexoID="2">
+  <ModelSlot_VirtualModelInstanceModelSlot id="1" cardinality="ZeroOne" virtualModelURI="http://javizz.org/Javizz.viewpoint/JavaModel" cloningStrategy="Reference" userID="FLX" name="javaContent" flexoID="69">
+    <VirtualModelInstanceModelSlot idref="1" />
+  </ModelSlot_VirtualModelInstanceModelSlot>
+  <Inspector id="2" userID="FLX" inspectorTitle="ProjectFilesModel" flexoID="1" />
+  <FlexoConcept id="3" userID="FLX" name="File" flexoID="11">
+    <Inspector id="4" userID="FLX" inspectorTitle="File" flexoID="7" />
+    <GetSetProperty id="5" userID="FLX" name="name" flexoID="13">
+      <SetControlGraph_EmptyControlGraph id="6" ownerContext="setControlGraph" userID="FLX" flexoID="57" />
+    </GetSetProperty>
+    <GetSetProperty id="7" userID="FLX" name="creationDate" flexoID="12">
+      <SetControlGraph_EmptyControlGraph id="8" ownerContext="setControlGraph" userID="FLX" flexoID="14" />
+    </GetSetProperty>
+    <CreationScheme id="9" label="create" userID="FLX" name="create" width="800" height="600" flexoID="6">
+      <BehaviourControlGraph_Sequence id="10" userID="FLX" flexoID="60">
+        <ControlGraph2_AssignationAction id="11" assign="creationDate" ownerContext="controlGraph2" userID="FLX" flexoID="16">
+          <AssignableAction_ExpressionAction id="12" expression="parameters.aCreationDate" userID="FLX" flexoID="58" />
+        </ControlGraph2_AssignationAction>
+        <ControlGraph1_AssignationAction id="13" assign="name" ownerContext="controlGraph1" userID="FLX" flexoID="15">
+          <AssignableAction_ExpressionAction id="14" expression="parameters.aName" userID="FLX" flexoID="59" />
+        </ControlGraph1_AssignationAction>
+      </BehaviourControlGraph_Sequence>
+      <GenericBehaviourParameter id="15" isRequired="true" widget="TEXT_FIELD" type="java.lang.String" userID="FLX" name="aName" flexoID="61" />
+      <GenericBehaviourParameter id="16" isRequired="true" widget="TEXT_FIELD" type="java.lang.String" userID="FLX" name="aCreationDate" flexoID="62" />
+    </CreationScheme>
+    <DeletionScheme id="17" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="10">
+      <BehaviourControlGraph_EmptyControlGraph id="18" userID="FLX" flexoID="63" />
+    </DeletionScheme>
+  </FlexoConcept>
+  <FlexoConcept id="19" userID="FLX" name="JavaFile" flexoID="22">
+    <ParentFlexoConcept idref="3" />
+    <Inspector id="20" userID="FLX" inspectorTitle="JavaFile" flexoID="17" />
+    <FlexoConceptInstanceRole id="21" virtualModelInstance="virtualModelInstance" flexoConceptTypeURI="http://javizz.org/Javizz.viewpoint/ProjectFilesModel#JavaFileVersion" description="Current version of the java file." cardinality="One" cloningStrategy="Reference" userID="FLX" name="version" flexoID="35" />
+    <FlexoConceptInstanceRole id="22" virtualModelInstance="virtualModelInstance.javaContent" flexoConceptTypeURI="http://javizz.org/Javizz.viewpoint/JavaModel#ClassOrInterface" description="Classes of Interface contained in the java file." cardinality="ZeroMany" cloningStrategy="Reference" userID="FLX" name="containedClassOrInterface" flexoID="70">
+      <VirtualModelInstanceModelSlot idref="1" />
+    </FlexoConceptInstanceRole>
+    <CreationScheme id="23" label="create" userID="FLX" name="create" width="800" height="600" flexoID="20">
+      <BehaviourControlGraph_EmptyControlGraph id="24" userID="FLX" flexoID="64" />
+    </CreationScheme>
+    <DeletionScheme id="25" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="21">
+      <BehaviourControlGraph_EmptyControlGraph id="26" userID="FLX" flexoID="65" />
+    </DeletionScheme>
+  </FlexoConcept>
+  <FlexoConcept id="27" userID="FLX" name="JavaFileVersion" flexoID="28">
+    <Inspector id="28" userID="FLX" inspectorTitle="JavaFileVersion" flexoID="24" />
+    <GetSetProperty id="29" userID="FLX" name="Number" flexoID="29">
+      <SetControlGraph_EmptyControlGraph id="30" ownerContext="setControlGraph" userID="FLX" flexoID="38" />
+    </GetSetProperty>
+    <GetSetProperty id="31" userID="FLX" name="Date" flexoID="30">
+      <SetControlGraph_EmptyControlGraph id="32" ownerContext="setControlGraph" userID="FLX" flexoID="39" />
+    </GetSetProperty>
+    <PrimitiveRole id="33" cardinality="One" cloningStrategy="Clone" userID="FLX" name="isDeletion" primitiveType="Boolean" flexoID="40" />
+    <FlexoConceptInstanceRole id="34" virtualModelInstance="virtualModelInstance" flexoConceptTypeURI="http://javizz.org/Javizz.viewpoint/ProjectFilesModel#JavaFileVersion" description="Previous version of the JavaFile." cardinality="One" cloningStrategy="Reference" userID="FLX" name="prevVersion" flexoID="49" />
+    <FlexoConceptInstanceRole id="35" virtualModelInstance="virtualModelInstance" flexoConceptTypeURI="http://javizz.org/Javizz.viewpoint/ProjectFilesModel#JavaFileVersion" description="Next version of the Java File." cardinality="ZeroOne" cloningStrategy="Reference" userID="FLX" name="nextVersion" flexoID="66" />
+    <CreationScheme id="36" label="create" userID="FLX" name="create" width="800" height="600" flexoID="23">
+      <BehaviourControlGraph_Sequence id="37" userID="FLX" flexoID="45">
+        <ControlGraph2_Sequence id="38" ownerContext="controlGraph2" userID="FLX" flexoID="43">
+          <ControlGraph2_AssignationAction id="39" assign="isDeletion" ownerContext="controlGraph2" userID="FLX" flexoID="33">
+            <AssignableAction_ExpressionAction id="40" expression="parameters.anIsDeletion" userID="FLX" flexoID="41" />
+          </ControlGraph2_AssignationAction>
+          <ControlGraph1_AssignationAction id="41" assign="Date" ownerContext="controlGraph1" userID="FLX" flexoID="32">
+            <AssignableAction_ExpressionAction id="42" expression="parameters.aDate" userID="FLX" flexoID="42" />
+          </ControlGraph1_AssignationAction>
+        </ControlGraph2_Sequence>
+        <ControlGraph1_AssignationAction id="43" assign="Number" ownerContext="controlGraph1" userID="FLX" flexoID="31">
+          <AssignableAction_ExpressionAction id="44" expression="parameters.aNumber" userID="FLX" flexoID="44" />
+        </ControlGraph1_AssignationAction>
+      </BehaviourControlGraph_Sequence>
+      <GenericBehaviourParameter id="45" isRequired="true" widget="INTEGER" defaultValue="1" type="java.lang.Integer" userID="FLX" name="aNumber" flexoID="46" />
+      <GenericBehaviourParameter id="46" isRequired="true" widget="TEXT_FIELD" type="java.lang.String" userID="FLX" name="aDate" flexoID="47" />
+      <GenericBehaviourParameter id="47" isRequired="true" widget="CHECKBOX" defaultValue="false" type="java.lang.Boolean" userID="FLX" name="anIsDeletion" flexoID="48" />
+    </CreationScheme>
+    <DeletionScheme id="48" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="27">
+      <BehaviourControlGraph_DeleteAction id="49" userID="FLX" object="isDeletion" flexoID="34" />
+    </DeletionScheme>
+  </FlexoConcept>
+  <FlexoConcept id="50" userID="FLX" name="Directory" flexoID="55">
+    <Inspector id="51" userID="FLX" inspectorTitle="Directory" flexoID="50" />
+    <FlexoConceptInstanceRole id="52" flexoConceptTypeURI="http://javizz.org/Javizz.viewpoint/ProjectFilesModel#File" cardinality="ZeroOne" cloningStrategy="Reference" userID="FLX" name="containedFiles" flexoID="56" />
+    <CreationScheme id="53" label="create" userID="FLX" name="create" width="800" height="600" flexoID="53">
+      <BehaviourControlGraph_EmptyControlGraph id="54" userID="FLX" flexoID="67" />
+    </CreationScheme>
+    <DeletionScheme id="55" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="54">
+      <BehaviourControlGraph_EmptyControlGraph id="56" userID="FLX" flexoID="68" />
+    </DeletionScheme>
+  </FlexoConcept>
+</VirtualModel>
