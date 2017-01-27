@@ -84,6 +84,7 @@ public class JVModule extends FlexoModule<JVModule> {
 		TechnologyAdapterService taService = getApplicationContext().getTechnologyAdapterService();
 		taService.activateTechnologyAdapter(taService.getTechnologyAdapter(FMLTechnologyAdapter.class));
 		taService.activateTechnologyAdapter(taService.getTechnologyAdapter(FMLRTTechnologyAdapter.class));
+		//taService.activateTechnologyAdapter(taService.getTechnologyAdapter(JavaTechnologyAdapter.class));
 		Progress.progress(getLocales().localizedForKey("load_javizz_viewpoint"));
 		initJavizzViewpoint();
 	}

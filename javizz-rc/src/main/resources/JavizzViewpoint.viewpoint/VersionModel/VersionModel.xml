@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VirtualModel id="0" modelVersion="1.0" version="0.1" userID="FLX" name="VersionModel" flexoID="2">
+  <ModelSlot_VirtualModelInstanceModelSlot id="1" isRequired="true" cardinality="One" virtualModelURI="http://javizz.org/Javizz.viewpoint/JavaApplicationModel" cloningStrategy="Reference" userID="FLX" name="ApplicationSlot" flexoID="6">
+    <VirtualModelInstanceModelSlot idref="1" />
+  </ModelSlot_VirtualModelInstanceModelSlot>
+  <Inspector id="2" userID="FLX" inspectorTitle="VersionModel" flexoID="1" />
+  <FlexoConcept id="3" userID="FLX" name="ClassOrInterfaceVersion" flexoID="12">
+    <Inspector id="4" userID="FLX" inspectorTitle="ClassOrInterfaceVersion" flexoID="7" />
+    <PrimitiveRole id="5" description="" cardinality="One" cloningStrategy="Clone" userID="FLX" name="number" primitiveType="Integer" flexoID="15" />
+    <PrimitiveRole id="6" description="" cardinality="One" cloningStrategy="Clone" userID="FLX" name="date" primitiveType="String" flexoID="16" />
+    <PrimitiveRole id="7" cardinality="One" cloningStrategy="Clone" userID="FLX" name="isDeletion" primitiveType="Boolean" flexoID="17" />
+    <CreationScheme id="8" label="create" userID="FLX" name="create" width="800" height="600" flexoID="10">
+      <BehaviourControlGraph_EmptyControlGraph id="9" userID="FLX" flexoID="13" />
+    </CreationScheme>
+    <DeletionScheme id="10" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="11">
+      <BehaviourControlGraph_EmptyControlGraph id="11" userID="FLX" flexoID="14" />
+    </DeletionScheme>
+  </FlexoConcept>
+  <FlexoConcept id="12" userID="FLX" name="VersionnedClassOrInterface" flexoID="24">
+    <Inspector id="13" userID="FLX" inspectorTitle="VersionnedClassOrInterface" flexoID="19" />
+    <FlexoConceptInstanceRole id="14" virtualModelInstance="ApplicationSlot.virtualModelInstance" flexoConceptTypeURI="http://javizz.org/Javizz.viewpoint/JavaApplicationModel#ClassOrInterface" description="" cardinality="One" cloningStrategy="Reference" userID="FLX" name="classOrInterface" flexoID="27">
+      <VirtualModelInstanceModelSlot idref="1" />
+    </FlexoConceptInstanceRole>
+    <FlexoConceptInstanceRole id="15" virtualModelInstance="virtualModelInstance" flexoConceptTypeURI="http://javizz.org/Javizz.viewpoint/VersionModel#ClassOrInterfaceVersion" cardinality="ZeroMany" cloningStrategy="Reference" userID="FLX" name="versions" flexoID="28" />
+    <CreationScheme id="16" label="create" userID="FLX" name="create" width="800" height="600" flexoID="22">
+      <BehaviourControlGraph_EmptyControlGraph id="17" userID="FLX" flexoID="25" />
+    </CreationScheme>
+    <DeletionScheme id="18" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="23">
+      <BehaviourControlGraph_EmptyControlGraph id="19" userID="FLX" flexoID="26" />
+    </DeletionScheme>
+  </FlexoConcept>
+  <CreationScheme id="20" label="create" userID="FLX" name="create" width="800" height="600" flexoID="32">
+    <BehaviourControlGraph_AssignationAction id="21" assign="ApplicationSlot" userID="FLX" flexoID="35">
+      <AssignableAction_ExpressionAction id="22" expression="parameters.anApplication" userID="FLX" flexoID="34" />
+    </BehaviourControlGraph_AssignationAction>
+    <GenericBehaviourParameter id="23" isRequired="true" widget="CUSTOM_WIDGET" type="org.openflexo.foundation.fml.VirtualModelInstanceType&lt;http://javizz.org/Javizz.viewpoint/JavaApplicationModel&gt;" userID="FLX" name="anApplication" flexoID="36" />
+  </CreationScheme>
+</VirtualModel>

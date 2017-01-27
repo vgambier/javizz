@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VirtualModelInstance id="0" modelVersion="1.0" title="javaApp" version="0.1" virtualModelURI="http://javizz.org/Javizz.viewpoint/JavaApplicationModel" userID="FLX" flexoConceptURI="http://javizz.org/Javizz.viewpoint/JavaApplicationModel" flexoID="1">
+  <FlexoConceptInstance id="1" userID="FLX" flexoConceptURI="http://javizz.org/Javizz.viewpoint/JavaApplicationModel#ClassOrInterface" flexoID="3">
+    <PrimitiveActorReference id="2" userID="FLX" valueAsString="ClassA" roleName="name" flexoID="4" />
+    <ModelObjectActorReference id="3" userID="FLX" roleName="file" objectReference="http://javizz.org&#xA;/JavizzView.view/Files.vmxml#FLX_5" flexoID="5" />
+  </FlexoConceptInstance>
+  <VirtualModelModelSlotInstance id="4" modelSlotName="FilesSlot" userID="FLX" virtualModelInstanceURI="http://javizz.org&#xA;/JavizzView.view/Files.vmxml" flexoID="2" />
+</VirtualModelInstance>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VirtualModel id="0" modelVersion="1.0" description="Model followed by the Javizz view." version="0.1" userID="FLX" name="JavizzVM" flexoID="2">
+  <ModelSlot_VirtualModelInstanceModelSlot id="1" isRequired="true" cardinality="One" virtualModelURI="http://javizz.org/Javizz.viewpoint/JavaApplicationModel" cloningStrategy="Reference" userID="FLX" name="ApplicationSlot" flexoID="81">
+    <VirtualModelInstanceModelSlot idref="1" />
+  </ModelSlot_VirtualModelInstanceModelSlot>
+  <Inspector id="2" userID="FLX" inspectorTitle="JavizzVM" flexoID="1" />
+  <FlexoConcept id="3" isAbstract="true" userID="FLX" name="Icon" flexoID="11">
+    <Inspector id="4" userID="FLX" inspectorTitle="Icon" flexoID="6" />
+    <CreationScheme id="5" label="create" userID="FLX" name="create" width="800" height="600" flexoID="9">
+      <BehaviourControlGraph_EmptyControlGraph id="6" userID="FLX" flexoID="12" />
+    </CreationScheme>
+    <DeletionScheme id="7" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="10">
+      <BehaviourControlGraph_EmptyControlGraph id="8" userID="FLX" flexoID="13" />
+    </DeletionScheme>
+  </FlexoConcept>
+  <FlexoConcept id="9" userID="FLX" name="DirectoryIcon" flexoID="22">
+    <ParentFlexoConcept idref="3" />
+    <Inspector id="10" userID="FLX" inspectorTitle="DirectoryIcon" flexoID="17" />
+    <PrimitiveRole id="11" cardinality="One" cloningStrategy="Clone" userID="FLX" name="name" primitiveType="String" flexoID="70" />
+    <CreationScheme id="12" label="create" userID="FLX" name="create" width="800" height="600" flexoID="20">
+      <BehaviourControlGraph_EmptyControlGraph id="13" userID="FLX" flexoID="23" />
+    </CreationScheme>
+    <DeletionScheme id="14" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="21">
+      <BehaviourControlGraph_EmptyControlGraph id="15" userID="FLX" flexoID="24" />
+    </DeletionScheme>
+  </FlexoConcept>
+  <FlexoConcept id="16" userID="FLX" name="JavaFileIcon" flexoID="30">
+    <ParentFlexoConcept idref="3" />
+    <Inspector id="17" userID="FLX" inspectorTitle="JavaFileIcon" flexoID="25" />
+    <PrimitiveRole id="18" cardinality="One" cloningStrategy="Clone" userID="FLX" name="name" primitiveType="String" flexoID="73" />
+    <CreationScheme id="19" label="create" userID="FLX" name="create" width="800" height="600" flexoID="28">
+      <BehaviourControlGraph_EmptyControlGraph id="20" userID="FLX" flexoID="31" />
+    </CreationScheme>
+    <DeletionScheme id="21" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="29">
+      <BehaviourControlGraph_EmptyControlGraph id="22" userID="FLX" flexoID="32" />
+    </DeletionScheme>
+  </FlexoConcept>
+  <FlexoConcept id="23" userID="FLX" name="CoiIcon" flexoID="38">
+    <ParentFlexoConcept idref="3" />
+    <Inspector id="24" userID="FLX" inspectorTitle="CoiIcon" flexoID="33" />
+    <PrimitiveRole id="25" cardinality="One" cloningStrategy="Clone" userID="FLX" name="name" primitiveType="String" flexoID="76" />
+    <PrimitiveRole id="26" description="" cardinality="One" cloningStrategy="Clone" userID="FLX" name="date" primitiveType="String" flexoID="77" />
+    <CreationScheme id="27" label="create" userID="FLX" name="create" width="800" height="600" flexoID="36">
+      <BehaviourControlGraph_EmptyControlGraph id="28" userID="FLX" flexoID="39" />
+    </CreationScheme>
+    <DeletionScheme id="29" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="37">
+      <BehaviourControlGraph_EmptyControlGraph id="30" userID="FLX" flexoID="40" />
+    </DeletionScheme>
+  </FlexoConcept>
+  <FlexoConcept id="31" isAbstract="true" userID="FLX" name="Connector" flexoID="46">
+    <Inspector id="32" userID="FLX" inspectorTitle="Connector" flexoID="41" />
+    <CreationScheme id="33" label="create" userID="FLX" name="create" width="800" height="600" flexoID="44">
+      <BehaviourControlGraph_EmptyControlGraph id="34" userID="FLX" flexoID="47" />
+    </CreationScheme>
+    <DeletionScheme id="35" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="45">
+      <BehaviourControlGraph_EmptyControlGraph id="36" userID="FLX" flexoID="48" />
+    </DeletionScheme>
+  </FlexoConcept>
+  <FlexoConcept id="37" userID="FLX" name="ArrowConnector" flexoID="54">
+    <ParentFlexoConcept idref="31" />
+    <Inspector id="38" userID="FLX" inspectorTitle="ArrowConnector" flexoID="49" />
+    <CreationScheme id="39" label="create" userID="FLX" name="create" width="800" height="600" flexoID="52">
+      <BehaviourControlGraph_EmptyControlGraph id="40" userID="FLX" flexoID="55" />
+    </CreationScheme>
+    <DeletionScheme id="41" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="53">
+      <BehaviourControlGraph_EmptyControlGraph id="42" userID="FLX" flexoID="56" />
+    </DeletionScheme>
+  </FlexoConcept>
+  <FlexoConcept id="43" userID="FLX" name="ListConnector" flexoID="62">
+    <ParentFlexoConcept idref="31" />
+    <Inspector id="44" userID="FLX" inspectorTitle="ListConnector" flexoID="57" />
+    <CreationScheme id="45" label="create" userID="FLX" name="create" width="800" height="600" flexoID="60">
+      <BehaviourControlGraph_EmptyControlGraph id="46" userID="FLX" flexoID="63" />
+    </CreationScheme>
+    <DeletionScheme id="47" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="61">
+      <BehaviourControlGraph_EmptyControlGraph id="48" userID="FLX" flexoID="64" />
+    </DeletionScheme>
+  </FlexoConcept>
+  <CreationScheme id="49" label="create" userID="FLX" name="create" width="800" height="600" flexoID="82">
+    <BehaviourControlGraph_AssignationAction id="50" assign="ApplicationSlot" userID="FLX" flexoID="85">
+      <AssignableAction_ExpressionAction id="51" expression="parameters.anApplication" description="" userID="FLX" flexoID="84" />
+    </BehaviourControlGraph_AssignationAction>
+    <GenericBehaviourParameter id="52" isRequired="true" widget="CUSTOM_WIDGET" type="org.openflexo.foundation.fml.VirtualModelInstanceType&lt;http://javizz.org/Javizz.viewpoint/JavaApplicationModel&gt;" userID="FLX" name="anApplication" flexoID="86" />
+  </CreationScheme>
+</VirtualModel>
