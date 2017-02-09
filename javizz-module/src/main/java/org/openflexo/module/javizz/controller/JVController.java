@@ -133,4 +133,5 @@ public class JVController extends FlexoController {
 	protected MouseSelectionManager createSelectionManager() {
 		return new JVSelectionManager(this);
 	}
+
 }

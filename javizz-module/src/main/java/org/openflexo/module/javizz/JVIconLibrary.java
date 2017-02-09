@@ -58,5 +58,9 @@ public class JVIconLibrary {
 	public static final ImageIcon JV_MEDIUM_ICON_HOVER = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/JavizzLogo_64x64.png"));
 	public static final ImageIcon JV_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/JavizzLogo_64x64.png"));
+	
+	public static final ImageIcon DIR_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/DirectoryIcon_64x64.png"));
+	public static final ImageIcon JAVA_FILE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/JavaFileIcon_64x64.png"));
+	public static final ImageIcon JAVA_COI_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/CoiIcon_32x32.png"));
 
 }
