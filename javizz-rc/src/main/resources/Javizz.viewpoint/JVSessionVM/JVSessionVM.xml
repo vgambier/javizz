@@ -27,7 +27,7 @@
     </FlexoConceptInstanceRole>
     <ShapeRole id="14" isRequired="true" cardinality="One" exampleLabel="label" cloningStrategy="Clone" userID="FLX" name="icon" flexoID="258">
       <FreeDiagramModelSlot idref="3" />
-      <GRSpec id="15" featureName="label" userID="FLX" value="directory.name" flexoID="332" />
+      <GRSpec id="15" featureName="label" userID="FLX" value="directory.name" flexoID="338" />
       <ShapeGraphicalRepresentation id="16" relativeTextY="0.5" locationConstraints="FREELY_MOVABLE" height="50.0" identifier="4f407990" relativeTextX="0.5" isFloatingLabel="false" dimensionConstraints="FREELY_RESIZABLE" layer="1" adaptBoundsToContents="false" x="20.0" width="80.0" y="20.0">
         <SelectedColorBackgroundStyle id="17" color="255,255,255" transparencyLevel="0.5" />
         <ForegroundStyle id="18" color="0,0,0" joinStyle="JOIN_MITER" dashStyle="PLAIN_STROKE" capStyle="CAP_SQUARE" />
@@ -83,171 +83,154 @@
       <BehaviourControlGraph_EmptyControlGraph id="49" userID="FLX" flexoID="50" />
     </DeletionScheme>
     <ActionScheme id="50" label="open" userID="FLX" name="open" width="800" height="600" flexoID="178">
-      <BehaviourControlGraph_IterationAction id="51" iteratorName="file" userID="FLX" flexoID="295">
-        <ControlGraph_EmptyControlGraph id="52" ownerContext="controlGraph" userID="FLX" flexoID="309" />
-        <Iteration_ExpressionAction id="53" expression="directory.containedFiles" ownerContext="iterationControlGraph" userID="FLX" flexoID="297" />
-      </BehaviourControlGraph_IterationAction>
+      <BehaviourControlGraph_EmptyControlGraph id="51" userID="FLX" flexoID="344" />
     </ActionScheme>
   </FlexoConcept>
-  <FlexoConcept id="54" userID="FLX" name="JavaFileIcon" flexoID="74">
+  <FlexoConcept id="52" userID="FLX" name="JavaFileIcon" flexoID="74">
     <ParentFlexoConcept idref="6" />
-    <Inspector id="55" userID="FLX" inspectorTitle="JavaFileIcon" flexoID="69" />
-    <FlexoConceptInstanceRole id="56" virtualModelInstance="Files" flexoConceptTypeURI="http://javizz.org/Javizz.viewpoint/ProjectFilesVM#JavaFile" cardinality="One" cloningStrategy="Reference" userID="FLX" name="javaFile" flexoID="162">
+    <Inspector id="53" userID="FLX" inspectorTitle="JavaFileIcon" flexoID="69" />
+    <FlexoConceptInstanceRole id="54" virtualModelInstance="Files" flexoConceptTypeURI="http://javizz.org/Javizz.viewpoint/ProjectFilesVM#JavaFile" cardinality="One" cloningStrategy="Reference" userID="FLX" name="javaFile" flexoID="162">
       <VirtualModelInstanceModelSlot idref="1" />
     </FlexoConceptInstanceRole>
-    <CreationScheme id="57" label="create" userID="FLX" name="create" width="800" height="600" flexoID="72">
-      <BehaviourControlGraph_Sequence id="58" userID="FLX" flexoID="83">
-        <ControlGraph2_Sequence id="59" ownerContext="controlGraph2" userID="FLX" flexoID="82">
-          <ControlGraph2_Sequence id="60" ownerContext="controlGraph2" userID="FLX" flexoID="163">
-            <ControlGraph2_AssignationAction id="61" assign="javaFile" ownerContext="controlGraph2" userID="FLX" flexoID="161">
-              <AssignableAction_ExpressionAction id="62" expression="parameters.aJavaFile" userID="FLX" flexoID="160" />
+    <CreationScheme id="55" label="create" userID="FLX" name="create" width="800" height="600" flexoID="72">
+      <BehaviourControlGraph_Sequence id="56" userID="FLX" flexoID="83">
+        <ControlGraph2_Sequence id="57" ownerContext="controlGraph2" userID="FLX" flexoID="82">
+          <ControlGraph2_Sequence id="58" ownerContext="controlGraph2" userID="FLX" flexoID="163">
+            <ControlGraph2_AssignationAction id="59" assign="javaFile" ownerContext="controlGraph2" userID="FLX" flexoID="161">
+              <AssignableAction_ExpressionAction id="60" expression="parameters.aJavaFile" userID="FLX" flexoID="160" />
             </ControlGraph2_AssignationAction>
-            <ControlGraph1_AssignationAction id="63" assign="y" ownerContext="controlGraph1" userID="FLX" flexoID="81">
-              <AssignableAction_ExpressionAction id="64" expression="parameters.aY" userID="FLX" flexoID="80" />
+            <ControlGraph1_AssignationAction id="61" assign="y" ownerContext="controlGraph1" userID="FLX" flexoID="81">
+              <AssignableAction_ExpressionAction id="62" expression="parameters.aY" userID="FLX" flexoID="80" />
             </ControlGraph1_AssignationAction>
           </ControlGraph2_Sequence>
-          <ControlGraph1_AssignationAction id="65" assign="x" ownerContext="controlGraph1" userID="FLX" flexoID="79">
-            <AssignableAction_ExpressionAction id="66" expression="parameters.aX" userID="FLX" flexoID="78" />
+          <ControlGraph1_AssignationAction id="63" assign="x" ownerContext="controlGraph1" userID="FLX" flexoID="79">
+            <AssignableAction_ExpressionAction id="64" expression="parameters.aX" userID="FLX" flexoID="78" />
           </ControlGraph1_AssignationAction>
         </ControlGraph2_Sequence>
-        <ControlGraph1_AssignationAction id="67" assign="scale" ownerContext="controlGraph1" userID="FLX" flexoID="77">
-          <AssignableAction_ExpressionAction id="68" expression="parameters.aScale" userID="FLX" flexoID="76" />
+        <ControlGraph1_AssignationAction id="65" assign="scale" ownerContext="controlGraph1" userID="FLX" flexoID="77">
+          <AssignableAction_ExpressionAction id="66" expression="parameters.aScale" userID="FLX" flexoID="76" />
         </ControlGraph1_AssignationAction>
       </BehaviourControlGraph_Sequence>
-      <GenericBehaviourParameter id="69" isRequired="true" widget="CUSTOM_WIDGET" type="java.lang.Float" userID="FLX" name="aScale" flexoID="84" />
-      <GenericBehaviourParameter id="70" isRequired="true" widget="INTEGER" type="java.lang.Integer" userID="FLX" name="aX" flexoID="85" />
-      <GenericBehaviourParameter id="71" isRequired="true" widget="INTEGER" type="java.lang.Integer" userID="FLX" name="aY" flexoID="86" />
-      <GenericBehaviourParameter id="72" isRequired="true" widget="CUSTOM_WIDGET" type="org.openflexo.foundation.fml.FlexoConceptInstanceType&lt;http://javizz.org/Javizz.viewpoint/ProjectFilesVM#JavaFile&gt;" userID="FLX" name="aJavaFile" flexoID="164" />
+      <GenericBehaviourParameter id="67" isRequired="true" widget="CUSTOM_WIDGET" type="java.lang.Float" userID="FLX" name="aScale" flexoID="84" />
+      <GenericBehaviourParameter id="68" isRequired="true" widget="INTEGER" type="java.lang.Integer" userID="FLX" name="aX" flexoID="85" />
+      <GenericBehaviourParameter id="69" isRequired="true" widget="INTEGER" type="java.lang.Integer" userID="FLX" name="aY" flexoID="86" />
+      <GenericBehaviourParameter id="70" isRequired="true" widget="CUSTOM_WIDGET" type="org.openflexo.foundation.fml.FlexoConceptInstanceType&lt;http://javizz.org/Javizz.viewpoint/ProjectFilesVM#JavaFile&gt;" userID="FLX" name="aJavaFile" flexoID="164" />
     </CreationScheme>
-    <DeletionScheme id="73" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="73">
-      <BehaviourControlGraph_EmptyControlGraph id="74" userID="FLX" flexoID="87" />
+    <DeletionScheme id="71" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="73">
+      <BehaviourControlGraph_EmptyControlGraph id="72" userID="FLX" flexoID="87" />
     </DeletionScheme>
   </FlexoConcept>
-  <FlexoConcept id="75" isAbstract="true" userID="FLX" name="Connector" flexoID="93">
-    <Inspector id="76" userID="FLX" inspectorTitle="Connector" flexoID="89" />
-    <PrimitiveRole id="77" cardinality="One" cloningStrategy="Clone" userID="FLX" name="length" primitiveType="Integer" flexoID="94" />
+  <FlexoConcept id="73" isAbstract="true" userID="FLX" name="Connector" flexoID="93">
+    <Inspector id="74" userID="FLX" inspectorTitle="Connector" flexoID="89" />
+    <PrimitiveRole id="75" cardinality="One" cloningStrategy="Clone" userID="FLX" name="length" primitiveType="Integer" flexoID="94" />
   </FlexoConcept>
-  <FlexoConcept id="78" userID="FLX" name="ArrowConnector" flexoID="104">
-    <ParentFlexoConcept idref="75" />
-    <Inspector id="79" userID="FLX" inspectorTitle="ArrowConnector" flexoID="100" />
-    <PrimitiveRole id="80" cardinality="One" cloningStrategy="Clone" userID="FLX" name="angle" primitiveType="Integer" flexoID="109" />
-    <FlexoConceptInstanceRole id="81" flexoConceptTypeURI="http://javizz.org/Javizz.viewpoint/JVSessionVM#DirectoryIcon" cardinality="One" cloningStrategy="Reference" userID="FLX" name="from" flexoID="110" />
-    <FlexoConceptInstanceRole id="82" flexoConceptTypeURI="http://javizz.org/Javizz.viewpoint/JVSessionVM#Icon" cardinality="One" cloningStrategy="Reference" userID="FLX" name="to" flexoID="111" />
-    <CreationScheme id="83" label="create" userID="FLX" name="create" width="800" height="600" flexoID="99">
-      <BehaviourControlGraph_Sequence id="84" userID="FLX" flexoID="116">
-        <ControlGraph2_Sequence id="85" ownerContext="controlGraph2" userID="FLX" flexoID="114">
-          <ControlGraph2_Sequence id="86" ownerContext="controlGraph2" userID="FLX" flexoID="122">
-            <ControlGraph2_AssignationAction id="87" assign="length" ownerContext="controlGraph2" userID="FLX" flexoID="121">
-              <AssignableAction_ExpressionAction id="88" expression="parameters.aLength" userID="FLX" flexoID="120" />
+  <FlexoConcept id="76" userID="FLX" name="ArrowConnector" flexoID="104">
+    <ParentFlexoConcept idref="73" />
+    <Inspector id="77" userID="FLX" inspectorTitle="ArrowConnector" flexoID="100" />
+    <PrimitiveRole id="78" cardinality="One" cloningStrategy="Clone" userID="FLX" name="angle" primitiveType="Integer" flexoID="109" />
+    <FlexoConceptInstanceRole id="79" flexoConceptTypeURI="http://javizz.org/Javizz.viewpoint/JVSessionVM#DirectoryIcon" cardinality="One" cloningStrategy="Reference" userID="FLX" name="from" flexoID="110" />
+    <FlexoConceptInstanceRole id="80" flexoConceptTypeURI="http://javizz.org/Javizz.viewpoint/JVSessionVM#Icon" cardinality="One" cloningStrategy="Reference" userID="FLX" name="to" flexoID="111" />
+    <CreationScheme id="81" label="create" userID="FLX" name="create" width="800" height="600" flexoID="99">
+      <BehaviourControlGraph_Sequence id="82" userID="FLX" flexoID="116">
+        <ControlGraph2_Sequence id="83" ownerContext="controlGraph2" userID="FLX" flexoID="114">
+          <ControlGraph2_Sequence id="84" ownerContext="controlGraph2" userID="FLX" flexoID="122">
+            <ControlGraph2_AssignationAction id="85" assign="length" ownerContext="controlGraph2" userID="FLX" flexoID="121">
+              <AssignableAction_ExpressionAction id="86" expression="parameters.aLength" userID="FLX" flexoID="120" />
             </ControlGraph2_AssignationAction>
-            <ControlGraph1_AssignationAction id="89" assign="to" ownerContext="controlGraph1" userID="FLX" flexoID="107">
-              <AssignableAction_ExpressionAction id="90" expression="parameters.aTo" userID="FLX" flexoID="112" />
+            <ControlGraph1_AssignationAction id="87" assign="to" ownerContext="controlGraph1" userID="FLX" flexoID="107">
+              <AssignableAction_ExpressionAction id="88" expression="parameters.aTo" userID="FLX" flexoID="112" />
             </ControlGraph1_AssignationAction>
           </ControlGraph2_Sequence>
-          <ControlGraph1_AssignationAction id="91" assign="from" ownerContext="controlGraph1" userID="FLX" flexoID="106">
-            <AssignableAction_ExpressionAction id="92" expression="parameters.aFrom" userID="FLX" flexoID="113" />
+          <ControlGraph1_AssignationAction id="89" assign="from" ownerContext="controlGraph1" userID="FLX" flexoID="106">
+            <AssignableAction_ExpressionAction id="90" expression="parameters.aFrom" userID="FLX" flexoID="113" />
           </ControlGraph1_AssignationAction>
         </ControlGraph2_Sequence>
-        <ControlGraph1_AssignationAction id="93" assign="angle" ownerContext="controlGraph1" userID="FLX" flexoID="105">
-          <AssignableAction_ExpressionAction id="94" expression="parameters.anAngle" userID="FLX" flexoID="115" />
+        <ControlGraph1_AssignationAction id="91" assign="angle" ownerContext="controlGraph1" userID="FLX" flexoID="105">
+          <AssignableAction_ExpressionAction id="92" expression="parameters.anAngle" userID="FLX" flexoID="115" />
         </ControlGraph1_AssignationAction>
       </BehaviourControlGraph_Sequence>
-      <GenericBehaviourParameter id="95" isRequired="true" widget="INTEGER" type="java.lang.Integer" userID="FLX" name="aLength" flexoID="123" />
-      <GenericBehaviourParameter id="96" isRequired="true" widget="INTEGER" type="java.lang.Integer" userID="FLX" name="anAngle" flexoID="117" />
-      <GenericBehaviourParameter id="97" isRequired="true" widget="CUSTOM_WIDGET" type="org.openflexo.foundation.fml.FlexoConceptInstanceType&lt;http://javizz.org/Javizz.viewpoint/JVSessionVM#DirectoryIcon&gt;" userID="FLX" name="aFrom" flexoID="118" />
-      <GenericBehaviourParameter id="98" isRequired="true" widget="CUSTOM_WIDGET" type="org.openflexo.foundation.fml.FlexoConceptInstanceType&lt;http://javizz.org/Javizz.viewpoint/JVSessionVM#Icon&gt;" userID="FLX" name="aTo" flexoID="119" />
+      <GenericBehaviourParameter id="93" isRequired="true" widget="INTEGER" type="java.lang.Integer" userID="FLX" name="aLength" flexoID="123" />
+      <GenericBehaviourParameter id="94" isRequired="true" widget="INTEGER" type="java.lang.Integer" userID="FLX" name="anAngle" flexoID="117" />
+      <GenericBehaviourParameter id="95" isRequired="true" widget="CUSTOM_WIDGET" type="org.openflexo.foundation.fml.FlexoConceptInstanceType&lt;http://javizz.org/Javizz.viewpoint/JVSessionVM#DirectoryIcon&gt;" userID="FLX" name="aFrom" flexoID="118" />
+      <GenericBehaviourParameter id="96" isRequired="true" widget="CUSTOM_WIDGET" type="org.openflexo.foundation.fml.FlexoConceptInstanceType&lt;http://javizz.org/Javizz.viewpoint/JVSessionVM#Icon&gt;" userID="FLX" name="aTo" flexoID="119" />
     </CreationScheme>
-    <DeletionScheme id="99" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="103">
-      <BehaviourControlGraph_EmptyControlGraph id="100" userID="FLX" flexoID="177" />
+    <DeletionScheme id="97" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="103">
+      <BehaviourControlGraph_EmptyControlGraph id="98" userID="FLX" flexoID="177" />
     </DeletionScheme>
   </FlexoConcept>
-  <FlexoConcept id="101" userID="FLX" name="ListConnector" flexoID="133">
-    <ParentFlexoConcept idref="75" />
-    <Inspector id="102" userID="FLX" inspectorTitle="ListConnector" flexoID="129" />
-    <FlexoConceptInstanceRole id="103" flexoConceptTypeURI="http://javizz.org/Javizz.viewpoint/JVSessionVM#JavaFileIcon" cardinality="One" cloningStrategy="Reference" userID="FLX" name="from" flexoID="134" />
-    <FlexoConceptInstanceRole id="104" virtualModelInstance="virtualModelInstance" flexoConceptTypeURI="http://javizz.org/Javizz.viewpoint/JVSessionVM#ClassOrInterfaceIcon" cardinality="One" cloningStrategy="Reference" userID="FLX" name="to" flexoID="152" />
-    <CreationScheme id="105" label="create" userID="FLX" name="create" width="800" height="600" flexoID="128">
-      <BehaviourControlGraph_Sequence id="106" userID="FLX" flexoID="153">
-        <ControlGraph2_AssignationAction id="107" assign="to" ownerContext="controlGraph2" userID="FLX" flexoID="151">
-          <AssignableAction_ExpressionAction id="108" expression="parameters.aTo" userID="FLX" flexoID="150" />
+  <FlexoConcept id="99" userID="FLX" name="ListConnector" flexoID="133">
+    <ParentFlexoConcept idref="73" />
+    <Inspector id="100" userID="FLX" inspectorTitle="ListConnector" flexoID="129" />
+    <FlexoConceptInstanceRole id="101" flexoConceptTypeURI="http://javizz.org/Javizz.viewpoint/JVSessionVM#JavaFileIcon" cardinality="One" cloningStrategy="Reference" userID="FLX" name="from" flexoID="134" />
+    <FlexoConceptInstanceRole id="102" virtualModelInstance="virtualModelInstance" flexoConceptTypeURI="http://javizz.org/Javizz.viewpoint/JVSessionVM#ClassOrInterfaceIcon" cardinality="One" cloningStrategy="Reference" userID="FLX" name="to" flexoID="152" />
+    <CreationScheme id="103" label="create" userID="FLX" name="create" width="800" height="600" flexoID="128">
+      <BehaviourControlGraph_Sequence id="104" userID="FLX" flexoID="153">
+        <ControlGraph2_AssignationAction id="105" assign="to" ownerContext="controlGraph2" userID="FLX" flexoID="151">
+          <AssignableAction_ExpressionAction id="106" expression="parameters.aTo" userID="FLX" flexoID="150" />
         </ControlGraph2_AssignationAction>
-        <ControlGraph1_AssignationAction id="109" assign="from" ownerContext="controlGraph1" userID="FLX" flexoID="136">
-          <AssignableAction_ExpressionAction id="110" expression="parameters.aFrom" userID="FLX" flexoID="135" />
+        <ControlGraph1_AssignationAction id="107" assign="from" ownerContext="controlGraph1" userID="FLX" flexoID="136">
+          <AssignableAction_ExpressionAction id="108" expression="parameters.aFrom" userID="FLX" flexoID="135" />
         </ControlGraph1_AssignationAction>
       </BehaviourControlGraph_Sequence>
-      <GenericBehaviourParameter id="111" isRequired="true" widget="CUSTOM_WIDGET" type="org.openflexo.foundation.fml.FlexoConceptInstanceType&lt;http://javizz.org/Javizz.viewpoint/JVSessionVM#JavaFileIcon&gt;" userID="FLX" name="aFrom" flexoID="137" />
-      <GenericBehaviourParameter id="112" isRequired="true" widget="CUSTOM_WIDGET" type="org.openflexo.foundation.fml.FlexoConceptInstanceType&lt;http://javizz.org/Javizz.viewpoint/JavaApplicationVM#ClassOrInterface&gt;" userID="FLX" name="aTo" flexoID="154" />
+      <GenericBehaviourParameter id="109" isRequired="true" widget="CUSTOM_WIDGET" type="org.openflexo.foundation.fml.FlexoConceptInstanceType&lt;http://javizz.org/Javizz.viewpoint/JVSessionVM#JavaFileIcon&gt;" userID="FLX" name="aFrom" flexoID="137" />
+      <GenericBehaviourParameter id="110" isRequired="true" widget="CUSTOM_WIDGET" type="org.openflexo.foundation.fml.FlexoConceptInstanceType&lt;http://javizz.org/Javizz.viewpoint/JavaApplicationVM#ClassOrInterface&gt;" userID="FLX" name="aTo" flexoID="154" />
     </CreationScheme>
-    <DeletionScheme id="113" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="132">
-      <BehaviourControlGraph_EmptyControlGraph id="114" userID="FLX" flexoID="138" />
+    <DeletionScheme id="111" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="132">
+      <BehaviourControlGraph_EmptyControlGraph id="112" userID="FLX" flexoID="138" />
     </DeletionScheme>
   </FlexoConcept>
-  <FlexoConcept id="115" userID="FLX" name="ClassOrInterfaceIcon" flexoID="144">
+  <FlexoConcept id="113" userID="FLX" name="ClassOrInterfaceIcon" flexoID="144">
     <ParentFlexoConcept idref="6" />
-    <Inspector id="116" userID="FLX" inspectorTitle="ClassOrInterfaceIcon" flexoID="140" />
-    <FlexoConceptInstanceRole id="117" flexoConceptTypeURI="http://javizz.org/Javizz.viewpoint/JavaApplicationVM#ClassOrInterface" cardinality="One" cloningStrategy="Reference" userID="FLX" name="classOrInterface" flexoID="145">
+    <Inspector id="114" userID="FLX" inspectorTitle="ClassOrInterfaceIcon" flexoID="140" />
+    <FlexoConceptInstanceRole id="115" flexoConceptTypeURI="http://javizz.org/Javizz.viewpoint/JavaApplicationVM#ClassOrInterface" cardinality="One" cloningStrategy="Reference" userID="FLX" name="classOrInterface" flexoID="145">
       <VirtualModelInstanceModelSlot idref="2" />
     </FlexoConceptInstanceRole>
-    <CreationScheme id="118" label="create" userID="FLX" name="create" width="800" height="600" flexoID="139">
-      <BehaviourControlGraph_Sequence id="119" userID="FLX" flexoID="170">
-        <ControlGraph2_Sequence id="120" ownerContext="controlGraph2" userID="FLX" flexoID="174">
-          <ControlGraph2_Sequence id="121" ownerContext="controlGraph2" userID="FLX" flexoID="173">
-            <ControlGraph2_AssignationAction id="122" assign="y" ownerContext="controlGraph2" userID="FLX" flexoID="172">
-              <AssignableAction_ExpressionAction id="123" expression="parameters.aY" userID="FLX" flexoID="171" />
+    <CreationScheme id="116" label="create" userID="FLX" name="create" width="800" height="600" flexoID="139">
+      <BehaviourControlGraph_Sequence id="117" userID="FLX" flexoID="170">
+        <ControlGraph2_Sequence id="118" ownerContext="controlGraph2" userID="FLX" flexoID="174">
+          <ControlGraph2_Sequence id="119" ownerContext="controlGraph2" userID="FLX" flexoID="173">
+            <ControlGraph2_AssignationAction id="120" assign="y" ownerContext="controlGraph2" userID="FLX" flexoID="172">
+              <AssignableAction_ExpressionAction id="121" expression="parameters.aY" userID="FLX" flexoID="171" />
             </ControlGraph2_AssignationAction>
-            <ControlGraph1_AssignationAction id="124" assign="x" ownerContext="controlGraph1" userID="FLX" flexoID="169">
-              <AssignableAction_ExpressionAction id="125" expression="parameters.aX" userID="FLX" flexoID="168" />
+            <ControlGraph1_AssignationAction id="122" assign="x" ownerContext="controlGraph1" userID="FLX" flexoID="169">
+              <AssignableAction_ExpressionAction id="123" expression="parameters.aX" userID="FLX" flexoID="168" />
             </ControlGraph1_AssignationAction>
           </ControlGraph2_Sequence>
-          <ControlGraph1_AssignationAction id="126" assign="scale" ownerContext="controlGraph1" userID="FLX" flexoID="167">
-            <AssignableAction_ExpressionAction id="127" expression="parameters.aScale" userID="FLX" flexoID="166" />
+          <ControlGraph1_AssignationAction id="124" assign="scale" ownerContext="controlGraph1" userID="FLX" flexoID="167">
+            <AssignableAction_ExpressionAction id="125" expression="parameters.aScale" userID="FLX" flexoID="166" />
           </ControlGraph1_AssignationAction>
         </ControlGraph2_Sequence>
-        <ControlGraph1_AssignationAction id="128" assign="classOrInterface" ownerContext="controlGraph1" userID="FLX" flexoID="147">
-          <AssignableAction_ExpressionAction id="129" expression="parameters.aClassOrInterface" userID="FLX" flexoID="146" />
+        <ControlGraph1_AssignationAction id="126" assign="classOrInterface" ownerContext="controlGraph1" userID="FLX" flexoID="147">
+          <AssignableAction_ExpressionAction id="127" expression="parameters.aClassOrInterface" userID="FLX" flexoID="146" />
         </ControlGraph1_AssignationAction>
       </BehaviourControlGraph_Sequence>
-      <GenericBehaviourParameter id="130" isRequired="true" widget="FLOAT" type="java.lang.Float" userID="FLX" name="aScale" flexoID="175" />
-      <GenericBehaviourParameter id="131" isRequired="true" widget="INTEGER" type="java.lang.Integer" userID="FLX" name="aX" flexoID="176" />
-      <GenericBehaviourParameter id="132" isRequired="true" widget="INTEGER" type="java.lang.Integer" userID="FLX" name="aY" flexoID="165" />
-      <GenericBehaviourParameter id="133" isRequired="true" widget="CUSTOM_WIDGET" type="org.openflexo.foundation.fml.FlexoConceptInstanceType&lt;http://javizz.org/Javizz.viewpoint/JavaApplicationVM#ClassOrInterface&gt;" userID="FLX" name="aClassOrInterface" flexoID="148" />
+      <GenericBehaviourParameter id="128" isRequired="true" widget="FLOAT" type="java.lang.Float" userID="FLX" name="aScale" flexoID="175" />
+      <GenericBehaviourParameter id="129" isRequired="true" widget="INTEGER" type="java.lang.Integer" userID="FLX" name="aX" flexoID="176" />
+      <GenericBehaviourParameter id="130" isRequired="true" widget="INTEGER" type="java.lang.Integer" userID="FLX" name="aY" flexoID="165" />
+      <GenericBehaviourParameter id="131" isRequired="true" widget="CUSTOM_WIDGET" type="org.openflexo.foundation.fml.FlexoConceptInstanceType&lt;http://javizz.org/Javizz.viewpoint/JavaApplicationVM#ClassOrInterface&gt;" userID="FLX" name="aClassOrInterface" flexoID="148" />
     </CreationScheme>
-    <DeletionScheme id="134" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="143">
-      <BehaviourControlGraph_EmptyControlGraph id="135" userID="FLX" flexoID="149" />
+    <DeletionScheme id="132" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="143">
+      <BehaviourControlGraph_EmptyControlGraph id="133" userID="FLX" flexoID="149" />
     </DeletionScheme>
   </FlexoConcept>
-  <CreationScheme id="136" label="create" userID="FLX" name="create" width="800" height="600" flexoID="9">
-    <BehaviourControlGraph_Sequence id="137" userID="FLX" flexoID="15">
-      <ControlGraph2_Sequence id="138" ownerContext="controlGraph2" userID="FLX" flexoID="228">
-        <ControlGraph2_Sequence id="139" ownerContext="controlGraph2" userID="FLX" flexoID="231">
-          <ControlGraph2_Sequence id="140" ownerContext="controlGraph2" userID="FLX" flexoID="251">
-            <ControlGraph2_AddFlexoConceptInstance id="141" creationSchemeURI="http://javizz.org/Javizz.viewpoint/JVSessionVM#DirectoryIcon.create" virtualModelInstance="virtualModelInstance" ownerContext="controlGraph2" userID="FLX" flexoID="244">
-              <VirtualModelInstanceModelSlot idref="4" />
-              <AddFlexoConceptInstanceParameter id="142" userID="FLX" paramName="aScale" value="1" flexoID="245" />
-              <AddFlexoConceptInstanceParameter id="143" userID="FLX" paramName="aX" value="0" flexoID="246" />
-              <AddFlexoConceptInstanceParameter id="144" userID="FLX" paramName="aY" value="0" flexoID="247" />
-              <AddFlexoConceptInstanceParameter id="145" userID="FLX" paramName="aDirectory" value="Files.root" flexoID="248" />
-            </ControlGraph2_AddFlexoConceptInstance>
-            <ControlGraph1_CreateDiagram id="146" ownerContext="controlGraph1" diagramName="&quot;JVSessionView&quot;" userID="FLX" flexoID="230">
-              <FreeDiagramModelSlot idref="3" />
-            </ControlGraph1_CreateDiagram>
-          </ControlGraph2_Sequence>
-          <ControlGraph1_AssignationAction id="147" assign="self" ownerContext="controlGraph1" userID="FLX" flexoID="227">
-            <AssignableAction_ExpressionAction id="148" expression="virtualModelInstance" userID="FLX" flexoID="226" />
-          </ControlGraph1_AssignationAction>
-        </ControlGraph2_Sequence>
-        <ControlGraph1_AssignationAction id="149" assign="Application" ownerContext="controlGraph1" userID="FLX" flexoID="14">
-          <AssignableAction_ExpressionAction id="150" expression="parameters.application" userID="FLX" flexoID="13" />
+  <CreationScheme id="134" label="create" userID="FLX" name="create" width="800" height="600" flexoID="9">
+    <BehaviourControlGraph_Sequence id="135" userID="FLX" flexoID="15">
+      <ControlGraph2_Sequence id="136" ownerContext="controlGraph2" userID="FLX" flexoID="228">
+        <ControlGraph2_AssignationAction id="137" assign="self" ownerContext="controlGraph2" userID="FLX" flexoID="227">
+          <AssignableAction_ExpressionAction id="138" expression="virtualModelInstance" userID="FLX" flexoID="226" />
+        </ControlGraph2_AssignationAction>
+        <ControlGraph1_AssignationAction id="139" assign="Application" ownerContext="controlGraph1" userID="FLX" flexoID="14">
+          <AssignableAction_ExpressionAction id="140" expression="parameters.application" userID="FLX" flexoID="13" />
         </ControlGraph1_AssignationAction>
       </ControlGraph2_Sequence>
-      <ControlGraph1_AssignationAction id="151" assign="Files" ownerContext="controlGraph1" userID="FLX" flexoID="12">
-        <AssignableAction_ExpressionAction id="152" expression="parameters.files" userID="FLX" flexoID="11" />
+      <ControlGraph1_AssignationAction id="141" assign="Files" ownerContext="controlGraph1" userID="FLX" flexoID="12">
+        <AssignableAction_ExpressionAction id="142" expression="parameters.files" userID="FLX" flexoID="11" />
       </ControlGraph1_AssignationAction>
     </BehaviourControlGraph_Sequence>
-    <GenericBehaviourParameter id="153" isRequired="true" widget="CUSTOM_WIDGET" type="org.openflexo.foundation.fml.VirtualModelInstanceType&lt;http://javizz.org/Javizz.viewpoint/ProjectFilesVM&gt;" userID="FLX" name="files" flexoID="16" />
-    <GenericBehaviourParameter id="154" isRequired="true" widget="CUSTOM_WIDGET" type="org.openflexo.foundation.fml.VirtualModelInstanceType&lt;http://javizz.org/Javizz.viewpoint/JavaApplicationVM&gt;" userID="FLX" name="application" flexoID="17" />
+    <GenericBehaviourParameter id="143" isRequired="true" widget="CUSTOM_WIDGET" type="org.openflexo.foundation.fml.VirtualModelInstanceType&lt;http://javizz.org/Javizz.viewpoint/ProjectFilesVM&gt;" userID="FLX" name="files" flexoID="16" />
+    <GenericBehaviourParameter id="144" isRequired="true" widget="CUSTOM_WIDGET" type="org.openflexo.foundation.fml.VirtualModelInstanceType&lt;http://javizz.org/Javizz.viewpoint/JavaApplicationVM&gt;" userID="FLX" name="application" flexoID="17" />
   </CreationScheme>
-  <DeletionScheme id="155" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="253">
-    <BehaviourControlGraph_EmptyControlGraph id="156" userID="FLX" flexoID="252" />
+  <DeletionScheme id="145" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="253">
+    <BehaviourControlGraph_EmptyControlGraph id="146" userID="FLX" flexoID="252" />
   </DeletionScheme>
 </VirtualModel>
