@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VirtualModelInstance id="0" modelVersion="1.0" title="ProjectFiles" version="0.1" virtualModelURI="http://javizz.org/Javizz.viewpoint/ProjectFilesVM" userID="FLX" flexoConceptURI="http://javizz.org/Javizz.viewpoint/ProjectFilesVM" flexoID="1">
+  <FlexoConceptInstance id="1" userID="FLX" flexoConceptURI="http://javizz.org/Javizz.viewpoint/ProjectFilesVM#Directory" flexoID="2">
+    <PrimitiveActorReference id="2" userID="FLX" valueAsString="testRoot" roleName="name" flexoID="3" />
+    <ModelObjectActorReference id="3" userID="FLX" roleName="sons" objectReference="http://javizz.org&#xA;/JavizzView.view/ProjectFiles.vmxml#FLX_5" flexoID="10" />
+    <ModelObjectActorReference id="4" userID="FLX" roleName="containedFiles" objectReference="http://javizz.org&#xA;/JavizzView.view/ProjectFiles.vmxml#FLX_6" flexoID="11" />
+  </FlexoConceptInstance>
+  <FlexoConceptInstance id="5" userID="FLX" flexoConceptURI="http://javizz.org/Javizz.viewpoint/ProjectFilesVM#Directory" flexoID="5">
+    <PrimitiveActorReference id="6" userID="FLX" valueAsString="testDirectory" roleName="name" flexoID="12" />
+    <ModelObjectActorReference id="7" userID="FLX" roleName="parent" objectReference="http://javizz.org&#xA;/JavizzView.view/ProjectFiles.vmxml#FLX_2" flexoID="13" />
+    <ModelObjectActorReference id="8" userID="FLX" roleName="containedFiles" objectReference="http://javizz.org&#xA;/JavizzView.view/ProjectFiles.vmxml#FLX_7" flexoID="14" />
+    <ModelObjectActorReference id="9" userID="FLX" roleName="containedFiles" objectReference="http://javizz.org&#xA;/JavizzView.view/ProjectFiles.vmxml#FLX_8" flexoID="15" />
+  </FlexoConceptInstance>
+  <FlexoConceptInstance id="10" userID="FLX" flexoConceptURI="http://javizz.org/Javizz.viewpoint/ProjectFilesVM#JavaFile" flexoID="6">
+    <PrimitiveActorReference id="11" userID="FLX" valueAsString="ClasseA.java" roleName="name" flexoID="16" />
+    <ModelObjectActorReference id="12" userID="FLX" roleName="parent" objectReference="http://javizz.org&#xA;/JavizzView.view/ProjectFiles.vmxml#FLX_2" flexoID="17" />
+    <ModelObjectActorReference id="13" userID="FLX" roleName="containedClassOrInterface" objectReference="http://javizz.org&#xA;/JavizzView.view/JavaApplication.vmxml#FLX_4" flexoID="18" />
+  </FlexoConceptInstance>
+  <FlexoConceptInstance id="14" userID="FLX" flexoConceptURI="http://javizz.org/Javizz.viewpoint/ProjectFilesVM#JavaFile" flexoID="7">
+    <PrimitiveActorReference id="15" userID="FLX" valueAsString="ClasseB.java" roleName="name" flexoID="19" />
+    <ModelObjectActorReference id="16" userID="FLX" roleName="parent" objectReference="http://javizz.org&#xA;/JavizzView.view/ProjectFiles.vmxml#FLX_5" flexoID="20" />
+    <ModelObjectActorReference id="17" userID="FLX" roleName="containedClassOrInterface" objectReference="http://javizz.org&#xA;/JavizzView.view/JavaApplication.vmxml#FLX_5" flexoID="21" />
+  </FlexoConceptInstance>
+  <FlexoConceptInstance id="18" userID="FLX" flexoConceptURI="http://javizz.org/Javizz.viewpoint/ProjectFilesVM#JavaFile" flexoID="8">
+    <PrimitiveActorReference id="19" userID="FLX" valueAsString="ClasseC.java" roleName="name" flexoID="22" />
+    <ModelObjectActorReference id="20" userID="FLX" roleName="parent" objectReference="http://javizz.org&#xA;/JavizzView.view/ProjectFiles.vmxml#FLX_5" flexoID="23" />
+    <ModelObjectActorReference id="21" userID="FLX" roleName="containedClassOrInterface" objectReference="http://javizz.org&#xA;/JavizzView.view/JavaApplication.vmxml#FLX_6" flexoID="24" />
+  </FlexoConceptInstance>
+  <VirtualModelModelSlotInstance id="22" modelSlotName="self" userID="FLX" virtualModelInstanceURI="http://javizz.org&#xA;/JavizzView.view/ProjectFiles.vmxml" flexoID="4" />
+  <VirtualModelModelSlotInstance id="23" modelSlotName="Application" userID="FLX" virtualModelInstanceURI="http://javizz.org&#xA;/JavizzView.view/JavaApplication.vmxml" flexoID="9" />
+</VirtualModelInstance>

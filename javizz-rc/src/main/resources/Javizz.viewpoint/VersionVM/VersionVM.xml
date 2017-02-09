@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VirtualModel id="0" modelVersion="1.0" version="0.1" userID="FLX" name="VersionVM" flexoID="2">
+  <ModelSlot_VirtualModelInstanceModelSlot id="1" isRequired="true" cardinality="ZeroOne" virtualModelURI="http://javizz.org/Javizz.viewpoint/JavaApplicationVM" cloningStrategy="Reference" userID="FLX" name="Application" flexoID="14">
+    <VirtualModelInstanceModelSlot idref="1" />
+  </ModelSlot_VirtualModelInstanceModelSlot>
+  <ModelSlot_VirtualModelInstanceModelSlot id="2" isRequired="true" cardinality="ZeroOne" virtualModelURI="http://javizz.org/Javizz.viewpoint/VersionVM" cloningStrategy="Reference" userID="FLX" name="self" flexoID="61">
+    <VirtualModelInstanceModelSlot idref="2" />
+  </ModelSlot_VirtualModelInstanceModelSlot>
+  <Inspector id="3" userID="FLX" inspectorTitle="VersionVM" flexoID="1" />
+  <FlexoConcept id="4" userID="FLX" name="CoiVersion" flexoID="20">
+    <Inspector id="5" userID="FLX" inspectorTitle="CoiVersion" flexoID="16" />
+    <PrimitiveRole id="6" cardinality="One" cloningStrategy="Clone" userID="FLX" name="number" primitiveType="Integer" flexoID="21" />
+    <PrimitiveRole id="7" cardinality="One" cloningStrategy="Clone" userID="FLX" name="date" primitiveType="String" flexoID="22" />
+    <PrimitiveRole id="8" cardinality="One" cloningStrategy="Clone" userID="FLX" name="isDeletion" primitiveType="Boolean" flexoID="23" />
+    <CreationScheme id="9" label="create" userID="FLX" name="create" width="800" height="600" flexoID="15">
+      <BehaviourControlGraph_Sequence id="10" userID="FLX" flexoID="31">
+        <ControlGraph2_Sequence id="11" ownerContext="controlGraph2" userID="FLX" flexoID="28">
+          <ControlGraph2_AssignationAction id="12" assign="isDeletion" ownerContext="controlGraph2" userID="FLX" flexoID="25">
+            <AssignableAction_ExpressionAction id="13" expression="parameters.anIsDeletion" userID="FLX" flexoID="24" />
+          </ControlGraph2_AssignationAction>
+          <ControlGraph1_AssignationAction id="14" assign="date" ownerContext="controlGraph1" userID="FLX" flexoID="27">
+            <AssignableAction_ExpressionAction id="15" expression="parameters.aDate" userID="FLX" flexoID="26" />
+          </ControlGraph1_AssignationAction>
+        </ControlGraph2_Sequence>
+        <ControlGraph1_AssignationAction id="16" assign="number" ownerContext="controlGraph1" userID="FLX" flexoID="30">
+          <AssignableAction_ExpressionAction id="17" expression="parameters.aNumber" userID="FLX" flexoID="29" />
+        </ControlGraph1_AssignationAction>
+      </BehaviourControlGraph_Sequence>
+      <GenericBehaviourParameter id="18" isRequired="true" widget="INTEGER" type="java.lang.Integer" userID="FLX" name="aNumber" flexoID="32" />
+      <GenericBehaviourParameter id="19" isRequired="true" widget="TEXT_FIELD" type="java.lang.String" userID="FLX" name="aDate" flexoID="33" />
+      <GenericBehaviourParameter id="20" isRequired="true" widget="CHECKBOX" type="java.lang.Boolean" userID="FLX" name="anIsDeletion" flexoID="34" />
+    </CreationScheme>
+    <DeletionScheme id="21" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="19">
+      <BehaviourControlGraph_EmptyControlGraph id="22" userID="FLX" flexoID="40" />
+    </DeletionScheme>
+  </FlexoConcept>
+  <FlexoConcept id="23" userID="FLX" name="VersionnedClassOrInterface" flexoID="46">
+    <Inspector id="24" userID="FLX" inspectorTitle="VersionnedClassOrInterface" flexoID="42" />
+    <FlexoConceptInstanceRole id="25" virtualModelInstance="Application" flexoConceptTypeURI="http://javizz.org/Javizz.viewpoint/JavaApplicationVM#ClassOrInterface" cardinality="One" cloningStrategy="Reference" userID="FLX" name="classOrInterface" flexoID="48">
+      <VirtualModelInstanceModelSlot idref="1" />
+    </FlexoConceptInstanceRole>
+    <FlexoConceptInstanceRole id="26" virtualModelInstance="virtualModelInstance" flexoConceptTypeURI="http://javizz.org/Javizz.viewpoint/VersionVM#CoiVersion" cardinality="ZeroMany" cloningStrategy="Reference" userID="FLX" name="versions" flexoID="49" />
+    <CreationScheme id="27" label="create" userID="FLX" name="create" width="800" height="600" flexoID="41">
+      <BehaviourControlGraph_AssignationAction id="28" assign="classOrInterface" userID="FLX" flexoID="47">
+        <AssignableAction_ExpressionAction id="29" expression="parameters.aClassOrInterface" userID="FLX" flexoID="50" />
+      </BehaviourControlGraph_AssignationAction>
+      <GenericBehaviourParameter id="30" isRequired="true" widget="CUSTOM_WIDGET" type="org.openflexo.foundation.fml.FlexoConceptInstanceType&lt;http://javizz.org/Javizz.viewpoint/JavaApplicationVM#ClassOrInterface&gt;" userID="FLX" name="aClassOrInterface" flexoID="51" />
+    </CreationScheme>
+    <DeletionScheme id="31" label="delete" userID="FLX" name="delete" width="800" height="600" flexoID="45">
+      <BehaviourControlGraph_EmptyControlGraph id="32" userID="FLX" flexoID="52" />
+    </DeletionScheme>
+    <ActionScheme id="33" label="newVersion" userID="FLX" name="newVersion" width="800" height="600" flexoID="54">
+      <BehaviourControlGraph_EmptyControlGraph id="34" userID="FLX" flexoID="70" />
+      <GenericBehaviourParameter id="35" isRequired="true" widget="INTEGER" type="java.lang.Integer" userID="FLX" name="aNumber" flexoID="56" />
+      <GenericBehaviourParameter id="36" isRequired="true" widget="TEXT_FIELD" type="java.lang.String" userID="FLX" name="aDate" flexoID="57" />
+      <GenericBehaviourParameter id="37" isRequired="true" widget="CHECKBOX" type="java.lang.Boolean" userID="FLX" name="anIsDeletion" flexoID="58" />
+    </ActionScheme>
+  </FlexoConcept>
+  <CreationScheme id="38" label="create" userID="FLX" name="create" width="800" height="600" flexoID="6">
+    <BehaviourControlGraph_Sequence id="39" userID="FLX" flexoID="64">
+      <ControlGraph2_AssignationAction id="40" assign="self" ownerContext="controlGraph2" userID="FLX" flexoID="63">
+        <AssignableAction_ExpressionAction id="41" expression="virtualModelInstance" userID="FLX" flexoID="62" />
+      </ControlGraph2_AssignationAction>
+      <ControlGraph1_AssignationAction id="42" assign="Application" ownerContext="controlGraph1" userID="FLX" flexoID="13">
+        <AssignableAction_ExpressionAction id="43" expression="parameters.anApplicationVM" userID="FLX" flexoID="12" />
+      </ControlGraph1_AssignationAction>
+    </BehaviourControlGraph_Sequence>
+    <GenericBehaviourParameter id="44" isRequired="true" widget="CUSTOM_WIDGET" type="org.openflexo.foundation.fml.VirtualModelInstanceType&lt;null&gt;" userID="FLX" name="anApplicationVM" flexoID="8" />
+  </CreationScheme>
+</VirtualModel>

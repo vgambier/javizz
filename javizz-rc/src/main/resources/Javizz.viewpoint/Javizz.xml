@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewPoint id="0" modelVersion="1.0" version="0.1" userID="FLX" name="Javizz" uri="http://javizz.org/Javizz.viewpoint" flexoID="3">
+  <Inspector id="1" userID="FLX" inspectorTitle="Javizz" flexoID="2" />
+  <CreationScheme id="2" label="create" userID="FLX" name="create" width="800" height="600" flexoID="7">
+    <BehaviourControlGraph_EmptyControlGraph id="3" userID="FLX" flexoID="154" />
+  </CreationScheme>
+</ViewPoint>

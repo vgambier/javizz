@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<VirtualModelInstance id="0" modelVersion="1.0" title="versionnedApp" version="0.1" virtualModelURI="http://javizz.org/Javizz.viewpoint/VersionModel" userID="FLX" flexoConceptURI="http://javizz.org/Javizz.viewpoint/VersionModel" flexoID="1">
-  <VirtualModelModelSlotInstance id="1" modelSlotName="ApplicationSlot" userID="FLX" virtualModelInstanceURI="http://javizz.org&#xA;/JavizzView.view/JavaApp.vmxml" flexoID="2" />
-</VirtualModelInstance>
