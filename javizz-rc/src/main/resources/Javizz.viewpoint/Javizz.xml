@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ViewPoint id="0" modelVersion="1.0" version="0.1" userID="FLX" name="Javizz" uri="http://javizz.org/Javizz.viewpoint" flexoID="3">
-  <Inspector id="1" userID="FLX" inspectorTitle="Javizz" flexoID="2" />
-  <CreationScheme id="2" label="create" userID="FLX" name="create" width="800" height="600" flexoID="7">
-    <BehaviourControlGraph_EmptyControlGraph id="3" userID="FLX" flexoID="154" />
+  <ModelSlot_VirtualModelInstanceModelSlot id="1" isRequired="true" cardinality="One" virtualModelURI="http://javizz.org/Javizz.viewpoint/ProjectFilesVM" cloningStrategy="Reference" userID="FLX" name="ProjectFiles" flexoID="190">
+    <VirtualModelInstanceModelSlot idref="1" />
+  </ModelSlot_VirtualModelInstanceModelSlot>
+  <ModelSlot_VirtualModelInstanceModelSlot id="2" isRequired="true" cardinality="One" virtualModelURI="http://javizz.org/Javizz.viewpoint/JavaApplicationVM" cloningStrategy="Reference" userID="FLX" name="JavaApplication" flexoID="191">
+    <VirtualModelInstanceModelSlot idref="2" />
+  </ModelSlot_VirtualModelInstanceModelSlot>
+  <ModelSlot_VirtualModelInstanceModelSlot id="3" isRequired="true" cardinality="One" virtualModelURI="http://javizz.org/Javizz.viewpoint/JVSessionVM" cloningStrategy="Reference" userID="FLX" name="JVSession" flexoID="192">
+    <VirtualModelInstanceModelSlot idref="3" />
+  </ModelSlot_VirtualModelInstanceModelSlot>
+  <Inspector id="4" userID="FLX" inspectorTitle="Javizz" flexoID="2" />
+  <CreationScheme id="5" label="create" userID="FLX" name="create" width="800" height="600" flexoID="7">
+    <BehaviourControlGraph_EmptyControlGraph id="6" ownerContext="controlGraph1" userID="FLX" flexoID="245" />
+    <GenericBehaviourParameter id="7" isRequired="true" widget="TEXT_FIELD" type="java.lang.String" userID="FLX" name="rootDirectory" flexoID="199" />
   </CreationScheme>
 </ViewPoint>

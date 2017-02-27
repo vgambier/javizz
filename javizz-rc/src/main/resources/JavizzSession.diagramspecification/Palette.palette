@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DiagramPalette id="0" name="Palette">
+  <DrawingGraphicalRepresentation id="1" selectionColor="0,0,255" dimensionConstraints="FREELY_RESIZABLE" rectangleSelectingSelectionColor="0,0,255" identifier="2a921a9c" backgroundColor="255,255,255" drawWorkingArea="false" focusColor="255,0,0">
+    <TextStyle id="2" backgroundColor="255,255,255" color="0,0,0" font="Lucida Sans,0,11" />
+  </DrawingGraphicalRepresentation>
+</DiagramPalette>
