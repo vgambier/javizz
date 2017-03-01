@@ -1,17 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ViewPoint id="0" modelVersion="1.0" version="0.1" userID="FLX" name="Javizz" uri="http://javizz.org/Javizz.viewpoint" flexoID="3">
-  <ModelSlot_VirtualModelInstanceModelSlot id="1" isRequired="true" cardinality="One" virtualModelURI="http://javizz.org/Javizz.viewpoint/ProjectFilesVM" cloningStrategy="Reference" userID="FLX" name="ProjectFiles" flexoID="190">
+  <ModelSlot_VirtualModelInstanceModelSlot id="1" isRequired="true" cardinality="ZeroOne" virtualModelURI="http://javizz.org/Javizz.viewpoint/ProjectFilesVM" cloningStrategy="Reference" userID="FLX" name="ProjectFiles" flexoID="190">
     <VirtualModelInstanceModelSlot idref="1" />
   </ModelSlot_VirtualModelInstanceModelSlot>
-  <ModelSlot_VirtualModelInstanceModelSlot id="2" isRequired="true" cardinality="One" virtualModelURI="http://javizz.org/Javizz.viewpoint/JavaApplicationVM" cloningStrategy="Reference" userID="FLX" name="JavaApplication" flexoID="191">
+  <ModelSlot_VirtualModelInstanceModelSlot id="2" isRequired="true" cardinality="ZeroOne" virtualModelURI="http://javizz.org/Javizz.viewpoint/JavaApplicationVM" cloningStrategy="Reference" userID="FLX" name="JavaApplication" flexoID="191">
     <VirtualModelInstanceModelSlot idref="2" />
   </ModelSlot_VirtualModelInstanceModelSlot>
-  <ModelSlot_VirtualModelInstanceModelSlot id="3" isRequired="true" cardinality="One" virtualModelURI="http://javizz.org/Javizz.viewpoint/JVSessionVM" cloningStrategy="Reference" userID="FLX" name="JVSession" flexoID="192">
+  <ModelSlot_VirtualModelInstanceModelSlot id="3" isRequired="true" cardinality="ZeroOne" virtualModelURI="http://javizz.org/Javizz.viewpoint/JVSessionVM" cloningStrategy="Reference" userID="FLX" name="JVSession" flexoID="192">
     <VirtualModelInstanceModelSlot idref="3" />
   </ModelSlot_VirtualModelInstanceModelSlot>
   <Inspector id="4" userID="FLX" inspectorTitle="Javizz" flexoID="2" />
   <CreationScheme id="5" label="create" userID="FLX" name="create" width="800" height="600" flexoID="7">
-    <BehaviourControlGraph_EmptyControlGraph id="6" ownerContext="controlGraph1" userID="FLX" flexoID="245" />
-    <GenericBehaviourParameter id="7" isRequired="true" widget="TEXT_FIELD" type="java.lang.String" userID="FLX" name="rootDirectory" flexoID="199" />
+    <BehaviourControlGraph_Sequence id="6" ownerContext="controlGraph1" userID="FLX" flexoID="256">
+      <ControlGraph2_Sequence id="7" ownerContext="controlGraph2" userID="FLX" flexoID="267">
+        <ControlGraph2_AssignationAction id="8" assign="JVSession" ownerContext="controlGraph2" userID="FLX" flexoID="266">
+          <AssignableAction_AddVirtualModelInstance id="9" creationSchemeURI="http://javizz.org/Javizz.viewpoint/JVSessionVM.init" virtualModelInstance="view" virtualModelInstanceTitle="&quot;JVSession&quot;" userID="FLX" virtualModelInstanceName="&quot;JVSession&quot;" flexoID="265">
+            <VirtualModelInstanceModelSlot idref="3" />
+            <AddFlexoConceptInstanceParameter id="10" userID="FLX" paramName="diagramName" value="parameters.diagramName" flexoID="548" />
+          </AssignableAction_AddVirtualModelInstance>
+        </ControlGraph2_AssignationAction>
+        <ControlGraph1_AssignationAction id="11" assign="JavaApplication" ownerContext="controlGraph1" userID="FLX" flexoID="255">
+          <AssignableAction_AddVirtualModelInstance id="12" creationSchemeURI="http://javizz.org/Javizz.viewpoint/JavaApplicationVM.create" virtualModelInstance="view" virtualModelInstanceTitle="&quot;Japp&quot;" userID="FLX" virtualModelInstanceName="&quot;JApp&quot;" flexoID="254">
+            <VirtualModelInstanceModelSlot idref="2" />
+            <AddFlexoConceptInstanceParameter id="13" userID="FLX" paramName="aFilesVM" value="ProjectFiles" flexoID="69" />
+          </AssignableAction_AddVirtualModelInstance>
+        </ControlGraph1_AssignationAction>
+      </ControlGraph2_Sequence>
+      <ControlGraph1_AssignationAction id="14" assign="ProjectFiles" ownerContext="controlGraph1" userID="FLX" flexoID="252">
+        <AssignableAction_AddVirtualModelInstance id="15" creationSchemeURI="http://javizz.org/Javizz.viewpoint/ProjectFilesVM.create" virtualModelInstance="view" virtualModelInstanceTitle="&quot;PFiles&quot;" userID="FLX" virtualModelInstanceName="&quot;PFiles&quot;" flexoID="251">
+          <VirtualModelInstanceModelSlot idref="1" />
+          <AddFlexoConceptInstanceParameter id="16" userID="FLX" paramName="aRoot" value="parameters.rootDirectory" flexoID="206" />
+        </AssignableAction_AddVirtualModelInstance>
+      </ControlGraph1_AssignationAction>
+    </BehaviourControlGraph_Sequence>
+    <GenericBehaviourParameter id="17" isRequired="true" widget="TEXT_FIELD" type="java.lang.String" userID="FLX" name="rootDirectory" flexoID="199" />
+    <GenericBehaviourParameter id="18" isRequired="true" widget="TEXT_FIELD" type="java.lang.String" userID="FLX" name="diagramName" flexoID="268" />
   </CreationScheme>
 </ViewPoint>
