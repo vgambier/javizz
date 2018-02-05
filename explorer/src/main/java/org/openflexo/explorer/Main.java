@@ -2,6 +2,9 @@ package org.openflexo.explorer;
 
 import org.openflexo.explorer.model.Root;
 
+/**
+ * @author Fabien Dagnat
+ */
 public class Main {
 
 	public static void main(String[] args) {
@@ -17,6 +20,7 @@ public class Main {
 		// e.printStackTrace();
 		// }
 		Root root = new Root(args[0]);
+		root.parseBuilds();
 		System.out.println(root);
 	}
 }

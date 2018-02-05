@@ -10,6 +10,9 @@ import org.codehaus.groovy.ast.builder.AstBuilder;
 import org.openflexo.explorer.FindDependenciesVisitor;
 import org.openflexo.explorer.GradleDependency;
 
+/**
+ * @author Fabien Dagnat
+ */
 public class Project extends GradleDir {
 	public enum Kind {
 		API, Test, RC, Code, Other
@@ -23,7 +26,10 @@ public class Project extends GradleDir {
 		super(path);
 		this.kind = k;
 		this.isBuilt = built;
-		if (k != Kind.Other) {
+	}
+
+	public void parseBuild(Root root) {
+		if (this.kind != Kind.Other) {
 			Path buildFile = this.getPath().resolve("build.gradle");
 			if (Files.exists(buildFile)) {
 				System.out.println(buildFile);
@@ -31,7 +37,7 @@ public class Project extends GradleDir {
 					String buildContent = new String(Files.readAllBytes(buildFile));
 					if (!buildContent.equals("")) {
 						List<ASTNode> nodes = new AstBuilder().buildFromString(buildContent);
-						FindDependenciesVisitor visitor = new FindDependenciesVisitor();
+						FindDependenciesVisitor visitor = new FindDependenciesVisitor(root.getProjects());
 						for (ASTNode node : nodes) {
 							node.visit(visitor);
 						}

@@ -3,6 +3,9 @@ package org.openflexo.explorer.model;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * @author Fabien Dagnat
+ */
 public class GradleDir {
 	private Path path;
 
@@ -42,5 +45,9 @@ public class GradleDir {
 			return other.path != null;
 		}
 		return path.equals(other.path);
+	}
+
+	public String getName() {
+		return this.path.getFileName().toString();
 	}
 }

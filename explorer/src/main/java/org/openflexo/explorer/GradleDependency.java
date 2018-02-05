@@ -1,50 +1,22 @@
 package org.openflexo.explorer;
 
-import java.util.Map;
-
 /**
- * @author Lovett Li
+ * @author Fabien Dagnat
  */
 public class GradleDependency {
 
-	private String group;
-	private String name;
-	private String version;
-
-	public GradleDependency(Map<String, String> dep) {
-		setGroup(dep.get("group"));
-		setName(dep.get("name"));
-		setVersion(dep.get("version"));
+	public enum Kind {
+		Compile, TestCompile, Runtime, TestRuntime
 	}
 
-	public GradleDependency(String group, String name, String version) {
-		this.group = group;
-		this.name = name;
-		this.version = version;
+	private Kind kind;
+
+	public GradleDependency(Kind kind) {
+		this.kind = kind;
 	}
 
-	public String getGroup() {
-		return group;
+	@Override
+	public String toString() {
+		return this.kind == null ? "null" : this.kind.toString();
 	}
-
-	public void setGroup(String group) {
-		this.group = group;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getVersion() {
-		return version;
-	}
-
-	public void setVersion(String version) {
-		this.version = version;
-	}
-
 }

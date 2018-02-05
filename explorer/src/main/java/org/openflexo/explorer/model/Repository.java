@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -15,6 +16,9 @@ import org.codehaus.groovy.ast.builder.AstBuilder;
 import org.eclipse.jgit.api.Git;
 import org.openflexo.explorer.FindInclude;
 
+/**
+ * @author Fabien Dagnat
+ */
 public class Repository extends GradleComposite {
 	private org.eclipse.jgit.lib.Repository repo;
 	private Set<Project> projects;
@@ -36,7 +40,7 @@ public class Repository extends GradleComposite {
 			}
 			try (DirectoryStream<Path> stream = Files.newDirectoryStream(this.getPath())) {
 				for (Path p : stream) {
-					if (Files.isDirectory(p) && !projects.contains(new GradleDir(p)))
+					if (Files.isDirectory(p) && !projects.contains(new GradleDir(p)) && !Files.exists(p.resolve("settings.gradle")))
 						registerProject(p);
 				}
 			}
@@ -74,6 +78,15 @@ public class Repository extends GradleComposite {
 
 	public String getURL() {
 		return this.repo.getConfig().getString("remote", "origin", "url");
+	}
+
+	public void parseBuilds(Root root) {
+		for (Project p : projects)
+			p.parseBuild(root);
+	}
+
+	public Collection<Project> getProjects() {
+		return projects;
 	}
 
 	@Override
