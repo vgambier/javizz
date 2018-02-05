@@ -1,2 +1,8 @@
-/.project
 *~
+.classpath
+.project
+.settings
+/.pmd
+**/.DS_Store
+.gradle
+build/
