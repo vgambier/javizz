@@ -11,6 +11,8 @@ import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.builder.AstBuilder;
 import org.openflexo.explorer.FindIncludeBuild;
 
+import edu.uci.ics.jung.graph.Graph;
+
 /**
  * @author Fabien Dagnat
  */
@@ -47,5 +49,14 @@ public class Root extends GradleComposite {
 		for (Repository r : content)
 			result.addAll(r.getProjects());
 		return result;
+	}
+
+	@Override
+	public void addToGraph(Graph<GradleDir, String> graph) {
+		super.addToGraph(graph);
+		for (Repository r : content) {
+			r.addToGraph(graph);
+			graph.addEdge("edgeTo" + r.getName(), this, r);
+		}
 	}
 }

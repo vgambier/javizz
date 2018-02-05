@@ -2,23 +2,29 @@ plugins {
     id 'java'
 }
 
+repositories {
+	maven {
+    		url "https://maven.openflexo.org/artifactory/openflexo-deps/"
+	}
+}
+
 dependencies {
     compile group: 'org.codehaus.groovy', name: 'groovy', version: '2.4.13'
     compile group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '4.10.0.201712302008-r'
+    compile group: 'net.sf.jung', name: 'jung-graph-impl', version: '2.1.1'
+    compile group: 'net.sf.jung', name: 'jung-algorithms', version: '2.1.1'
+    compile group: 'net.sf.jung', name: 'jung-visualization', version: '2.1.1'
+    compile "org.openflexo:gina-swing:2.1.1-SNAPSHOT"
+    compile "org.openflexo:diana-core:1.4.1-SNAPSHOT"
+    compile "org.openflexo:diana-swing:1.4.1-SNAPSHOT"
     
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
 }
 
-// In this section you declare where to find the dependencies of your project
-repositories {
-    // Use jcenter for resolving your dependencies.
-    // You can declare any Maven/Ivy/file repository here.
-    jcenter()
-}
 apply plugin: 'application'
-mainClassName = "org.openflexo.explorer.Main"
+mainClassName = "org.openflexo.explorer.MainUi2"
 run {
   if ( project.hasProperty("appArgs") ) {
     args Eval.me(appArgs)

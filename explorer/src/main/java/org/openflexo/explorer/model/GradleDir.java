@@ -3,6 +3,8 @@ package org.openflexo.explorer.model;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import edu.uci.ics.jung.graph.Graph;
+
 /**
  * @author Fabien Dagnat
  */
@@ -49,5 +51,9 @@ public class GradleDir {
 
 	public String getName() {
 		return this.path.getFileName().toString();
+	}
+
+	public void addToGraph(Graph<GradleDir, String> graph) {
+		graph.addVertex(this);
 	}
 }
