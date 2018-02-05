@@ -1,4 +1,4 @@
-package org.openflexo.explorer;
+package org.openflexo.explorer.gradle;
 
 /**
  * @author Fabien Dagnat

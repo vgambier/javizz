@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.builder.AstBuilder;
-import org.openflexo.explorer.FindDependenciesVisitor;
-import org.openflexo.explorer.GradleDependency;
+import org.openflexo.explorer.gradle.FindDependenciesVisitor;
+import org.openflexo.explorer.gradle.GradleDependency;
 
 /**
  * @author Fabien Dagnat

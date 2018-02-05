@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.builder.AstBuilder;
-import org.openflexo.explorer.FindIncludeBuild;
+import org.openflexo.explorer.gradle.FindIncludeBuild;
 
 import edu.uci.ics.jung.graph.Graph;
 

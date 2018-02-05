@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.builder.AstBuilder;
 import org.eclipse.jgit.api.Git;
-import org.openflexo.explorer.FindInclude;
+import org.openflexo.explorer.gradle.FindInclude;
 
 /**
  * @author Fabien Dagnat
