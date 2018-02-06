@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +17,7 @@ import edu.uci.ics.jung.graph.Graph;
 /**
  * @author Fabien Dagnat
  */
-public class Root extends GradleComposite {
+public class Root extends GradleComposite implements Iterable<Repository> {
 	private List<Repository> content;
 
 	public Root(String path) {
@@ -58,5 +59,10 @@ public class Root extends GradleComposite {
 			r.addToGraph(graph);
 			graph.addEdge("edgeTo" + r.getName(), this, r);
 		}
+	}
+
+	@Override
+	public Iterator<Repository> iterator() {
+		return this.content.iterator();
 	}
 }

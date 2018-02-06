@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,7 +22,7 @@ import edu.uci.ics.jung.graph.Graph;
 /**
  * @author Fabien Dagnat
  */
-public class Repository extends GradleComposite {
+public class Repository extends GradleComposite implements Iterable<Project> {
 	private org.eclipse.jgit.lib.Repository repo;
 	private Set<Project> projects;
 
@@ -107,5 +108,10 @@ public class Repository extends GradleComposite {
 		result.append(":\n    ");
 		result.append(this.projects.stream().map(Project::toString).sorted().collect(Collectors.joining("\n    ", "", "")));
 		return result.toString();
+	}
+
+	@Override
+	public Iterator<Project> iterator() {
+		return this.projects.iterator();
 	}
 }

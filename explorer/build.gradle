@@ -17,6 +17,7 @@ dependencies {
     compile "org.openflexo:gina-swing:2.1.1-SNAPSHOT"
     compile "org.openflexo:diana-core:1.4.1-SNAPSHOT"
     compile "org.openflexo:diana-swing:1.4.1-SNAPSHOT"
+    compile 'com.thoughtworks.qdox:qdox:2.0-M7'
     
 
     // Use JUnit test framework
@@ -24,7 +25,7 @@ dependencies {
 }
 
 apply plugin: 'application'
-mainClassName = "org.openflexo.explorer.MainUi2"
+mainClassName = "org.openflexo.explorer.Main"
 run {
   if ( project.hasProperty("appArgs") ) {
     args Eval.me(appArgs)
