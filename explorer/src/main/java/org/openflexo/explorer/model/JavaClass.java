@@ -1,10 +1,15 @@
 package org.openflexo.explorer.model;
 
-import java.nio.file.Path;
+import org.openflexo.explorer.util.JavaUtils.Visibility;
 
 public class JavaClass extends JavaType {
 
-	public JavaClass(Package pakc, Path path) {
-		super(pakc, path);
+	public JavaClass(JavaFile file, String name, boolean isStatic, Visibility visibility) {
+		super(file, name, isStatic, visibility);
+	}
+
+	@Override
+	public String getKind() {
+		return "C";
 	}
 }

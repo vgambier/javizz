@@ -1,19 +1,18 @@
 package org.openflexo.explorer.model;
 
-import java.io.File;
-import java.nio.file.Path;
+import org.openflexo.explorer.util.JavaUtils.Visibility;
 
-import org.openflexo.explorer.util.JavaUtils;
-
-public class JavaType {
+public abstract class JavaType {
 	private String name;
-	private Package pakc;
-	private Path path;
+	private JavaFile file;
+	private boolean isStatic;
+	private Visibility visibility;
 
-	public JavaType(Package pakc, Path path) {
-		this.name = JavaUtils.getName(path);
-		this.pakc = pakc;
-		this.path = path;
+	public JavaType(JavaFile file, String name, boolean isStatic, Visibility visibility) {
+		this.name = name;
+		this.file = file;
+		this.isStatic = isStatic;
+		this.visibility = visibility;
 	}
 
 	@Override
@@ -21,11 +20,23 @@ public class JavaType {
 		return name;
 	}
 
-	public File getFile() {
-		return this.path.toFile();
-	}
-
 	public String getName() {
 		return this.name;
+	}
+
+	protected String getKind() {
+		return "U";
+	}
+
+	public String getInfo() {
+		StringBuffer result = new StringBuffer(this.name);
+		result.append("(");
+		result.append(this.getKind());
+		if (this.isStatic)
+			result.append(", S");
+		result.append(", ");
+		result.append(this.visibility);
+		result.append(")");
+		return result.toString();
 	}
 }

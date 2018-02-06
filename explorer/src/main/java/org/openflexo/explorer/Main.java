@@ -2,14 +2,13 @@ package org.openflexo.explorer;
 
 import java.io.IOException;
 
+import org.openflexo.explorer.model.JavaFile;
 import org.openflexo.explorer.model.JavaType;
 import org.openflexo.explorer.model.Project;
 import org.openflexo.explorer.model.Repository;
 import org.openflexo.explorer.model.Root;
 
 import com.thoughtworks.qdox.JavaProjectBuilder;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaPackage;
 
 /**
  * @author Fabien Dagnat
@@ -32,14 +31,21 @@ public class Main {
 		root.parseBuilds();
 		// System.out.println(root);
 		JavaProjectBuilder builder = new JavaProjectBuilder();
-		// Populate builder
+		// Populate builder (each Java file is added to the builder)
 		for (Repository r : root)
 			for (Project p : r)
 				for (org.openflexo.explorer.model.Package pa : p.getPackages())
-					for (JavaType t : pa)
-						if (!t.getName().equals("Platform"))
-							builder.addSource(t.getFile());
+					for (JavaFile f : pa)
+						if (!f.getName().equals("Platform"))
+							builder.addSource(f.getFile());
 		// System.out.println(builder.getPackages());
+		// Modify model using builder (populate types)
+		for (Repository r : root) {
+			for (Project p : r) {
+				for (org.openflexo.explorer.model.Package pa : p.getPackages())
+					pa.setQdoxPackage(builder);
+			}
+		}
 		// Print content
 		for (Repository r : root) {
 			if (r.getName().equals("connie")) {
@@ -48,24 +54,15 @@ public class Main {
 					System.out.println("  " + p.getName());
 					for (org.openflexo.explorer.model.Package pa : p.getPackages()) {
 						System.out.println("    " + pa);
-						JavaPackage jp = builder.getPackageByName(pa.getName());
-						if (jp != null)
-							for (com.thoughtworks.qdox.model.JavaClass t : jp.getClasses()) {
-								for (com.thoughtworks.qdox.model.JavaClass ic : t.getNestedClasses()) {
-									System.out.println("      " + ic.getName() + "(" + getKind(ic) + ")");
-								}
+						for (JavaFile f : pa) {
+							System.out.println("      " + f.getName());
+							for (JavaType t : f) {
+								System.out.println("        " + t.getInfo());
 							}
+						}
 					}
 				}
 			}
 		}
-	}
-
-	public static String getKind(JavaClass ic) {
-		if (ic.isInterface())
-			return "I";
-		if (ic.isEnum())
-			return "E";
-		return "C";
 	}
 }
