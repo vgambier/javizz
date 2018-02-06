@@ -112,7 +112,9 @@ public class Node {
 	}
 
 	public void connectTo(Node toNode) {
-		new Edge(this, toNode);
+		Edge newEdge = new Edge(this, toNode);
+		addToOutputEdges(newEdge);
+		toNode.addToInputEdges(newEdge);
 	}
 
 	public double getX() {

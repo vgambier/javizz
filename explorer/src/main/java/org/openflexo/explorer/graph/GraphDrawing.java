@@ -38,8 +38,7 @@
 
 package org.openflexo.explorer.graph;
 
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
+import java.awt.Color;
 
 import org.openflexo.connie.DataBinding;
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
@@ -55,18 +54,13 @@ import org.openflexo.fge.GRStructureVisitor;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.connectors.ConnectorSpecification.ConnectorType;
-import org.openflexo.fge.control.DianaInteractiveViewer;
 import org.openflexo.fge.control.MouseControl.MouseButton;
-import org.openflexo.fge.control.MouseControlContext;
 import org.openflexo.fge.control.MouseDragControl;
 import org.openflexo.fge.control.actions.MouseDragControlImpl;
 import org.openflexo.fge.control.actions.MoveAction;
 import org.openflexo.fge.impl.DrawingImpl;
+import org.openflexo.fge.layout.TreeLayoutManagerSpecification;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
-import org.openflexo.fge.swing.JDianaInteractiveEditor;
-import org.openflexo.fge.swing.SwingViewFactory;
-import org.openflexo.fge.swing.control.SwingToolFactory;
-import org.openflexo.fge.swing.control.tools.JDianaScaleSelector;
 
 public class GraphDrawing extends DrawingImpl<Graph> {
 
@@ -81,52 +75,49 @@ public class GraphDrawing extends DrawingImpl<Graph> {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void init() {
-		graphRepresentation = getFactory().makeDrawingGraphicalRepresentation();
-		// graphRepresentation.setBackgroundColor(Color.RED);
-		nodeRepresentation = getFactory().makeShapeGraphicalRepresentation(ShapeType.CIRCLE);
+		FGEModelFactory factory = getFactory();
+		graphRepresentation = factory.makeDrawingGraphicalRepresentation();
+		graphRepresentation
+				.addToLayoutManagerSpecifications(factory.makeLayoutManagerSpecification("tree", TreeLayoutManagerSpecification.class));
+
+		nodeRepresentation = factory.makeShapeGraphicalRepresentation(ShapeType.RECTANGLE);
+		nodeRepresentation.setBackground(factory.makeColoredBackground(Color.PINK));
 		// nodeRepresentation.setX(50);
 		// nodeRepresentation.setY(50);
-		nodeRepresentation.setWidth(20);
+		nodeRepresentation.setWidth(40);
 		nodeRepresentation.setHeight(20);
 		nodeRepresentation.setAbsoluteTextX(30);
 		nodeRepresentation.setAbsoluteTextY(0);
-		edgeRepresentation = getFactory().makeConnectorGraphicalRepresentation(ConnectorType.LINE);
+		// nodeRepresentation.setIsFloatingLabel(false);
+		nodeRepresentation.setLayoutManagerIdentifier("tree");
+		edgeRepresentation = factory.makeConnectorGraphicalRepresentation(ConnectorType.LINE);
 
 		MouseDragControl moveControl = nodeRepresentation.getMouseDragControl("Move");
 		nodeRepresentation.removeFromMouseDragControls(moveControl);
-		nodeRepresentation.addToMouseDragControls(new MouseDragControlImpl("dragNode", MouseButton.LEFT, new MoveAction() {
-
-			@Override
-			public boolean handleMouseReleased(org.openflexo.fge.Drawing.DrawingTreeNode<?, ?> node, DianaInteractiveViewer<?, ?, ?> editor,
-					MouseControlContext context, boolean isSignificativeDrag) {
-				boolean returned = super.handleMouseReleased(node, editor, context, isSignificativeDrag);
-				System.out.println("Detected mouse released");
-				return returned;
-			}
-		}, false, false, false, false, getFactory().getEditingContext()));
+		nodeRepresentation.addToMouseDragControls(new MouseDragControlImpl("dragNode", MouseButton.LEFT, new MoveAction(), false, false,
+				false, false, factory.getEditingContext()));
 
 		final DrawingGRBinding<Graph> graphBinding = bindDrawing(Graph.class, "graph", new DrawingGRProvider<Graph>() {
 			@Override
 			public DrawingGraphicalRepresentation provideGR(Graph drawable, FGEModelFactory factory) {
-				return graphRepresentation;
+				return GraphDrawing.this.graphRepresentation;
 			}
 		});
 		final ShapeGRBinding<Node> nodeBinding = bindShape(Node.class, "node", new ShapeGRProvider<Node>() {
 			@Override
 			public ShapeGraphicalRepresentation provideGR(Node drawable, FGEModelFactory factory) {
-				return nodeRepresentation;
+				return GraphDrawing.this.nodeRepresentation;
 			}
 		});
 		final ConnectorGRBinding<Edge> edgeBinding = bindConnector(Edge.class, "edge", nodeBinding, nodeBinding, graphBinding,
 				new ConnectorGRProvider<Edge>() {
 					@Override
 					public ConnectorGraphicalRepresentation provideGR(Edge drawable, FGEModelFactory factory) {
-						return edgeRepresentation;
+						return GraphDrawing.this.edgeRepresentation;
 					}
 				});
 
 		graphBinding.addToWalkers(new GRStructureVisitor<Graph>() {
-
 			@Override
 			public void visit(Graph graph) {
 				for (Node node : graph.getNodes()) {
@@ -138,7 +129,6 @@ public class GraphDrawing extends DrawingImpl<Graph> {
 		nodeBinding.addToWalkers(new GRStructureVisitor<Node>() {
 			@Override
 			public void visit(Node node) {
-				System.out.println("Walking for edges ");
 				for (Edge edge : node.getInputEdges()) {
 					drawConnector(edgeBinding, edge, edge.getStartNode(), edge.getEndNode(), node.getGraph());
 				}
@@ -149,22 +139,7 @@ public class GraphDrawing extends DrawingImpl<Graph> {
 		});
 
 		nodeBinding.setDynamicPropertyValue(GraphicalRepresentation.TEXT, new DataBinding<String>("drawable.name"), true);
-		// nodeBinding.setDynamicPropertyValue(GraphicalRepresentation.ABSOLUTE_TEXT_X, new DataBinding<Double>("drawable.labelX"));
-		// nodeBinding.setDynamicPropertyValue(GraphicalRepresentation.ABSOLUTE_TEXT_Y, new DataBinding<Double>("drawable.labelY"));
 		nodeBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.X, new DataBinding<Double>("drawable.x"), true);
 		nodeBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.Y, new DataBinding<Double>("drawable.y"), true);
-
-	}
-
-	public static class TestDrawingController extends JDianaInteractiveEditor<Graph> {
-		private final JPopupMenu contextualMenu;
-		private final JDianaScaleSelector scaleSelector;
-
-		public TestDrawingController(GraphDrawing aDrawing) {
-			super(aDrawing, aDrawing.getFactory(), SwingViewFactory.INSTANCE, SwingToolFactory.DEFAULT);
-			scaleSelector = (JDianaScaleSelector) getToolFactory().makeDianaScaleSelector(this);
-			contextualMenu = new JPopupMenu();
-			contextualMenu.add(new JMenuItem("Item"));
-		}
 	}
 }
