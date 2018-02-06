@@ -37,7 +37,7 @@ public class Repository extends GradleComposite implements Iterable<Project> {
 				for (ASTNode node : nodes) {
 					node.visit(visitor);
 				}
-				projects = visitor.getResult().stream().map(p -> Project.create(this.getPath(), p, true)).collect(Collectors.toSet());
+				projects = visitor.getResult().stream().map(p -> Project.create(this, this.getPath(), p, true)).collect(Collectors.toSet());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -76,7 +76,7 @@ public class Repository extends GradleComposite implements Iterable<Project> {
 				registerProject(p);
 			return;
 		}
-		projects.add(Project.create(dir, false));
+		projects.add(Project.create(this, dir, false));
 	}
 
 	public String getURL() {
@@ -113,5 +113,9 @@ public class Repository extends GradleComposite implements Iterable<Project> {
 	@Override
 	public Iterator<Project> iterator() {
 		return this.projects.iterator();
+	}
+
+	public Path getShortPath() {
+		return this.getPath().getFileName();
 	}
 }

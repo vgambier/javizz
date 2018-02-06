@@ -1,5 +1,7 @@
 package org.openflexo.explorer.model;
 
+import java.nio.file.Path;
+
 import org.openflexo.explorer.util.JavaUtils.Visibility;
 
 public abstract class JavaType {
@@ -38,5 +40,9 @@ public abstract class JavaType {
 		result.append(this.visibility);
 		result.append(")");
 		return result.toString();
+	}
+
+	public Path getShortPath() {
+		return file.getShortPath();
 	}
 }

@@ -26,6 +26,7 @@ public class Project extends GradleDir {
 	final private boolean isBuilt;
 	private List<GradleDependency> dependencies;
 	private List<Package> packages = new ArrayList<>();
+	private Repository repo;
 
 	public List<GradleDependency> getDependencies() {
 		return dependencies;
@@ -35,8 +36,9 @@ public class Project extends GradleDir {
 		return packages;
 	}
 
-	private Project(Path path, Kind k, boolean built) {
+	private Project(Repository repo, Path path, Kind k, boolean built) {
 		super(path);
+		this.repo = repo;
 		this.kind = k;
 		this.isBuilt = built;
 		Path codeDir = this.getPath().resolve("src/main/java");
@@ -94,13 +96,13 @@ public class Project extends GradleDir {
 		}
 	}
 
-	public static Project create(Path path, String name, boolean built) {
+	public static Project create(Repository repo, Path path, String name, boolean built) {
 		Path thePath = path.resolve(name.replaceAll(":", "/"));
-		return new Project(thePath, getKind(thePath), built);
+		return new Project(repo, thePath, getKind(thePath), built);
 	}
 
-	public static Project create(Path path, boolean built) {
-		return new Project(path, getKind(path), built);
+	public static Project create(Repository repo, Path path, boolean built) {
+		return new Project(repo, path, getKind(path), built);
 	}
 
 	private static Kind getKind(Path path) {
@@ -129,5 +131,9 @@ public class Project extends GradleDir {
 			result.append(this.dependencies);
 		}
 		return result.toString();
+	}
+
+	public Path getShortPath() {
+		return this.repo.getShortPath().resolve(this.getName());
 	}
 }

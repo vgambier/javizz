@@ -61,9 +61,11 @@ public class Package implements Iterable<JavaFile> {
 		this.qdoxPackage = builder.getPackageByName(this.getName());
 		if (this.qdoxPackage != null)
 			for (com.thoughtworks.qdox.model.JavaClass t : this.qdoxPackage.getClasses()) {
+				// System.out.println("===" + t);
+				// System.out.println("===" + t.getNestedClasses());
 				registerType(t);
-				for (com.thoughtworks.qdox.model.JavaClass ic : t.getNestedClasses())
-					registerType(ic);
+				// for (com.thoughtworks.qdox.model.JavaClass ic : t.getNestedClasses())
+				// registerType(ic);
 			}
 	}
 
@@ -93,5 +95,9 @@ public class Package implements Iterable<JavaFile> {
 
 	private boolean contains(Path location) {
 		return this.location.resolve(name).equals(location.getParent());
+	}
+
+	public Path getShortPath() {
+		return this.container.getShortPath().resolve(name);
 	}
 }

@@ -45,4 +45,12 @@ public class JavaFile implements Iterable<JavaType> {
 	public void add(JavaType t) {
 		this.javaTypes.add(t);
 	}
+
+	public Path getPath() {
+		return this.path;
+	}
+
+	public Path getShortPath() {
+		return this.pakc.getShortPath().resolve(this.name);
+	}
 }
