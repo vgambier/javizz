@@ -25,9 +25,11 @@ import edu.uci.ics.jung.graph.Graph;
 public class Repository extends GradleComposite implements Iterable<Project> {
 	private org.eclipse.jgit.lib.Repository repo;
 	private Set<Project> projects;
+	private Root root;
 
-	public Repository(Path path) {
+	public Repository(Root root, Path path) {
 		super(path);
+		this.root = root;
 		try {
 			this.repo = Git.open(path.resolve(".git").toFile()).getRepository();
 			Path settingsFile = this.getPath().resolve("settings.gradle");
@@ -117,5 +119,9 @@ public class Repository extends GradleComposite implements Iterable<Project> {
 
 	public Path getShortPath() {
 		return this.getPath().getFileName();
+	}
+
+	public Root getRoot() {
+		return this.root;
 	}
 }

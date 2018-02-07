@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.codehaus.groovy.ast.ASTNode;
@@ -19,6 +21,16 @@ import edu.uci.ics.jung.graph.Graph;
  */
 public class Root extends GradleComposite implements Iterable<Repository> {
 	private List<Repository> content;
+	private Map<String, JavaPackage> packages = new HashMap<>();
+
+	public JavaPackage registerPackage(String name) {
+		JavaPackage result = packages.get(name);
+		if (result == null) {
+			result = new JavaPackage(name);
+			packages.put(name, result);
+		}
+		return result;
+	}
 
 	public Root(String path) {
 		super(path);
@@ -29,7 +41,7 @@ public class Root extends GradleComposite implements Iterable<Repository> {
 			for (ASTNode node : nodes) {
 				node.visit(visitor);
 			}
-			content = visitor.getResult().stream().map(p -> new Repository(this.getPath().resolve(p))).collect(Collectors.toList());
+			content = visitor.getResult().stream().map(p -> new Repository(this, this.getPath().resolve(p))).collect(Collectors.toList());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -38,6 +50,16 @@ public class Root extends GradleComposite implements Iterable<Repository> {
 	public void parseBuilds() {
 		for (Repository r : content)
 			r.parseBuilds(this);
+	}
+
+	public List<JavaFile> getJavaFiles() {
+		List<JavaFile> result = new ArrayList<>();
+		for (Repository r : this)
+			for (Project p : r)
+				for (JavaPackagePart pa : p.getPackages())
+					for (JavaFile f : pa)
+						result.add(f);
+		return result;
 	}
 
 	@Override
@@ -64,5 +86,9 @@ public class Root extends GradleComposite implements Iterable<Repository> {
 	@Override
 	public Iterator<Repository> iterator() {
 		return this.content.iterator();
+	}
+
+	public Map<String, JavaPackage> getPackages() {
+		return this.packages;
 	}
 }

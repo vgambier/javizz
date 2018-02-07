@@ -25,15 +25,15 @@ public class Project extends GradleDir {
 	final private Kind kind;
 	final private boolean isBuilt;
 	private List<GradleDependency> dependencies;
-	private List<Package> packages = new ArrayList<>();
+	private List<JavaPackagePart> parts = new ArrayList<>();
 	private Repository repo;
 
 	public List<GradleDependency> getDependencies() {
 		return dependencies;
 	}
 
-	public List<Package> getPackages() {
-		return packages;
+	public List<JavaPackagePart> getPackages() {
+		return parts;
 	}
 
 	private Project(Repository repo, Path path, Kind k, boolean built) {
@@ -42,25 +42,33 @@ public class Project extends GradleDir {
 		this.kind = k;
 		this.isBuilt = built;
 		Path codeDir = this.getPath().resolve("src/main/java");
-		registerPackages(codeDir, Paths.get(""));
+		registerPackageParts(codeDir, Paths.get(""));
 	}
 
-	private void registerPackages(Path dir, Path container) {
+	private void registerPackageParts(Path dir, Path container) {
 		Path path = dir.resolve(container);
 		if (Files.isDirectory(path)) {
 			try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
 				for (Path p : stream) {
 					if (Files.isDirectory(p)) {
 						Path pack = container.resolve(p.getFileName());
-						if (containsJavaFile(p))
-							this.packages.add(new Package(this, dir, pack));
-						registerPackages(dir, pack);
+						if (containsJavaFile(p)) {
+							String packageName = pack.toString().replace("/", ".");
+							JavaPackage pa = getRoot().registerPackage(packageName);
+							this.parts.add(new JavaPackagePart(this, p, pa));
+						}
+
+						registerPackageParts(dir, pack);
 					}
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private Root getRoot() {
+		return repo.getRoot();
 	}
 
 	private static boolean containsJavaFile(Path path) {

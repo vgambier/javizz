@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.openflexo.explorer.model.JavaFile;
+import org.openflexo.explorer.model.JavaPackage;
+import org.openflexo.explorer.model.JavaPackagePart;
 import org.openflexo.explorer.model.JavaType;
 import org.openflexo.explorer.model.Project;
 import org.openflexo.explorer.model.Repository;
@@ -24,43 +26,47 @@ public class Main {
 			System.out.println("You must specify a starting path!");
 			return;
 		}
-		// try (DirectoryStream<Path> stream = Files.newDirectoryStream(root)) {
-		// for (Path p : stream) {
-		// System.out.println(p);
-		// }
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
+		// Creating the root
 		Root root = new Root(args[0]);
 		root.parseBuilds();
 		// System.out.println(root);
-		JavaProjectBuilder builder = new JavaProjectBuilder();
+
 		// Populate builder (each Java file is added to the builder)
-		for (Repository r : root)
-			for (Project p : r)
-				for (org.openflexo.explorer.model.Package pa : p.getPackages())
-					for (JavaFile f : pa)
-						if (!f.getName().equals("Platform"))
-							builder.addSource(f.getFile());
-		// System.out.println(builder.getPackages());
+		JavaProjectBuilder builder = new JavaProjectBuilder();
+		for (JavaFile f : root.getJavaFiles())
+			if (!f.getName().equals("Platform")) // qdox does not support this file (don't know why precisely)
+				builder.addSource(f.getFile());
+
 		// Modify model using builder (populate types)
-		for (Repository r : root) {
-			for (Project p : r) {
-				for (org.openflexo.explorer.model.Package pa : p.getPackages())
-					pa.setQdoxPackage(builder);
-			}
+		for (JavaPackage p : root.getPackages().values()) {
+			p.setQdoxPackage(builder);
 		}
+
 		// print(root);
-		findDuplicateClasses(root);
+
+		// findDuplicateClasses(root);
+
+		findPackageSplit(root);
 	}
 
+	private static void findPackageSplit(Root root) {
+		for (JavaPackage p : root.getPackages().values()) {
+			if (p.isSplit()) {
+				System.out.println(p.getName());
+				for (JavaPackagePart pp : p)
+					System.out.println("  " + pp.getShortPath());
+			}
+		}
+	}
+
+	@SuppressWarnings("unused")
 	private static void print(Root root) {
 		// Print content
 		for (Repository r : root) {
 			System.out.println(r.getURL() + ":");
 			for (Project p : r) {
 				System.out.println("  " + p.getName());
-				for (org.openflexo.explorer.model.Package pa : p.getPackages()) {
+				for (JavaPackagePart pa : p.getPackages()) {
 					System.out.println("    " + pa);
 					for (JavaFile f : pa) {
 						System.out.println("      " + f.getName());
@@ -74,11 +80,12 @@ public class Main {
 
 	}
 
+	@SuppressWarnings("unused")
 	private static void findDuplicateClasses(Root root) {
 		Map<String, List<JavaType>> allClasses = new HashMap<>();
 		for (Repository r : root)
 			for (Project p : r)
-				for (org.openflexo.explorer.model.Package pa : p.getPackages())
+				for (JavaPackagePart pa : p.getPackages())
 					for (JavaFile f : pa)
 						for (JavaType t : f) {
 							List<JavaType> types = allClasses.get(t.getName());

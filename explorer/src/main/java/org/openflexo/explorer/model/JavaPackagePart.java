@@ -12,21 +12,18 @@ import java.util.Set;
 
 import org.openflexo.explorer.util.JavaUtils;
 
-import com.thoughtworks.qdox.JavaProjectBuilder;
-import com.thoughtworks.qdox.model.JavaPackage;
-
-public class Package implements Iterable<JavaFile> {
-	private Path location;
-	private Path name;
+public class JavaPackagePart implements Iterable<JavaFile> {
+	private Path path;
 	private Project container;
 	private Set<JavaFile> javaFiles = new HashSet<>();
-	private JavaPackage qdoxPackage;
+	private JavaPackage pack;
 
-	public Package(Project container, Path location, Path name) {
+	public JavaPackagePart(Project container, Path path, JavaPackage pa) {
 		this.container = container;
-		this.location = location;
-		this.name = name;
-		registerJavaFiles(location.resolve(name));
+		this.path = path;
+		this.pack = pa;
+		pa.registerPart(this);
+		registerJavaFiles(path);
 	}
 
 	private void registerJavaFiles(Path path) {
@@ -45,7 +42,7 @@ public class Package implements Iterable<JavaFile> {
 
 	@Override
 	public String toString() {
-		return this.getName();
+		return this.pack.getName();
 	}
 
 	@Override
@@ -53,23 +50,7 @@ public class Package implements Iterable<JavaFile> {
 		return javaFiles.iterator();
 	}
 
-	public String getName() {
-		return name.toString().replace("/", ".");
-	}
-
-	public void setQdoxPackage(JavaProjectBuilder builder) {
-		this.qdoxPackage = builder.getPackageByName(this.getName());
-		if (this.qdoxPackage != null)
-			for (com.thoughtworks.qdox.model.JavaClass t : this.qdoxPackage.getClasses()) {
-				// System.out.println("===" + t);
-				// System.out.println("===" + t.getNestedClasses());
-				registerType(t);
-				// for (com.thoughtworks.qdox.model.JavaClass ic : t.getNestedClasses())
-				// registerType(ic);
-			}
-	}
-
-	private void registerType(com.thoughtworks.qdox.model.JavaClass t) {
+	void registerType(com.thoughtworks.qdox.model.JavaClass t) {
 		try {
 			Path location = Paths.get(t.getSource().getURL().toURI());
 			if (this.contains(location)) {
@@ -94,10 +75,10 @@ public class Package implements Iterable<JavaFile> {
 	}
 
 	private boolean contains(Path location) {
-		return this.location.resolve(name).equals(location.getParent());
+		return this.path.equals(location.getParent());
 	}
 
 	public Path getShortPath() {
-		return this.container.getShortPath().resolve(name);
+		return this.container.getShortPath().resolve(pack.getName());
 	}
 }

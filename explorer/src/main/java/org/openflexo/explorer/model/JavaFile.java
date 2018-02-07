@@ -10,11 +10,11 @@ import org.openflexo.explorer.util.JavaUtils;
 
 public class JavaFile implements Iterable<JavaType> {
 	private String name;
-	private Package pakc;
+	private JavaPackagePart pakc;
 	private Path path;
 	private Set<JavaType> javaTypes = new HashSet<>();
 
-	public JavaFile(Package pakc, Path path) {
+	public JavaFile(JavaPackagePart pakc, Path path) {
 		this.name = JavaUtils.getName(path);
 		this.pakc = pakc;
 		this.path = path;
