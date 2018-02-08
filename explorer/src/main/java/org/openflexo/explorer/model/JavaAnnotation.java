@@ -2,15 +2,15 @@ package org.openflexo.explorer.model;
 
 import java.util.Map;
 
-public class JavaInterface extends JavaType {
+public class JavaAnnotation extends JavaType {
 
-	public JavaInterface(JavaFile file, com.thoughtworks.qdox.model.JavaClass c) {
+	public JavaAnnotation(JavaFile file, com.thoughtworks.qdox.model.JavaClass c) {
 		super(file, c);
 	}
 
 	@Override
 	public String getKind() {
-		return "I";
+		return "A";
 	}
 
 	@Override
@@ -18,4 +18,5 @@ public class JavaInterface extends JavaType {
 		// TODO Auto-generated method stub
 
 	}
+
 }

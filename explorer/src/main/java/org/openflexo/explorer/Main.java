@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.openflexo.explorer.model.JavaFile;
 import org.openflexo.explorer.model.JavaPackage;
@@ -42,13 +43,26 @@ public class Main {
 			p.setQdoxPackage(builder);
 		}
 
+		// Register classes
+		root.registerClass();
+
+		for (String s : root.getAllClasses().keySet())
+			System.out.println(s);
+
+		System.out.println("--------------------------");
+		// Updating class infos
+		root.updateTypeInfo();
+		for (Entry<String, JavaType> e : root.getAllClasses().entrySet())
+			System.out.println("=> " + e.getValue().getInfo());
+
 		// print(root);
 
 		// findDuplicateClasses(root);
 
-		findPackageSplit(root);
+		// findPackageSplit(root);
 	}
 
+	@SuppressWarnings("unused")
 	private static void findPackageSplit(Root root) {
 		for (JavaPackage p : root.getPackages().values()) {
 			if (p.isSplit()) {

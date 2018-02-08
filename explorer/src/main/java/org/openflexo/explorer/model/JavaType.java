@@ -1,20 +1,24 @@
 package org.openflexo.explorer.model;
 
 import java.nio.file.Path;
+import java.util.Map;
 
+import org.openflexo.explorer.util.JavaUtils;
 import org.openflexo.explorer.util.JavaUtils.Visibility;
+
+import com.thoughtworks.qdox.model.JavaClass;
 
 public abstract class JavaType {
 	private String name;
-	private JavaFile file;
-	private boolean isStatic;
+	protected JavaFile file;
 	private Visibility visibility;
+	protected com.thoughtworks.qdox.model.JavaClass qdoxClass;
 
-	public JavaType(JavaFile file, String name, boolean isStatic, Visibility visibility) {
-		this.name = name;
+	protected JavaType(JavaFile file, com.thoughtworks.qdox.model.JavaClass c) {
+		this.name = c.getName();
 		this.file = file;
-		this.isStatic = isStatic;
-		this.visibility = visibility;
+		this.visibility = JavaUtils.getVisibility(c);
+		this.qdoxClass = c;
 	}
 
 	@Override
@@ -34,7 +38,7 @@ public abstract class JavaType {
 		StringBuffer result = new StringBuffer(this.name);
 		result.append("(");
 		result.append(this.getKind());
-		if (this.isStatic)
+		if (this.qdoxClass.isStatic())
 			result.append(", S");
 		result.append(", ");
 		result.append(this.visibility);
@@ -44,5 +48,22 @@ public abstract class JavaType {
 
 	public Path getShortPath() {
 		return file.getShortPath();
+	}
+
+	public String getCompleteName() {
+		StringBuffer sb = new StringBuffer(this.file.getPackageName());
+		sb.append(".");
+		if (this.qdoxClass.isInner()) {
+			sb.append(this.file.getName());
+			sb.append("$");
+		}
+		sb.append(this.name);
+		return sb.toString();
+	}
+
+	public abstract void updateInfo(Map<String, JavaType> allClasses);
+
+	public JavaClass getQdoxClass() {
+		return this.qdoxClass;
 	}
 }

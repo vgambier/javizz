@@ -56,11 +56,13 @@ public class JavaPackagePart implements Iterable<JavaFile> {
 			if (this.contains(location)) {
 				JavaFile file = this.getFile(location);
 				if (t.isInterface())
-					file.add(new JavaInterface(file, t.getName(), t.isStatic(), JavaUtils.getVisibility(t)));
+					file.add(new JavaInterface(file, t));
 				else if (t.isEnum())
-					file.add(new JavaEnum(file, t.getName(), t.isStatic(), JavaUtils.getVisibility(t)));
+					file.add(new JavaEnum(file, t));
+				else if (t.isAnnotation())
+					file.add(new JavaAnnotation(file, t));
 				else
-					file.add(new JavaClass(file, t.getName(), t.isStatic(), JavaUtils.getVisibility(t)));
+					file.add(new JavaClass(file, t));
 			}
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
@@ -76,6 +78,10 @@ public class JavaPackagePart implements Iterable<JavaFile> {
 
 	private boolean contains(Path location) {
 		return this.path.equals(location.getParent());
+	}
+
+	public String getName() {
+		return pack.getName();
 	}
 
 	public Path getShortPath() {

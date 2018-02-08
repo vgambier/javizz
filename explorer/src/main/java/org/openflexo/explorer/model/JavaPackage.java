@@ -18,7 +18,7 @@ public class JavaPackage implements Iterable<JavaPackagePart> {
 	public void setQdoxPackage(JavaProjectBuilder builder) {
 		this.qdoxPackage = builder.getPackageByName(this.name);
 		if (this.qdoxPackage != null)
-			for (com.thoughtworks.qdox.model.JavaClass t : this.qdoxPackage.getClasses()) {
+			for (com.thoughtworks.qdox.model.JavaClass t : new ArrayList<>(this.qdoxPackage.getClasses())) {
 				// System.out.println("===" + t);
 				// System.out.println("===" + t.getNestedClasses());
 				for (JavaPackagePart pp : parts)

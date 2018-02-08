@@ -22,6 +22,30 @@ import edu.uci.ics.jung.graph.Graph;
 public class Root extends GradleComposite implements Iterable<Repository> {
 	private List<Repository> content;
 	private Map<String, JavaPackage> packages = new HashMap<>();
+	private Map<String, JavaType> allClasses = new HashMap<>();
+
+	public Map<String, JavaType> getAllClasses() {
+		return allClasses;
+	}
+
+	public void registerClass() {
+		for (Repository r : this)
+			for (Project p : r)
+				for (JavaPackagePart pa : p.getPackages())
+					for (JavaFile f : pa)
+						for (JavaType t : f)
+							this.allClasses.put(t.getQdoxClass().getBinaryName(), t);
+	}
+
+	public void updateTypeInfo() {
+		for (Repository r : this)
+			for (Project p : r)
+				for (JavaPackagePart pa : p.getPackages())
+					for (JavaFile f : pa)
+						for (JavaType t : f)
+							if (t instanceof JavaClass)
+								t.updateInfo(this.allClasses);
+	}
 
 	public JavaPackage registerPackage(String name) {
 		JavaPackage result = packages.get(name);

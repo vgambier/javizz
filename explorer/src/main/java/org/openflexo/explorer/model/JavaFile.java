@@ -33,6 +33,10 @@ public class JavaFile implements Iterable<JavaType> {
 		return this.name;
 	}
 
+	public String getPackageName() {
+		return this.pakc.getName();
+	}
+
 	@Override
 	public Iterator<JavaType> iterator() {
 		return javaTypes.iterator();
