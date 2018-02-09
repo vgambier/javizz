@@ -1,59 +1,44 @@
 package org.openflexo.explorer.model;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.List;
 
-import edu.uci.ics.jung.graph.Graph;
+import org.codehaus.groovy.ast.ASTNode;
+import org.codehaus.groovy.ast.CodeVisitorSupport;
+import org.codehaus.groovy.ast.builder.AstBuilder;
 
-/**
- * @author Fabien Dagnat
- */
-public class GradleDir {
-	private Path path;
+public class GradleDir extends Dir {
 
-	public Path getPath() {
-		return path;
+	protected GradleDir(Path path) {
+		super(path);
 	}
 
 	protected GradleDir(String path) {
-		this.path = Paths.get(path).toAbsolutePath().normalize();
+		super(path);
 	}
 
-	protected GradleDir(Path path) {
-		this.path = path.toAbsolutePath().normalize();
+	protected void visitSettings(CodeVisitorSupport visitor) throws IOException {
+		visitGradleFile("settings", visitor);
 	}
 
-	@Override
-	public String toString() {
-		return this.path.getFileName().toString();
+	protected void visitBuild(CodeVisitorSupport visitor) throws IOException {
+		visitGradleFile("build", visitor);
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((path == null) ? 0 : path.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		GradleDir other = (GradleDir) obj;
-		if (path == null) {
-			return other.path != null;
+	private void visitGradleFile(String fileName, CodeVisitorSupport visitor) throws IOException {
+		Path gradleFile = this.getPath().resolve(fileName + ".gradle");
+		if (Files.exists(gradleFile)) {
+			String fileContent = new String(Files.readAllBytes(gradleFile));
+			if (!fileContent.equals("")) {
+				List<ASTNode> nodes = new AstBuilder().buildFromString(fileContent);
+				for (ASTNode node : nodes) {
+					node.visit(visitor);
+				}
+			}
+			return;
 		}
-		return path.equals(other.path);
-	}
-
-	public String getName() {
-		return this.path.getFileName().toString();
-	}
-
-	public void addToGraph(Graph<GradleDir, String> graph) {
-		graph.addVertex(this);
+		throw new IOException("Found no file " + gradleFile);
 	}
 }

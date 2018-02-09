@@ -1,12 +1,13 @@
 package org.openflexo.explorer;
 
 import java.awt.Dimension;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
-import org.openflexo.explorer.model.GradleDir;
+import org.openflexo.explorer.model.Dir;
 import org.openflexo.explorer.model.Root;
 
 import edu.uci.ics.jung.algorithms.layout.Layout;
@@ -20,7 +21,7 @@ import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 
 public class MainUi {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		if (args.length == 0) {
 			System.out.println("You must specify a starting path!");
 			return;
@@ -28,12 +29,12 @@ public class MainUi {
 		Root root = new Root(args[0]);
 		root.parseBuilds();
 
-		Graph<GradleDir, String> graph = new DelegateForest<>();
+		Graph<Dir, String> graph = new DelegateForest<>();
 
 		root.addToGraph(graph);
 
-		Layout<GradleDir, String> layout = new TreeLayout<>((Forest<GradleDir, String>) graph);
-		VisualizationViewer<GradleDir, String> vv = new VisualizationViewer<>(layout, new Dimension(3000, 600));
+		Layout<Dir, String> layout = new TreeLayout<>((Forest<Dir, String>) graph);
+		VisualizationViewer<Dir, String> vv = new VisualizationViewer<>(layout, new Dimension(3000, 600));
 		vv.getRenderContext().setEdgeShapeTransformer(EdgeShape.line(graph));
 		vv.getRenderContext().setVertexLabelTransformer(gd -> gd.getName());
 		vv.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR);

@@ -1,14 +1,14 @@
 package org.openflexo.explorer.gradle;
 
-import org.openflexo.explorer.model.GradleDir;
+import org.openflexo.explorer.model.Dir;
 
 /**
  * @author Fabien Dagnat
  */
 public class InternalDependency extends GradleDependency {
-	private GradleDir project;
+	private Dir project;
 
-	public InternalDependency(GradleDir project, Kind kind) {
+	public InternalDependency(Dir project, Kind kind) {
 		super(kind);
 		this.project = project;
 	}

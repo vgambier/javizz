@@ -8,8 +8,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.groovy.ast.ASTNode;
-import org.codehaus.groovy.ast.builder.AstBuilder;
 import org.openflexo.explorer.gradle.FindDependenciesVisitor;
 import org.openflexo.explorer.gradle.GradleDependency;
 import org.openflexo.explorer.util.JavaUtils;
@@ -36,10 +34,10 @@ public class Project extends GradleDir {
 		return parts;
 	}
 
-	private Project(Repository repo, Path path, Kind k, boolean built) {
+	private Project(Repository repo, Path path, boolean built) {
 		super(path);
 		this.repo = repo;
-		this.kind = k;
+		this.kind = getKind(path);
 		this.isBuilt = built;
 		Path codeDir = this.getPath().resolve("src/main/java");
 		registerPackageParts(codeDir, Paths.get(""));
@@ -77,40 +75,25 @@ public class Project extends GradleDir {
 				if (JavaUtils.isJavaFile(p.getFileName()))
 					return true;
 			}
-		} catch (IOException e) {
-		}
+		} catch (IOException e) {}
 		return false;
 	}
 
-	public void parseBuild(Root root) {
+	public void parseBuild(Root root) throws IOException {
 		if (this.kind != Kind.Other) {
-			Path buildFile = this.getPath().resolve("build.gradle");
-			if (Files.exists(buildFile)) {
-				// System.out.println(buildFile);
-				try {
-					String buildContent = new String(Files.readAllBytes(buildFile));
-					if (!buildContent.equals("")) {
-						List<ASTNode> nodes = new AstBuilder().buildFromString(buildContent);
-						FindDependenciesVisitor visitor = new FindDependenciesVisitor(root.getProjects());
-						for (ASTNode node : nodes) {
-							node.visit(visitor);
-						}
-						dependencies = visitor.getDependencies();
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+			FindDependenciesVisitor visitor = new FindDependenciesVisitor(root.getProjects());
+			this.visitBuild(visitor);
+			dependencies = visitor.getDependencies();
 		}
 	}
 
-	public static Project create(Repository repo, Path path, String name, boolean built) {
-		Path thePath = path.resolve(name.replaceAll(":", "/"));
-		return new Project(repo, thePath, getKind(thePath), built);
+	public static Project create(Repository repo, String name, boolean built) {
+		Path thePath = repo.getPath().resolve(name.replaceAll(":", "/"));
+		return new Project(repo, thePath, built);
 	}
 
 	public static Project create(Repository repo, Path path, boolean built) {
-		return new Project(repo, path, getKind(path), built);
+		return new Project(repo, path, built);
 	}
 
 	private static Kind getKind(Path path) {

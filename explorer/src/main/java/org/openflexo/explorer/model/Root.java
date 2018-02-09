@@ -1,8 +1,7 @@
 package org.openflexo.explorer.model;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -10,16 +9,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.codehaus.groovy.ast.ASTNode;
-import org.codehaus.groovy.ast.builder.AstBuilder;
-import org.openflexo.explorer.gradle.FindIncludeBuild;
+import org.codehaus.groovy.ast.CodeVisitorSupport;
+import org.codehaus.groovy.ast.expr.MethodCallExpression;
+import org.codehaus.groovy.ast.expr.TupleExpression;
 
 import edu.uci.ics.jung.graph.Graph;
 
 /**
  * @author Fabien Dagnat
  */
-public class Root extends GradleComposite implements Iterable<Repository> {
+public class Root extends GradleDir implements Iterable<Repository> {
 	private List<Repository> content;
 	private Map<String, JavaPackage> packages = new HashMap<>();
 	private Map<String, JavaType> allClasses = new HashMap<>();
@@ -28,7 +27,7 @@ public class Root extends GradleComposite implements Iterable<Repository> {
 		return allClasses;
 	}
 
-	public void registerClass() {
+	public void registerClasses() {
 		for (Repository r : this)
 			for (Project p : r)
 				for (JavaPackagePart pa : p.getPackages())
@@ -56,22 +55,23 @@ public class Root extends GradleComposite implements Iterable<Repository> {
 		return result;
 	}
 
-	public Root(String path) {
+	public Root(String path) throws IOException {
 		super(path);
-		Path settingsFile = this.getPath().resolve("settings.gradle");
-		try {
-			List<ASTNode> nodes = new AstBuilder().buildFromString(new String(Files.readAllBytes(settingsFile)));
-			FindIncludeBuild visitor = new FindIncludeBuild();
-			for (ASTNode node : nodes) {
-				node.visit(visitor);
+		this.visitSettings(new CodeVisitorSupport() {
+			@Override
+			public void visitMethodCallExpression(MethodCallExpression call) {
+				if (call.getMethodAsString().equals("includeBuild")) {
+					String includedFile = ((TupleExpression) call.getArguments()).getExpression(0).getText();
+					try {
+						new Repository(Root.this, Root.this.getPath().resolve(Paths.get(includedFile)));
+					} catch (IOException e) {}
+				}
+				super.visitMethodCallExpression(call);
 			}
-			content = visitor.getResult().stream().map(p -> new Repository(this, this.getPath().resolve(p))).collect(Collectors.toList());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		});
 	}
 
-	public void parseBuilds() {
+	public void parseBuilds() throws IOException {
 		for (Repository r : content)
 			r.parseBuilds(this);
 	}
@@ -99,7 +99,7 @@ public class Root extends GradleComposite implements Iterable<Repository> {
 	}
 
 	@Override
-	public void addToGraph(Graph<GradleDir, String> graph) {
+	public void addToGraph(Graph<Dir, String> graph) {
 		super.addToGraph(graph);
 		for (Repository r : content) {
 			r.addToGraph(graph);

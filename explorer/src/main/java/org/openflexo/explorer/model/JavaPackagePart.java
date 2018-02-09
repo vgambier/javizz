@@ -12,15 +12,14 @@ import java.util.Set;
 
 import org.openflexo.explorer.util.JavaUtils;
 
-public class JavaPackagePart implements Iterable<JavaFile> {
-	private Path path;
+public class JavaPackagePart extends Dir implements Iterable<JavaFile> {
 	private Project container;
 	private Set<JavaFile> javaFiles = new HashSet<>();
 	private JavaPackage pack;
 
 	public JavaPackagePart(Project container, Path path, JavaPackage pa) {
+		super(path);
 		this.container = container;
-		this.path = path;
 		this.pack = pa;
 		pa.registerPart(this);
 		registerJavaFiles(path);
@@ -37,7 +36,6 @@ public class JavaPackagePart implements Iterable<JavaFile> {
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	@Override
@@ -76,10 +74,7 @@ public class JavaPackagePart implements Iterable<JavaFile> {
 		return null;
 	}
 
-	private boolean contains(Path location) {
-		return this.path.equals(location.getParent());
-	}
-
+	@Override
 	public String getName() {
 		return pack.getName();
 	}

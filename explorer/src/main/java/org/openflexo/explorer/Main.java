@@ -44,7 +44,7 @@ public class Main {
 		}
 
 		// Register classes
-		root.registerClass();
+		root.registerClasses();
 
 		for (String s : root.getAllClasses().keySet())
 			System.out.println(s);

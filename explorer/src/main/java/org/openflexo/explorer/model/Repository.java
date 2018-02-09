@@ -12,59 +12,54 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.codehaus.groovy.ast.ASTNode;
-import org.codehaus.groovy.ast.builder.AstBuilder;
+import org.codehaus.groovy.ast.CodeVisitorSupport;
+import org.codehaus.groovy.ast.expr.Expression;
+import org.codehaus.groovy.ast.expr.MethodCallExpression;
+import org.codehaus.groovy.ast.expr.TupleExpression;
 import org.eclipse.jgit.api.Git;
-import org.openflexo.explorer.gradle.FindInclude;
 
 import edu.uci.ics.jung.graph.Graph;
 
 /**
  * @author Fabien Dagnat
  */
-public class Repository extends GradleComposite implements Iterable<Project> {
+public class Repository extends GradleDir implements Iterable<Project> {
 	private org.eclipse.jgit.lib.Repository repo;
 	private Set<Project> projects;
 	private Root root;
 
-	public Repository(Root root, Path path) {
+	public Repository(Root root, Path path) throws IOException {
 		super(path);
 		this.root = root;
-		try {
-			this.repo = Git.open(path.resolve(".git").toFile()).getRepository();
-			Path settingsFile = this.getPath().resolve("settings.gradle");
-			try {
-				List<ASTNode> nodes = new AstBuilder().buildFromString(new String(Files.readAllBytes(settingsFile)));
-				FindInclude visitor = new FindInclude();
-				for (ASTNode node : nodes) {
-					node.visit(visitor);
-				}
-				projects = visitor.getResult().stream().map(p -> Project.create(this, this.getPath(), p, true)).collect(Collectors.toSet());
-			} catch (IOException e) {
-				e.printStackTrace();
+		this.repo = Git.open(path.resolve(".git").toFile()).getRepository();
+		this.visitSettings(new CodeVisitorSupport() {
+			@Override
+			public void visitMethodCallExpression(MethodCallExpression call) {
+				if (call.getMethodAsString().equals("include"))
+					for (Expression e : ((TupleExpression) call.getArguments()).getExpressions())
+						Project.create(Repository.this, e.getText(), true);
+				super.visitMethodCallExpression(call);
 			}
-			try (DirectoryStream<Path> stream = Files.newDirectoryStream(this.getPath())) {
-				for (Path p : stream) {
-					if (Files.isDirectory(p) && !projects.contains(new GradleDir(p)) && !Files.exists(p.resolve("settings.gradle")))
-						registerProject(p);
-				}
+		});
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(this.getPath())) {
+			for (Path p : stream) {
+				if (Files.isDirectory(p) && !projects.contains(new Dir(p)) && !Files.exists(p.resolve("settings.gradle")))
+					registerProject(p);
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 
+	private static List<String> ignoredDirs = Arrays.asList(".git", ".gradle", "gradle", ".settings", "bin", "infer-out");
+
 	private void registerProject(Path dir) {
-		if (Arrays.asList(".git", ".gradle", "gradle", ".settings", "bin", "infer-out").contains(dir.getFileName().toString()))
-			return;
-		if (projects.contains(new GradleDir(dir)))
+		if (ignoredDirs.contains(dir.getFileName().toString()) || projects.contains(new Dir(dir)))
 			return;
 		List<Path> subdirs = new ArrayList<>();
 		boolean hasSubProjects = false;
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
 			for (Path p : stream) {
 				if (Files.isDirectory(p)) {
-					if (projects.contains(new GradleDir(p)))
+					if (projects.contains(new Dir(p)))
 						hasSubProjects = true;
 					else
 						subdirs.add(p);
@@ -85,7 +80,7 @@ public class Repository extends GradleComposite implements Iterable<Project> {
 		return this.repo.getConfig().getString("remote", "origin", "url");
 	}
 
-	public void parseBuilds(Root root) {
+	public void parseBuilds(Root root) throws IOException {
 		for (Project p : projects)
 			p.parseBuild(root);
 	}
@@ -95,7 +90,7 @@ public class Repository extends GradleComposite implements Iterable<Project> {
 	}
 
 	@Override
-	public void addToGraph(Graph<GradleDir, String> graph) {
+	public void addToGraph(Graph<Dir, String> graph) {
 		super.addToGraph(graph);
 		for (Project p : projects) {
 			p.addToGraph(graph);

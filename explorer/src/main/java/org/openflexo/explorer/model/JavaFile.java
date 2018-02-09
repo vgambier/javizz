@@ -9,20 +9,18 @@ import java.util.Set;
 import org.openflexo.explorer.util.JavaUtils;
 
 public class JavaFile implements Iterable<JavaType> {
-	private String name;
 	private JavaPackagePart pakc;
 	private Path path;
 	private Set<JavaType> javaTypes = new HashSet<>();
 
 	public JavaFile(JavaPackagePart pakc, Path path) {
-		this.name = JavaUtils.getName(path);
 		this.pakc = pakc;
 		this.path = path;
 	}
 
 	@Override
 	public String toString() {
-		return name;
+		return this.getName();
 	}
 
 	public File getFile() {
@@ -30,7 +28,7 @@ public class JavaFile implements Iterable<JavaType> {
 	}
 
 	public String getName() {
-		return this.name;
+		return JavaUtils.getName(this.path);
 	}
 
 	public String getPackageName() {
@@ -55,6 +53,6 @@ public class JavaFile implements Iterable<JavaType> {
 	}
 
 	public Path getShortPath() {
-		return this.pakc.getShortPath().resolve(this.name);
+		return this.pakc.getShortPath().resolve(this.getName());
 	}
 }
