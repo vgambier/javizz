@@ -63,15 +63,14 @@ public class ClassLink {
 					for (VariableDeclarator variable : field.getVariables()) {
 
 						AttributeModel attributeModel = factory.newInstance(AttributeModel.class);
-						attributeModel.setName(variable.getName().asString());
-						attributeModel.setClazz(classModel);
 						new AttributeLink(attributeModel);
-
-						// attributeModel.setType(variable.getType().asString()); // TODO: à partir du nom du type, trouver la classe
-						// correspondante (avoir une fonction qui le fait) -
-						// nécessaire sur le type
-
 						classModel.addAttribute(attributeModel);
+						attributeModel.setClazz(classModel);
+						attributeModel.setName(variable.getName().asString());
+						attributeModel.setType(variable.getType().asString()); // TODO: à partir du nom du type, trouver la classe
+						// correspondante (avoir une fonction qui le fait) -
+						// nécessaire sur le type. à terme, ce ne sera plus une string mais un TypeModel
+
 					}
 				});
 			}
@@ -83,17 +82,14 @@ public class ClassLink {
 			@Override
 			public void visit(MethodDeclaration md, Void arg) {
 				super.visit(md, arg);
-				String method = md.getNameAsString(); // the name of the method will act as the key in the pair
-				String type = md.getType().asString(); // the type of the method will act as the value
+				String type = md.getType().asString();
 
 				MethodModel methodModel = factory.newInstance(MethodModel.class);
-				methodModel.setName(md.getNameAsString());
-				methodModel.setClazz(classModel);
 				new MethodLink(methodModel);
-
-				// TODO: handle types
-
 				classModel.addMethod(methodModel);
+				methodModel.setClazz(classModel);
+				methodModel.setName(md.getNameAsString());
+				methodModel.setType(md.getType().asString()); // TODO: see above
 
 			}
 		}

@@ -4,7 +4,6 @@ import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.Implementation;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.Setter;
-import org.openflexo.pamela.factory.AccessibleProxyObject;
 
 /**
  * @author Victor Gambier
@@ -12,7 +11,7 @@ import org.openflexo.pamela.factory.AccessibleProxyObject;
  */
 
 @ModelEntity
-public interface AttributeModel extends AccessibleProxyObject {
+public interface AttributeModel {
 
 	// Attributes and methods regarding the name of the attribute:
 
@@ -24,6 +23,16 @@ public interface AttributeModel extends AccessibleProxyObject {
 	@Setter(NAME)
 	void setName(String name);
 
+	// Attributes and methods regarding the type of the attribute:
+
+	String TYPE = "type";
+
+	@Getter(TYPE)
+	String getType();
+
+	@Setter(TYPE)
+	void setType(String type);
+
 	// Attributes and methods regarding the parent class:
 
 	String CLASS = "class";
@@ -33,16 +42,6 @@ public interface AttributeModel extends AccessibleProxyObject {
 
 	@Setter(CLASS)
 	void setClazz(ClassModel classModel);
-
-	// Attributes and methods regarding the type of the attribute:
-
-	String TYPE = "type"; // TODO: replace this with not a ClassModel but a TypeModel
-
-	@Getter(TYPE)
-	ClassModel getType();
-
-	@Setter(TYPE)
-	void setType(ClassModel name);
 
 	// toString description method
 

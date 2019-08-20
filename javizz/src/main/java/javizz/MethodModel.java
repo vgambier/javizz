@@ -22,6 +22,16 @@ public interface MethodModel {
 	@Setter(NAME)
 	void setName(String name);
 
+	// Attributes and methods regarding the type of the method:
+
+	String TYPE = "type";
+
+	@Getter(TYPE)
+	String getType();
+
+	@Setter(TYPE)
+	void setType(String type);
+
 	// Attributes and methods regarding the parent class:
 
 	String CLASS = "class";
@@ -31,15 +41,5 @@ public interface MethodModel {
 
 	@Setter(CLASS)
 	void setClazz(ClassModel classModel);
-
-	// Attributes and methods regarding the type of the method:
-
-	String TYPE = "type"; // TODO: replace this with not a ClassModel but a TypeModel
-
-	@Getter(TYPE)
-	ClassModel getType();
-
-	@Setter(TYPE)
-	void setType(ClassModel name);
 
 }

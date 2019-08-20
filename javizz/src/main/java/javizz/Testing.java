@@ -46,12 +46,13 @@ public class Testing {
 
 		List<AttributeModel> attributes = classModel.getAttributes();
 		for (AttributeModel attribute : attributes) {
-			System.out.println("\tOne attribute was found: " + attribute.toString() + " : " + attribute.getName());
+			System.out.println(
+					"\tOne attribute of type " + attribute.getType() + " was found: " + attribute.toString() + " : " + attribute.getName());
 		}
 
 		List<MethodModel> methods = classModel.getMethods();
 		for (MethodModel method : methods) {
-			System.out.println("\tOne method was found: " + method.getName());
+			System.out.println("\tOne method of type " + method.getType() + " was found: " + method.getName());
 		}
 
 		// Serializing
