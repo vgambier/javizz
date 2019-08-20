@@ -4,10 +4,8 @@ package javizz;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.nio.file.FileSystems;
 import java.util.LinkedList;
 
-import org.apache.commons.io.FilenameUtils;
 import org.openflexo.pamela.ModelContextLibrary;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.pamela.factory.ModelFactory;
@@ -36,12 +34,6 @@ public class Parser {
 
 		/* Gathering data about the file */
 
-		// Finding the absolute path
-		String absolutePath = FileSystems.getDefault().getPath(filepath).normalize().toAbsolutePath().toString();
-
-		// Finding the class name
-		String className = FilenameUtils.removeExtension(absolutePath.substring(absolutePath.lastIndexOf("/") + 1));
-
 		// Finding the package name
 		// TODO: finding the package name using folder names rather than reading files
 		PackageDeclaration pckDec = cu.getPackageDeclaration().orElse(null);
@@ -49,19 +41,12 @@ public class Parser {
 																					// set to null
 
 		// Creating and initializing several models using the gathered data
-
-		ModelFactory factory = new ModelFactory(
-				ModelContextLibrary.getCompoundModelContext(ClassModel.class, PackageModel.class, AttributeModel.class));
+		ModelFactory factory = new ModelFactory(ModelContextLibrary.getModelContext(PackageModel.class));
 
 		// Creating and initializing a model for the package
 		PackageModel packageModel = factory.newInstance(PackageModel.class);
 		packageModel.setName(packageName);
 		this.listOfPackages.add(packageModel);
-
-		// Creating and initializing a model for the class
-		ClassModel classModel = factory.newInstance(ClassModel.class);
-		classModel.setName(className);
-		packageModel.addClass(classModel);
 
 		// Finding the methods and initializing the models
 		// TODO: implement the methods query, which implies creating MethodLink and MethodModel

@@ -14,7 +14,7 @@ import org.openflexo.pamela.factory.AccessibleProxyObject;
 @ModelEntity
 public interface AttributeModel extends AccessibleProxyObject {
 
-	// Attributes and methods regarding the name of the attribute
+	// Attributes and methods regarding the name of the attribute:
 
 	String NAME = "name";
 
@@ -36,7 +36,7 @@ public interface AttributeModel extends AccessibleProxyObject {
 
 	// Attributes and methods regarding the type of the attribute:
 
-	String TYPE = "type"; // TODO: replace this with not a string but a TypeModel
+	String TYPE = "type"; // TODO: replace this with not a ClassModel but a TypeModel
 
 	@Getter(TYPE)
 	ClassModel getType();

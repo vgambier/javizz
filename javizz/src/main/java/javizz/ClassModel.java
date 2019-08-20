@@ -52,4 +52,18 @@ public interface ClassModel {
 	@Remover(ATTRIBUTES)
 	public void removeAttribute(AttributeModel c);
 
+	// Attributes and methods regarding the children methods:
+
+	String METHODS = "methods";
+
+	@Getter(value = METHODS, cardinality = Cardinality.LIST)
+	@Embedded // TODO: what is this?
+	public List<MethodModel> getMethods();
+
+	@Adder(METHODS)
+	public void addMethod(MethodModel c);
+
+	@Remover(METHODS)
+	public void removeMethod(MethodModel c);
+
 }

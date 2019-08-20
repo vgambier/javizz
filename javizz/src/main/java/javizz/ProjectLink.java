@@ -1,11 +1,5 @@
 package javizz;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-
-import com.github.javaparser.StaticJavaParser;
-import com.github.javaparser.ast.CompilationUnit;
-
 public class ProjectLink {
 
 	private ProjectModel ProjectModel;
@@ -13,10 +7,25 @@ public class ProjectLink {
 
 	// given a filepath, this method instantiates a projectModel, links it to the filepath via projectLink, and calls ClassLink.createModel
 	// to instantiate the classes and all the child models
-	public void createModel(String filepath) throws FileNotFoundException {
+	public void readFolder(String filepath) {
 
-		// Parsing the file into a compilation unit
-		CompilationUnit cu = StaticJavaParser.parse(new File(filepath));
+		// instantiate a projectModel
+
+		// looks for all folders containing .java files
+
+		// calls PackageLink
+
+		// instantiates a packageModel for each one
+
+		// sets the name of the package models
+
+		// links the packageModels and the packageLinks
+
+		// calls ClassLink.createModel() to read each file
+
+		// links the packageModels and the packageLinks and the ClassLinks. not the ClassModels
+
+		// Note: some of this logic may be better suited in PackageLink
 
 	}
 
