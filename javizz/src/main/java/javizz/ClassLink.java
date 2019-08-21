@@ -3,7 +3,6 @@ package javizz;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import org.apache.commons.io.FilenameUtils;
 import org.openflexo.pamela.ModelContextLibrary;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.pamela.factory.ModelFactory;
@@ -22,38 +21,23 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 public class ClassLink {
 
 	private ClassModel classModel;
-	private String path; // the filepath where the class is located - uniquely defines the class within the file system
+	private String path; // the path where the class is located - uniquely defines the class within the file system
 
-	/* 
-	methods : */
+	public ClassLink(PackageModel packageModel, String path) throws ModelDefinitionException, FileNotFoundException {
 
-	// creates a file corresponding to a given classModel:
-	// by using the data contained in the classModel and its child models (like packageModel),
-	// generates a file skeleton
+		// Instantiating attributes
 
-	public void createFile(ClassModel classModel) {
+		ModelFactory factory = new ModelFactory(ModelContextLibrary.getModelContext(ClassModel.class)); // we need to define factory to
+		// instantiate ClassModel
+		this.classModel = factory.newInstance(ClassModel.class);
+		this.path = path;
 
-	}
+		packageModel.addClass(classModel);
 
-	// creates an instance of classModel corresponding to a given file
-	// as well as all the relevant child models
-	public void createModel(String filepath) throws ModelDefinitionException, FileNotFoundException {
-
-		// Defining a factory for both class and attribute models
-		ModelFactory factory = new ModelFactory(
-				ModelContextLibrary.getCompoundModelContext(ClassModel.class, AttributeModel.class, MethodModel.class));
-
-		// Retrieving and setting the class name
-		String className = FilenameUtils.removeExtension(filepath.substring(filepath.lastIndexOf("/") + 1));
-		ClassModel classModel = factory.newInstance(ClassModel.class);
-		classModel.setName(className);
-
-		// Linking the model and the file
-		this.classModel = classModel;
-		this.path = filepath;
+		// Looking for methods and attributes within the file
 
 		// Parsing the file into a compilation unit
-		CompilationUnit cu = StaticJavaParser.parse(new File(filepath));
+		CompilationUnit cu = StaticJavaParser.parse(new File(path));
 
 		// Finding the attributes and initializing the models
 
@@ -82,8 +66,6 @@ public class ClassLink {
 			@Override
 			public void visit(MethodDeclaration md, Void arg) {
 				super.visit(md, arg);
-				String type = md.getType().asString();
-
 				MethodModel methodModel = factory.newInstance(MethodModel.class);
 				new MethodLink(methodModel);
 				classModel.addMethod(methodModel);
@@ -96,6 +78,14 @@ public class ClassLink {
 
 		VoidVisitor<?> methodNameVisitor = new MethodNamePrinter();
 		methodNameVisitor.visit(cu, null);
+
+	}
+
+	// creates a file corresponding to a given classModel:
+	// by using the data contained in the classModel and its child models (like packageModel),
+	// generates a file skeleton
+
+	public void createFile(ClassModel classModel) {
 
 	}
 
@@ -120,6 +110,13 @@ public class ClassLink {
 	 */
 	public ClassModel getClassModel() {
 		return classModel;
+	}
+
+	/**
+	 * @return the path
+	 */
+	public String getPath() {
+		return path;
 	}
 
 	/**

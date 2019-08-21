@@ -1,37 +1,48 @@
 package javizz;
 
+import org.openflexo.pamela.ModelContextLibrary;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.factory.ModelFactory;
+
 public class ProjectLink {
 
-	private ProjectModel ProjectModel;
-	private String path; // the filepath where the project is located
+	private ProjectModel projectModel;
+	private String path; // the path where the project is located
 
-	// given a filepath, this method instantiates a projectModel, links it to the filepath via projectLink, and calls ClassLink.createModel
-	// to instantiate the classes and all the child models
-	public void readFolder(String filepath) {
+	/**
+	 * The constructor. Takes the path to a folder containing subfolders and .java files, and modelizes them. Links an instance of
+	 * ProjectLink with an instance of ProjectModel. Also calls other package model constructors to modelize the packages contained within
+	 * the folders.
+	 * 
+	 * @param path
+	 *            the path of the folder that is going to be parsed and modelized as a project
+	 * @throws ModelDefinitionException
+	 */
+	public ProjectLink(String path) throws ModelDefinitionException {
 
-		// instantiate a projectModel
+		// Instantiating attributes
 
-		// looks for all folders containing .java files
+		ModelFactory factory = new ModelFactory(ModelContextLibrary.getModelContext(ProjectModel.class)); // we need to define factory to
+																											// instantiate ProjectModel
+		this.projectModel = factory.newInstance(ProjectModel.class);
+		this.path = path;
 
-		// calls PackageLink
+		// Looking for all packages
+		// A package is defined as a folder which contains .java files at its root
+		// TODO: parse the folder to find these subfolders
 
-		// instantiates a packageModel for each one
-		// ModelFactory factory = new ModelFactory(ModelContextLibrary.getModelContext(PackageModel.class));
-		// PackageModel packageModel = factory.newInstance(PackageModel.class);
+		// When a package is found:
+		// String packagePath = ...
+		// new PackageLink(projectModel, packagePath); // This constructor will take care of modelizing the package and its contents
+	}
 
-		// add the package to the list of packages
-
-		// sets the name of the package models
-		// packageModel.setName(packageName);
-
-		// links the packageModels and the packageLinks
-
-		// calls ClassLink.createModel() to read each file
-
-		// links the packageModels and the packageLinks and the ClassLinks. not the ClassModels
-
-		// Note: some of this logic may be better suited in PackageLink
-
+	/**
+	 * Not a traditional getter. Works by truncating the path attribute - there is no name attribute.
+	 * 
+	 * @return the name of the project, defined by the name of its root folder
+	 */
+	public String getName() {
+		return path.substring(path.lastIndexOf("/") + 1);
 	}
 
 }

@@ -37,12 +37,16 @@ public class Testing {
 		String testPath = "/homes/v17gambi/Documents/stage-ete-2019/resources/HelloWorld.java";
 
 		// Testing ClassLink
-		ClassLink classLink = new ClassLink();
-		classLink.createModel(testPath);
+
+		PackageModel packageModel = factory.newInstance(PackageModel.class);
+		ClassLink classLink = new ClassLink(packageModel, testPath);
+
+		// ClassLink classLink = new ClassLink();
+		// classLink.createModel(testPath);
 
 		// Retrieving and printing data
 		ClassModel classModel = classLink.getClassModel();
-		System.out.println("Class found: " + classModel.getName());
+		System.out.println("Class found: " + classModel.getName()); // TODO: fix name attributes
 
 		List<AttributeModel> attributes = classModel.getAttributes();
 		for (AttributeModel attribute : attributes) {
@@ -54,6 +58,12 @@ public class Testing {
 		for (MethodModel method : methods) {
 			System.out.println("\tOne method of type " + method.getType() + " was found: " + method.getName());
 		}
+
+		/*
+		
+		System.out.println("The class is located at: " + classModel.getLink().getPath());
+		
+		*/
 
 		// Serializing
 		// TODO: doesn't work, no XML element for interface ClassModel
@@ -85,6 +95,10 @@ public class Testing {
 		FileOutputStream fos = new FileOutputStream(file);
 		factory555.serialize(process, fos, SerializationPolicy.EXTENSIVE, true);
 		*/
+
+		// Full test - not implemented yet
+		// ProjectLink(path);
+		// read the data to see if it works (via XML serialization)
 
 	}
 }

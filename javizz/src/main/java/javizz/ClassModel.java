@@ -29,6 +29,20 @@ public interface ClassModel extends AccessibleProxyObject {
 	@Setter(NAME)
 	void setName(String name);
 
+	/* Doesn't work with custom types
+	
+	// Attributes and methods regarding the corresponding instance of ClassLink
+	
+	String LINK = "link";
+	
+	@Getter(LINK)
+	ClassLink getLink();
+	
+	@Setter(LINK)
+	void setLink(ClassLink link);
+	
+	 */
+
 	// Attributes and methods regarding the parent package:
 
 	String PACKAGE = "package";
