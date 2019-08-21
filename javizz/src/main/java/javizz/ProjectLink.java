@@ -27,6 +27,8 @@ public class ProjectLink {
 		this.projectModel = factory.newInstance(ProjectModel.class);
 		this.path = path;
 
+		projectModel.setName(Testing.pathToFilename(path));
+
 		// Looking for all packages
 		// A package is defined as a folder which contains .java files at its root
 		// TODO: parse the folder to find these subfolders
@@ -34,15 +36,6 @@ public class ProjectLink {
 		// When a package is found:
 		// String packagePath = ...
 		// new PackageLink(projectModel, packagePath); // This constructor will take care of modelizing the package and its contents
-	}
-
-	/**
-	 * Not a traditional getter. Works by truncating the path attribute - there is no name attribute.
-	 * 
-	 * @return the name of the project, defined by the name of its root folder
-	 */
-	public String getName() {
-		return path.substring(path.lastIndexOf("/") + 1);
 	}
 
 }

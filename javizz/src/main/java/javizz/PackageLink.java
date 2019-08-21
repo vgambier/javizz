@@ -18,6 +18,7 @@ public class PackageLink {
 		this.packageModel = factory.newInstance(PackageModel.class);
 		this.path = path;
 
+		packageModel.setName(Testing.pathToFilename(path));
 		projectModel.addPackage(packageModel);
 
 		// Looking for all classes

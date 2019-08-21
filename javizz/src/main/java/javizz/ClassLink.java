@@ -32,6 +32,7 @@ public class ClassLink {
 		this.classModel = factory.newInstance(ClassModel.class);
 		this.path = path;
 
+		classModel.setName(Testing.pathToFilename(path));
 		packageModel.addClass(classModel);
 
 		// Looking for methods and attributes within the file

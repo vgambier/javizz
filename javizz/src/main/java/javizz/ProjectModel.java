@@ -25,17 +25,17 @@ import org.openflexo.pamela.annotations.Setter;
 @ModelEntity
 public interface ProjectModel {
 
-	// Attributes and methods regarding the path of the project
+	// Attributes and methods regarding the name of the project
 
-	String PATH = "path";
+	String NAME = "name";
 
-	@Getter(PATH)
-	String getPath();
+	@Getter(NAME)
+	String getName();
 
-	@Setter(PATH)
-	void setPath(String path);
+	@Setter(NAME)
+	void setName(String name);
 
-	// Attributes and methods regarding the children attributes:
+	// Attributes and methods regarding the children packages:
 
 	String PACKAGES = "packages";
 

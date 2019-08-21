@@ -15,6 +15,17 @@ import org.openflexo.pamela.factory.ModelFactory;
 
 public class Testing {
 
+	/**
+	 * Takes a path and returns the bottom-most filename or folder
+	 * 
+	 * @param path
+	 *            the path that is going to be converted into a filename
+	 * @return the bottom-most filename or folder, as a String
+	 */
+	public static String pathToFilename(String path) {
+		return path.substring(path.lastIndexOf("/") + 1);
+	}
+
 	public static void main(String[] args) throws ModelDefinitionException, ModelException, IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException, IOException {
 
@@ -46,7 +57,7 @@ public class Testing {
 
 		// Retrieving and printing data
 		ClassModel classModel = classLink.getClassModel();
-		System.out.println("Class found: " + classModel.getName()); // TODO: fix name attributes
+		System.out.println("Class found: " + classModel.getName());
 
 		List<AttributeModel> attributes = classModel.getAttributes();
 		for (AttributeModel attribute : attributes) {
@@ -59,11 +70,7 @@ public class Testing {
 			System.out.println("\tOne method of type " + method.getType() + " was found: " + method.getName());
 		}
 
-		/*
-		
-		System.out.println("The class is located at: " + classModel.getLink().getPath());
-		
-		*/
+		// System.out.println("The class is located at: " + classModel.getLink().getPath());
 
 		// Serializing
 		// TODO: doesn't work, no XML element for interface ClassModel
@@ -96,7 +103,7 @@ public class Testing {
 		factory555.serialize(process, fos, SerializationPolicy.EXTENSIVE, true);
 		*/
 
-		// Full test - not implemented yet
+		// TODO Full test - not implemented yet
 		// ProjectLink(path);
 		// read the data to see if it works (via XML serialization)
 

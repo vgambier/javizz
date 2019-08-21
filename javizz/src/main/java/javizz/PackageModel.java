@@ -18,15 +18,15 @@ import org.openflexo.pamela.annotations.Setter;
 @ModelEntity
 public interface PackageModel {
 
-	// Attributes and methods regarding the path of the package
+	// Attributes and methods regarding the name of the package
 
-	String PATH = "path";
+	String NAME = "name";
 
-	@Getter(PATH)
-	String getPath();
+	@Getter(NAME)
+	String getName();
 
-	@Setter(PATH)
-	void setPath(String path);
+	@Setter(NAME)
+	void setName(String name);
 
 	// Attributes and methods regarding the children classes:
 
