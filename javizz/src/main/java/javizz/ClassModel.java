@@ -9,6 +9,7 @@ import org.openflexo.pamela.annotations.Getter.Cardinality;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.Remover;
 import org.openflexo.pamela.annotations.Setter;
+import org.openflexo.pamela.factory.AccessibleProxyObject;
 
 /**
  * @author Victor Gambier
@@ -16,7 +17,7 @@ import org.openflexo.pamela.annotations.Setter;
  */
 
 @ModelEntity
-public interface ClassModel {
+public interface ClassModel extends AccessibleProxyObject {
 
 	// Attributes and methods regarding the name of the class
 

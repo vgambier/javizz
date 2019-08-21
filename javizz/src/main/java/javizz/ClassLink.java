@@ -22,7 +22,7 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 public class ClassLink {
 
 	private ClassModel classModel;
-	private String path; // the filepath where the class is located
+	private String path; // the filepath where the class is located - uniquely defines the class within the file system
 
 	/* 
 	methods : */
@@ -48,9 +48,9 @@ public class ClassLink {
 		ClassModel classModel = factory.newInstance(ClassModel.class);
 		classModel.setName(className);
 
-		// Linking it to the file
+		// Linking the model and the file
 		this.classModel = classModel;
-		// TODO: defining the other attribute
+		this.path = filepath;
 
 		// Parsing the file into a compilation unit
 		CompilationUnit cu = StaticJavaParser.parse(new File(filepath));
@@ -70,7 +70,7 @@ public class ClassLink {
 						attributeModel.setType(variable.getType().asString()); // TODO: à partir du nom du type, trouver la classe
 						// correspondante (avoir une fonction qui le fait) -
 						// nécessaire sur le type. à terme, ce ne sera plus une string mais un TypeModel
-
+						classModel.addAttribute(attributeModel);
 					}
 				});
 			}
@@ -120,6 +120,14 @@ public class ClassLink {
 	 */
 	public ClassModel getClassModel() {
 		return classModel;
+	}
+
+	/**
+	 * @param path
+	 *            the path to set
+	 */
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 }

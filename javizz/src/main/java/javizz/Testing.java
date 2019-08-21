@@ -66,5 +66,25 @@ public class Testing {
 		
 		*/
 
+		/*
+		
+		ModelFactory factory33 = new ModelFactory(FlexoProcess.class);
+		FlexoProcess process = (FlexoProcess) factory33.newInstance(FlexoProcess.class).init();
+		File file = File.createTempFile("PAMELA-TestSerialization", ".xml");
+		FileOutputStream fos = new FileOutputStream(file);
+		factory33.serialize(process, fos, SerializationPolicy.EXTENSIVE, true);
+		
+		*/
+
+		/* copying an existing example - doesn't work
+		File file;
+		ModelFactory factory555;
+		file = File.createTempFile("PAMELA-TestSerialization", ".xml");
+		factory555 = new ModelFactory(FlexoProcess.class);
+		FlexoProcess process = (FlexoProcess) factory555.newInstance(FlexoProcess.class).init();
+		FileOutputStream fos = new FileOutputStream(file);
+		factory555.serialize(process, fos, SerializationPolicy.EXTENSIVE, true);
+		*/
+
 	}
 }

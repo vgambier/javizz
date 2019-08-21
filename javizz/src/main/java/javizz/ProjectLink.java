@@ -16,8 +16,13 @@ public class ProjectLink {
 		// calls PackageLink
 
 		// instantiates a packageModel for each one
+		// ModelFactory factory = new ModelFactory(ModelContextLibrary.getModelContext(PackageModel.class));
+		// PackageModel packageModel = factory.newInstance(PackageModel.class);
+
+		// add the package to the list of packages
 
 		// sets the name of the package models
+		// packageModel.setName(packageName);
 
 		// links the packageModels and the packageLinks
 
