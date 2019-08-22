@@ -62,11 +62,17 @@ public class ProjectLink {
 			}
 		}
 
-		System.out.println(packagePathList);
-
 		// For each package we've found...
 		for (String packagePath : packagePathList) {
 			new PackageLink(projectModel, packagePath); // This constructor will take care of modelizing the package and its contents
 		}
 	}
+
+	/**
+	 * @return the projectModel
+	 */
+	public ProjectModel getProjectModel() {
+		return projectModel;
+	}
+
 }

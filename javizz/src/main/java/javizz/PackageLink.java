@@ -40,7 +40,6 @@ public class PackageLink {
 			if (FilenameUtils.getExtension(filename).equals("java")) {
 				// If it is, then we assume the current file is a Java class
 				String filePath = file.getPath();
-				System.out.println(filePath);
 				new ClassLink(packageModel, filePath); // This constructor will take care of modelizing the class and its contents
 			}
 		}

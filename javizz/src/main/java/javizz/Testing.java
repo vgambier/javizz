@@ -5,9 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
-import org.openflexo.pamela.ModelContextLibrary;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
-import org.openflexo.pamela.factory.ModelFactory;
 
 /**
  * @author Victor Gambier
@@ -31,48 +29,34 @@ public class Testing {
 	public static void main(String[] args) throws ModelDefinitionException, ModelException, IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException, IOException {
 
-		// Defining a factory
-		ModelFactory factory = new ModelFactory(
-				ModelContextLibrary.getCompoundModelContext(ClassModel.class, PackageModel.class, AttributeModel.class));
+		// Reading a folder
+		String folderPath = "/homes/v17gambi/Documents/stage-ete-2019/resources";
+		ProjectLink projectLink = new ProjectLink(folderPath);
 
-		// Initializing a ClassModel
-		// Instanciation - deviendra à terme une fonction qui pourra également être appelée par le code lors des synch, etc.
+		// Testing to see if the data was properly gathered
+		// TODO read the data to see if it works (via XML serialization)
 
-		ClassModel classModelTest = factory.newInstance(ClassModel.class);
+		ProjectModel projectModel = projectLink.getProjectModel();
+		List<PackageModel> packages = projectModel.getPackages();
 
-		// Returns null
-		System.out.println("The default name of any class model is: " + classModelTest.getName());
+		for (PackageModel packageModel : packages) {
+			System.out.println("package: " + packageModel.getName());
 
-		// Testing setName and getName
-		classModelTest.setName("newName");
-		System.out.println("The name of the test class has been set to: " + classModelTest.getName());
+			List<ClassModel> classes = packageModel.getClasses();
+			for (ClassModel classModel : classes) {
+				System.out.println("\tclass: " + classModel.getName());
 
-		String testPath = "/homes/v17gambi/Documents/stage-ete-2019/resources/HelloWorld.java";
+				List<AttributeModel> attributes = classModel.getAttributes();
+				for (AttributeModel attributeModel : attributes) {
+					System.out.println("\t\tattribute: " + attributeModel.getName());
+				}
 
-		// Testing ClassLink
-
-		PackageModel packageModel = factory.newInstance(PackageModel.class);
-		ClassLink classLink = new ClassLink(packageModel, testPath);
-
-		// ClassLink classLink = new ClassLink();
-		// classLink.createModel(testPath);
-
-		// Retrieving and printing data
-		ClassModel classModel = classLink.getClassModel();
-		System.out.println("Class found: " + classModel.getName());
-
-		List<AttributeModel> attributes = classModel.getAttributes();
-		for (AttributeModel attribute : attributes) {
-			System.out.println(
-					"\tOne attribute of type " + attribute.getType() + " was found: " + attribute.toString() + " : " + attribute.getName());
+				List<MethodModel> methods = classModel.getMethods();
+				for (MethodModel methodModel : methods) {
+					System.out.println("\t\tattribute: " + methodModel.getName());
+				}
+			}
 		}
-
-		List<MethodModel> methods = classModel.getMethods();
-		for (MethodModel method : methods) {
-			System.out.println("\tOne method of type " + method.getType() + " was found: " + method.getName());
-		}
-
-		// System.out.println("The class is located at: " + classModel.getLink().getPath());
 
 		// Serializing
 		// TODO: doesn't work, no XML element for interface ClassModel
@@ -104,12 +88,6 @@ public class Testing {
 		FileOutputStream fos = new FileOutputStream(file);
 		factory555.serialize(process, fos, SerializationPolicy.EXTENSIVE, true);
 		*/
-
-		String folderPath = "/homes/v17gambi/Documents/stage-ete-2019/resources";
-		new ProjectLink(folderPath);
-
-		// TODO read the data via prints
-		// TODO read the data to see if it works (via XML serialization)
 
 	}
 }
