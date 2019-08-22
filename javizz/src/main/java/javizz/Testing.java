@@ -1,11 +1,15 @@
 package javizz;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.factory.ModelFactory;
+import org.openflexo.pamela.factory.SerializationPolicy;
 
 /**
  * @author Victor Gambier
@@ -15,7 +19,7 @@ import org.openflexo.pamela.exceptions.ModelDefinitionException;
 public class Testing {
 
 	/**
-	 * Takes a path and returns the bottom-most filename or folder
+	 * Takes a path and returns the name of filename or folder that it points to, without the extension
 	 * 
 	 * @param path
 	 *            the path that is going to be converted into a filename
@@ -53,41 +57,26 @@ public class Testing {
 
 				List<MethodModel> methods = classModel.getMethods();
 				for (MethodModel methodModel : methods) {
-					System.out.println("\t\tattribute: " + methodModel.getName());
+					System.out.println("\t\tmethod: " + methodModel.getName());
 				}
 			}
 		}
 
+		// Testing listeners
+		// TODO
+
 		// Serializing
-		// TODO: doesn't work, no XML element for interface ClassModel
 
-		/*
-		
+		ModelFactory factory = new ModelFactory(ClassModel.class);
+		ClassModel classModel = factory.newInstance(ClassModel.class);
+		classModel.setName("toto");
+		AttributeModel attribute = factory.newInstance(AttributeModel.class);
+		attribute.setName("titi");
+		classModel.addAttribute(attribute);
 		File file = File.createTempFile("PAMELA-TestSerialization", ".xml");
+		System.out.println(file); // to see the path since it's a temp file
 		FileOutputStream fos = new FileOutputStream(file);
-		factory.serialize(classModelTest, fos, SerializationPolicy.EXTENSIVE, true);
-		
-		*/
-
-		/*
-		
-		ModelFactory factory33 = new ModelFactory(FlexoProcess.class);
-		FlexoProcess process = (FlexoProcess) factory33.newInstance(FlexoProcess.class).init();
-		File file = File.createTempFile("PAMELA-TestSerialization", ".xml");
-		FileOutputStream fos = new FileOutputStream(file);
-		factory33.serialize(process, fos, SerializationPolicy.EXTENSIVE, true);
-		
-		*/
-
-		/* copying an existing example - doesn't work
-		File file;
-		ModelFactory factory555;
-		file = File.createTempFile("PAMELA-TestSerialization", ".xml");
-		factory555 = new ModelFactory(FlexoProcess.class);
-		FlexoProcess process = (FlexoProcess) factory555.newInstance(FlexoProcess.class).init();
-		FileOutputStream fos = new FileOutputStream(file);
-		factory555.serialize(process, fos, SerializationPolicy.EXTENSIVE, true);
-		*/
+		factory.serialize(classModel, fos, SerializationPolicy.EXTENSIVE, true);
 
 	}
 }

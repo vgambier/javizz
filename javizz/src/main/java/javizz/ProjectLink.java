@@ -53,7 +53,6 @@ public class ProjectLink {
 		// For each file, we check if it's a .java file
 		for (File file : files) {
 			String filename = file.getName();
-			System.out.println(filename);
 			if (FilenameUtils.getExtension(filename).equals("java")) {
 				// If it is, then we assume the current folder is a package
 				String currentPath = file.getParent();

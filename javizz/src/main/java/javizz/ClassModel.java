@@ -9,6 +9,8 @@ import org.openflexo.pamela.annotations.Getter.Cardinality;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.Remover;
 import org.openflexo.pamela.annotations.Setter;
+import org.openflexo.pamela.annotations.XMLAttribute;
+import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.pamela.factory.AccessibleProxyObject;
 
 /**
@@ -17,6 +19,7 @@ import org.openflexo.pamela.factory.AccessibleProxyObject;
  */
 
 @ModelEntity
+@XMLElement
 public interface ClassModel extends AccessibleProxyObject {
 
 	// Attributes and methods regarding the name of the class
@@ -24,6 +27,7 @@ public interface ClassModel extends AccessibleProxyObject {
 	String NAME = "name";
 
 	@Getter(NAME)
+	@XMLAttribute
 	String getName();
 
 	@Setter(NAME)
@@ -58,7 +62,8 @@ public interface ClassModel extends AccessibleProxyObject {
 	String ATTRIBUTES = "attributes";
 
 	@Getter(value = ATTRIBUTES, cardinality = Cardinality.LIST)
-	@Embedded // TODO: what is this?
+	@Embedded
+	@XMLElement
 	public List<AttributeModel> getAttributes();
 
 	@Adder(ATTRIBUTES)

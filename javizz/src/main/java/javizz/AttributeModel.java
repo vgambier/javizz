@@ -4,6 +4,8 @@ import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.Implementation;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.Setter;
+import org.openflexo.pamela.annotations.XMLAttribute;
+import org.openflexo.pamela.annotations.XMLElement;
 
 /**
  * @author Victor Gambier
@@ -11,12 +13,14 @@ import org.openflexo.pamela.annotations.Setter;
  */
 
 @ModelEntity
+@XMLElement
 public interface AttributeModel {
 
 	// Attributes and methods regarding the name of the attribute:
 
 	String NAME = "name";
 
+	@XMLAttribute
 	@Getter(NAME)
 	String getName();
 

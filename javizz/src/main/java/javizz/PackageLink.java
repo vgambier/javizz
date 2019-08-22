@@ -39,7 +39,6 @@ public class PackageLink {
 
 		for (File file : files) {
 			String filename = file.getName();
-			System.out.println(filename);
 			if (FilenameUtils.getExtension(filename).equals("java")) {
 				// If it is, then we assume the current file is a Java class
 				String filePath = file.getPath();
