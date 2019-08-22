@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
 import org.openflexo.pamela.ModelContextLibrary;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.pamela.factory.ModelFactory;
@@ -23,7 +24,8 @@ public class Testing {
 	 * @return the bottom-most filename or folder, as a String
 	 */
 	public static String pathToFilename(String path) {
-		return path.substring(path.lastIndexOf("/") + 1);
+		String filenameWithExt = path.substring(path.lastIndexOf("/") + 1);
+		return FilenameUtils.removeExtension(filenameWithExt);
 	}
 
 	public static void main(String[] args) throws ModelDefinitionException, ModelException, IllegalArgumentException,
@@ -102,6 +104,9 @@ public class Testing {
 		FileOutputStream fos = new FileOutputStream(file);
 		factory555.serialize(process, fos, SerializationPolicy.EXTENSIVE, true);
 		*/
+
+		String folderPath = "/homes/v17gambi/Documents/stage-ete-2019/resources";
+		new ProjectLink(folderPath);
 
 		// TODO Full test - not implemented yet
 		// ProjectLink(path);
