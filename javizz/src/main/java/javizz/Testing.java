@@ -29,8 +29,8 @@ public class Testing {
 	public static void main(String[] args) throws ModelDefinitionException, ModelException, IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException, IOException {
 
-		// Reading a folder
-		String folderPath = "/homes/v17gambi/Documents/stage-ete-2019/resources";
+		// Reading a test folder
+		String folderPath = "testFiles"; // a relative path, pointing to the testFiles directory included in the project
 		ProjectLink projectLink = new ProjectLink(folderPath);
 
 		// Testing to see if the data was properly gathered
