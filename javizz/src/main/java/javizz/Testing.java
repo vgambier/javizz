@@ -108,9 +108,8 @@ public class Testing {
 		String folderPath = "/homes/v17gambi/Documents/stage-ete-2019/resources";
 		new ProjectLink(folderPath);
 
-		// TODO Full test - not implemented yet
-		// ProjectLink(path);
-		// read the data to see if it works (via XML serialization)
+		// TODO read the data via prints
+		// TODO read the data to see if it works (via XML serialization)
 
 	}
 }
