@@ -65,7 +65,7 @@ public class Testing {
 		// Testing listeners
 		// TODO
 
-		// Serializing
+		// XML serialization
 
 		ModelFactory factory = new ModelFactory(ClassModel.class);
 		ClassModel classModel = factory.newInstance(ClassModel.class);
@@ -73,8 +73,8 @@ public class Testing {
 		AttributeModel attribute = factory.newInstance(AttributeModel.class);
 		attribute.setName("titi");
 		classModel.addAttribute(attribute);
-		File file = File.createTempFile("PAMELA-TestSerialization", ".xml");
-		System.out.println(file); // to see the path since it's a temp file
+		File file = File.createTempFile("PAMELA-TestSerialization", ".xml"); // TODO regular file
+		System.out.println(file); // useful to see the path since it's a temp file
 		FileOutputStream fos = new FileOutputStream(file);
 		factory.serialize(classModel, fos, SerializationPolicy.EXTENSIVE, true);
 
