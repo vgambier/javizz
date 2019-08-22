@@ -1,5 +1,7 @@
 package javizz;
 
+import java.io.FileNotFoundException;
+
 import org.openflexo.pamela.ModelContextLibrary;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.pamela.factory.ModelFactory;
@@ -9,7 +11,7 @@ public class PackageLink {
 	private PackageModel packageModel;
 	private String path; // the path where the package is located
 
-	public PackageLink(ProjectModel projectModel, String path) throws ModelDefinitionException {
+	public PackageLink(ProjectModel projectModel, String path) throws ModelDefinitionException, FileNotFoundException {
 
 		// Instantiating attributes
 

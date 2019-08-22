@@ -23,12 +23,12 @@ public class ClassLink {
 	private ClassModel classModel;
 	private String path; // the path where the class is located - uniquely defines the class within the file system
 
-	public ClassLink(PackageModel packageModel, String path) throws ModelDefinitionException, FileNotFoundException {
+	public ClassLink(PackageModel packageModel, String path) throws FileNotFoundException, ModelDefinitionException {
 
 		// Instantiating attributes
 
 		ModelFactory factory = new ModelFactory(ModelContextLibrary.getModelContext(ClassModel.class)); // we need to define factory to
-		// instantiate ClassModel
+																										// instantiate ClassModel
 		this.classModel = factory.newInstance(ClassModel.class);
 		this.path = path;
 
@@ -46,16 +46,11 @@ public class ClassLink {
 			for (BodyDeclaration<?> member : typeDec.getMembers()) {
 				member.toFieldDeclaration().ifPresent(field -> {
 					for (VariableDeclarator variable : field.getVariables()) {
-
-						AttributeModel attributeModel = factory.newInstance(AttributeModel.class);
-						new AttributeLink(attributeModel);
-						classModel.addAttribute(attributeModel);
-						attributeModel.setClazz(classModel);
-						attributeModel.setName(variable.getName().asString());
-						attributeModel.setType(variable.getType().asString()); // TODO: à partir du nom du type, trouver la classe
-						// correspondante (avoir une fonction qui le fait) -
-						// nécessaire sur le type. à terme, ce ne sera plus une string mais un TypeModel
-						classModel.addAttribute(attributeModel);
+						// Grabbing relevant data
+						String name = variable.getName().asString();
+						String type = variable.getType().asString();
+						// This constructor will take care of modelizing the attribute and its contents
+						new AttributeLink(classModel, name, type);
 					}
 				});
 			}
@@ -67,12 +62,12 @@ public class ClassLink {
 			@Override
 			public void visit(MethodDeclaration md, Void arg) {
 				super.visit(md, arg);
-				MethodModel methodModel = factory.newInstance(MethodModel.class);
-				new MethodLink(methodModel);
-				classModel.addMethod(methodModel);
-				methodModel.setClazz(classModel);
-				methodModel.setName(md.getNameAsString());
-				methodModel.setType(md.getType().asString()); // TODO: see above
+
+				// Grabbing relevant data
+				String name = md.getNameAsString();
+				String type = md.getType().asString();
+				// This constructor will take care of modelizing the method and its contents
+				new MethodLink(classModel, name, type);
 
 			}
 		}
