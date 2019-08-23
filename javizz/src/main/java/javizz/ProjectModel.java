@@ -9,6 +9,8 @@ import org.openflexo.pamela.annotations.Getter.Cardinality;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.Remover;
 import org.openflexo.pamela.annotations.Setter;
+import org.openflexo.pamela.annotations.XMLAttribute;
+import org.openflexo.pamela.annotations.XMLElement;
 
 /**
  * @author Victor Gambier
@@ -23,6 +25,7 @@ import org.openflexo.pamela.annotations.Setter;
 // folder or file lsit as input?
 
 @ModelEntity
+@XMLElement
 public interface ProjectModel {
 
 	// Attributes and methods regarding the name of the project
@@ -30,6 +33,7 @@ public interface ProjectModel {
 	String NAME = "name";
 
 	@Getter(NAME)
+	@XMLAttribute
 	String getName();
 
 	@Setter(NAME)
@@ -40,6 +44,7 @@ public interface ProjectModel {
 	String PACKAGES = "packages";
 
 	@Getter(value = PACKAGES, cardinality = Cardinality.LIST)
+	@XMLElement
 	@Embedded
 	public List<PackageModel> getPackages();
 

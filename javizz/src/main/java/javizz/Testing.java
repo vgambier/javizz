@@ -62,21 +62,20 @@ public class Testing {
 			}
 		}
 
-		// Testing listeners
+		// XML serialization
+		String xmlPath = "testFiles/XMLFiles/TestSerialization.xml";
+		File xmlFile = new File(xmlPath);
+		xmlFile.delete(); // deleting the previous instance
+		xmlFile.createNewFile();
+		FileOutputStream fos = new FileOutputStream(xmlFile);
+		ModelFactory projectFactory = new ModelFactory(ProjectModel.class);
+		projectFactory.serialize(projectModel, fos, SerializationPolicy.EXTENSIVE, true);
+
+		// XML deserialization
 		// TODO
 
-		// XML serialization
-
-		ModelFactory factory = new ModelFactory(ClassModel.class);
-		ClassModel classModel = factory.newInstance(ClassModel.class);
-		classModel.setName("toto");
-		AttributeModel attribute = factory.newInstance(AttributeModel.class);
-		attribute.setName("titi");
-		classModel.addAttribute(attribute);
-		File file = File.createTempFile("PAMELA-TestSerialization", ".xml"); // TODO regular file
-		System.out.println(file); // useful to see the path since it's a temp file
-		FileOutputStream fos = new FileOutputStream(file);
-		factory.serialize(classModel, fos, SerializationPolicy.EXTENSIVE, true);
+		// Testing listeners
+		// TODO
 
 	}
 }

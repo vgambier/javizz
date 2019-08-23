@@ -3,6 +3,8 @@ package javizz;
 import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.Setter;
+import org.openflexo.pamela.annotations.XMLAttribute;
+import org.openflexo.pamela.annotations.XMLElement;
 
 /**
  * @author Victor Gambier
@@ -10,6 +12,7 @@ import org.openflexo.pamela.annotations.Setter;
  */
 
 @ModelEntity
+@XMLElement
 public interface MethodModel {
 
 	// Attributes and methods regarding the name of the method:
@@ -17,6 +20,7 @@ public interface MethodModel {
 	String NAME = "name";
 
 	@Getter(NAME)
+	@XMLAttribute
 	String getName();
 
 	@Setter(NAME)
@@ -27,6 +31,7 @@ public interface MethodModel {
 	String TYPE = "type";
 
 	@Getter(TYPE)
+	@XMLAttribute
 	String getType();
 
 	@Setter(TYPE)

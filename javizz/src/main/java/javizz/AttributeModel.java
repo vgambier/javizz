@@ -23,8 +23,8 @@ public interface AttributeModel {
 
 	String NAME = "name";
 
-	@XMLAttribute
 	@Getter(NAME)
+	@XMLAttribute
 	String getName();
 
 	@Setter(NAME)
@@ -35,6 +35,7 @@ public interface AttributeModel {
 	String TYPE = "type";
 
 	@Getter(TYPE)
+	@XMLAttribute
 	String getType();
 
 	@Setter(TYPE)

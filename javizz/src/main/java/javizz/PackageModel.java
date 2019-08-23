@@ -9,6 +9,8 @@ import org.openflexo.pamela.annotations.Getter.Cardinality;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.Remover;
 import org.openflexo.pamela.annotations.Setter;
+import org.openflexo.pamela.annotations.XMLAttribute;
+import org.openflexo.pamela.annotations.XMLElement;
 
 /**
  * @author Victor Gambier
@@ -16,6 +18,7 @@ import org.openflexo.pamela.annotations.Setter;
  */
 
 @ModelEntity
+@XMLElement
 public interface PackageModel {
 
 	// Attributes and methods regarding the name of the package
@@ -23,6 +26,7 @@ public interface PackageModel {
 	String NAME = "name";
 
 	@Getter(NAME)
+	@XMLAttribute
 	String getName();
 
 	@Setter(NAME)
@@ -33,7 +37,8 @@ public interface PackageModel {
 	String CLASSES = "classes";
 
 	@Getter(value = CLASSES, cardinality = Cardinality.LIST)
-	@Embedded // TODO: what is this?
+	@XMLElement
+	@Embedded
 	public List<ClassModel> getClasses();
 
 	@Adder(CLASSES)
