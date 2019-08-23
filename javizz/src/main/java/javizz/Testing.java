@@ -1,13 +1,13 @@
 package javizz;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.openflexo.pamela.exceptions.ModelDefinitionException;
+import org.openflexo.pamela.factory.DeserializationPolicy;
 import org.openflexo.pamela.factory.ModelFactory;
 import org.openflexo.pamela.factory.SerializationPolicy;
 
@@ -30,8 +30,7 @@ public class Testing {
 		return FilenameUtils.removeExtension(filenameWithExt);
 	}
 
-	public static void main(String[] args) throws ModelDefinitionException, ModelException, IllegalArgumentException,
-			IllegalAccessException, InvocationTargetException, IOException {
+	public static void main(String[] args) throws Exception {
 
 		// Reading a test folder
 		String folderPath = "testFiles"; // a relative path, pointing to the testFiles directory included in the project
@@ -71,8 +70,22 @@ public class Testing {
 		ModelFactory projectFactory = new ModelFactory(ProjectModel.class);
 		projectFactory.serialize(projectModel, fos, SerializationPolicy.EXTENSIVE, true);
 
-		// XML deserialization
-		// TODO
+		// Copying the XML file
+		File xmlFileCopy = new File("testFiles/XMLFiles/TestSerializationCopy.xml");
+		FileUtils.copyFile(xmlFile, xmlFileCopy);
+
+		// XML deserialization (of the copy)
+		FileInputStream fis = new FileInputStream(xmlFileCopy);
+		ProjectModel projectModelClone = (ProjectModel) projectFactory.deserialize(fis, DeserializationPolicy.RESTRICTIVE);
+		xmlFileCopy.delete(); // we can delete the copy now
+
+		// XML reserialization
+		String xmlPath2 = "testFiles/XMLFiles/TestReserialization.xml";
+		File xmlFile2 = new File(xmlPath2);
+		xmlFile.delete(); // deleting the previous instance
+		xmlFile.createNewFile();
+		FileOutputStream fos2 = new FileOutputStream(xmlFile2);
+		projectFactory.serialize(projectModelClone, fos2, SerializationPolicy.EXTENSIVE, true);
 
 		// Testing listeners
 		// TODO
