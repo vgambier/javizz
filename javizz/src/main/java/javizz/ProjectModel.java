@@ -11,6 +11,7 @@ import org.openflexo.pamela.annotations.Remover;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
+import org.openflexo.pamela.factory.AccessibleProxyObject;
 
 /**
  * @author Victor Gambier
@@ -26,7 +27,7 @@ import org.openflexo.pamela.annotations.XMLElement;
 
 @ModelEntity
 @XMLElement
-public interface ProjectModel {
+public interface ProjectModel extends AccessibleProxyObject {
 
 	// Attributes and methods regarding the name of the project
 

@@ -97,8 +97,8 @@ public class ClassLink {
 	 * @param classModel
 	 *            the reference model
 	 */
-	public void syncFile() {
-
+	public void updateFile() {
+		// TODO
 	}
 
 	/**

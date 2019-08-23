@@ -70,6 +70,28 @@ public class ProjectLink {
 	}
 
 	/**
+	 * Reads a directory containing .java files, compares it to the existing model, and updates the model
+	 * 
+	 * @param filepath
+	 *            the path to the directory (including the directory itself)
+	 * @param classModel
+	 *            the reference model
+	 * @throws ModelDefinitionException
+	 * @throws FileNotFoundException
+	 */
+	public void updateModel(String path, ProjectModel projectModel) throws FileNotFoundException, ModelDefinitionException {
+
+		// Generating a new model based on the input file
+		ProjectLink projectLinkFile = new ProjectLink(path);
+		ProjectModel projectModelFile = projectLinkFile.projectModel;
+
+		// Updating the model
+		projectModel.updateWith(projectModelFile);
+	}
+
+	// TODO: updateFolder method
+
+	/**
 	 * @return the projectModel
 	 */
 	public ProjectModel getProjectModel() {

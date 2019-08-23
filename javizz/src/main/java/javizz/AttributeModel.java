@@ -1,13 +1,11 @@
 package javizz;
 
 import org.openflexo.pamela.annotations.Getter;
-import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.Implementation;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
-
-import javizz.AttributeModel.AttributeModelImpl;
 
 /**
  * @author Victor Gambier
@@ -16,7 +14,6 @@ import javizz.AttributeModel.AttributeModelImpl;
 
 @ModelEntity
 @XMLElement
-@ImplementationClass(AttributeModelImpl.class)
 public interface AttributeModel {
 
 	// Attributes and methods regarding the name of the attribute:
@@ -52,14 +49,16 @@ public interface AttributeModel {
 	void setClazz(ClassModel classModel);
 
 	// toString description method
+
 	@Override
 	public String toString();
 
-	static abstract class AttributeModelImpl implements AttributeModel {
+	@Implementation
+	abstract class AttributeModelImpl implements AttributeModel {
 
 		@Override
 		public String toString() {
-			return this.getName() + ": " + this.getType(); // TODO
+			return this.getName() + ": " + this.getType();
 		}
 	}
 }

@@ -74,12 +74,12 @@ public class Testing {
 		File xmlFileCopy = new File("testFiles/XMLFiles/TestSerializationCopy.xml");
 		FileUtils.copyFile(xmlFile, xmlFileCopy);
 
-		// XML deserialization (of the copy)
+		// XML deserialization (of the copy) to obtain a model
 		FileInputStream fis = new FileInputStream(xmlFileCopy);
 		ProjectModel projectModelClone = (ProjectModel) projectFactory.deserialize(fis, DeserializationPolicy.RESTRICTIVE);
 		xmlFileCopy.delete(); // we can delete the copy now
 
-		// XML reserialization
+		// XML reserialization of the model
 		String xmlPath2 = "testFiles/XMLFiles/TestReserialization.xml";
 		File xmlFile2 = new File(xmlPath2);
 		xmlFile.delete(); // deleting the previous instance
@@ -87,8 +87,13 @@ public class Testing {
 		FileOutputStream fos2 = new FileOutputStream(xmlFile2);
 		projectFactory.serialize(projectModelClone, fos2, SerializationPolicy.EXTENSIVE, true);
 
-		// Testing listeners
+		// Detecting changes on the disk
 		// TODO
+
+		// Detecting changes in models
+		// TODO
+
+		// Testing getProjectModel()
 
 	}
 }
