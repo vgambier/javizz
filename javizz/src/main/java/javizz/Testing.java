@@ -1,8 +1,10 @@
 package javizz;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -10,6 +12,14 @@ import org.apache.commons.io.FilenameUtils;
 import org.openflexo.pamela.factory.DeserializationPolicy;
 import org.openflexo.pamela.factory.ModelFactory;
 import org.openflexo.pamela.factory.SerializationPolicy;
+
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.BodyDeclaration;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
 
 /**
  * @author Victor Gambier
@@ -82,10 +92,75 @@ public class Testing {
 		// XML reserialization of the model
 		String xmlPath2 = "testFiles/XMLFiles/TestReserialization.xml";
 		File xmlFile2 = new File(xmlPath2);
-		xmlFile.delete(); // deleting the previous instance
-		xmlFile.createNewFile();
+		xmlFile2.delete(); // deleting the previous instance
+		xmlFile2.createNewFile();
 		FileOutputStream fos2 = new FileOutputStream(xmlFile2);
 		projectFactory.serialize(projectModelClone, fos2, SerializationPolicy.EXTENSIVE, true);
+
+		/* Testing updateModel() */
+
+		// Modifying a file
+
+		System.out.println("Editing file...");
+
+		String editPath = "/homes/v17gambi/git/javizz/javizz/testFiles/firstPackage/HelloWorld.java";
+
+		CompilationUnit cuTest = StaticJavaParser.parse(new File(editPath));
+		LexicalPreservingPrinter.setup(cuTest); // enables lexical preservation
+
+		// Change 1 - Retrieving a class and changing its name
+		ClassOrInterfaceDeclaration classDec;
+		try {
+			classDec = cuTest.getClassByName("Empty").orElse(null);
+			classDec.setName("VeryEmpty");
+		} catch (NullPointerException e) { // If there is no class by the name of Empty
+			classDec = cuTest.getClassByName("VeryEmpty").orElse(null);
+			classDec.setName("Empty");
+		}
+
+		// Change 2 - Modifying an attribute
+
+		for (TypeDeclaration<?> typeDec : cuTest.getTypes()) {
+			for (BodyDeclaration<?> member : typeDec.getMembers()) {
+				member.toFieldDeclaration().ifPresent(field -> {
+					for (VariableDeclarator variable : field.getVariables()) {
+						String variableName = variable.getName().asString();
+						if (variableName.equals("newAttribute")) {
+							variable.setName("veryNewAttribute");
+						}
+						else if (variableName.equals("veryNewAttribute")) {
+							variable.setName("newAttribute");
+						}
+					}
+				});
+			}
+		}
+
+		// Writing all changes to the original file
+		BufferedWriter writer = new BufferedWriter(new FileWriter(editPath));
+		writer.write(LexicalPreservingPrinter.print(cuTest));
+		writer.close();
+
+		System.out.println("Done.");
+
+		// Updating the model
+		System.out.println("Updating the model...");
+		ProjectLink.updateModel(folderPath, projectModel);
+		System.out.println("Done. Here are the attributes as stored in the HelloWorld ClassModel:");
+
+		// Showing that the model has changed
+
+		for (PackageModel packageModel : packages) {
+			List<ClassModel> classes = packageModel.getClasses();
+			for (ClassModel classModel : classes) {
+				if (classModel.getName().equals("HelloWorld")) {
+					List<AttributeModel> attributes = classModel.getAttributes();
+					for (AttributeModel attributeModel : attributes) {
+						System.out.println("\t" + attributeModel.getName());
+					}
+				}
+			}
+		}
 
 		// Detecting changes on the disk
 		// TODO
@@ -93,7 +168,11 @@ public class Testing {
 		// Detecting changes in models
 		// TODO
 
-		// Testing getProjectModel()
+		// TODO: turn ClassModel into also FileModel which handles all classes and also imports. 3 attributs: la classe publique, la liste
+		// des imports, la liste des classes non publiques (+ le nom, etc.)
+
+		// TODO vérification cohérence : classe publique = nom fichier, nom dossier = déclaration package, etc. implique création de
+		// nouveaux attributs, @Override + changement de nom
 
 	}
 }

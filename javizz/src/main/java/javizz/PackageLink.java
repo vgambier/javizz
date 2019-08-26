@@ -35,8 +35,6 @@ public class PackageLink {
 		File folder = new File(path);
 		Collection<File> files = FileUtils.listFiles(folder, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
 
-		System.out.println("");
-
 		for (File file : files) {
 			String filename = file.getName();
 			if (FilenameUtils.getExtension(filename).equals("java")) {

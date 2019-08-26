@@ -9,26 +9,19 @@
       <AttributeModel id="7" name="name" type="String" />
       <AttributeModel id="8" name="age" type="int" />
       <AttributeModel id="9" name="ssn" type="String" />
+      <AttributeModel id="10" name="veryNewAttribute" type="long" />
     </ClassModel>
-    <ClassModel id="10" name="HelloWorld_template">
-      <MethodModel id="11" name="main" type="void" />
-      <MethodModel id="12" name="uselessMethod" type="void" />
-      <MethodModel id="13" name="returnTwo" type="int" />
-      <AttributeModel id="14" name="name" type="String" />
-      <AttributeModel id="15" name="age" type="int" />
-      <AttributeModel id="16" name="ssn" type="String" />
-    </ClassModel>
-    <ClassModel id="17" name="NoMethodsNoAttributes" />
-    <ClassModel id="18" name="NoPackage" />
+    <ClassModel id="11" name="NoMethodsNoAttributes" />
+    <ClassModel id="12" name="NoPackage" />
   </PackageModel>
-  <PackageModel id="19" name="secondPackage">
-    <ClassModel id="20" name="HelloWorld_template2">
-      <MethodModel id="21" name="main" type="void" />
-      <MethodModel id="22" name="uselessMethod" type="void" />
-      <MethodModel id="23" name="returnTwo" type="int" />
-      <AttributeModel id="24" name="name" type="String" />
-      <AttributeModel id="25" name="age" type="int" />
-      <AttributeModel id="26" name="ssn" type="String" />
+  <PackageModel id="13" name="secondPackage">
+    <ClassModel id="14" name="HelloWorld_template2">
+      <MethodModel id="15" name="main" type="void" />
+      <MethodModel id="16" name="uselessMethod" type="void" />
+      <MethodModel id="17" name="returnTwo" type="int" />
+      <AttributeModel id="18" name="name" type="String" />
+      <AttributeModel id="19" name="age" type="int" />
+      <AttributeModel id="20" name="ssn" type="String" />
     </ClassModel>
   </PackageModel>
 </ProjectModel>

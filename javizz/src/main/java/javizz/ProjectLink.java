@@ -79,7 +79,7 @@ public class ProjectLink {
 	 * @throws ModelDefinitionException
 	 * @throws FileNotFoundException
 	 */
-	public void updateModel(String path, ProjectModel projectModel) throws FileNotFoundException, ModelDefinitionException {
+	public static void updateModel(String path, ProjectModel projectModel) throws FileNotFoundException, ModelDefinitionException {
 
 		// Generating a new model based on the input file
 		ProjectLink projectLinkFile = new ProjectLink(path);
@@ -89,6 +89,7 @@ public class ProjectLink {
 		projectModel.updateWith(projectModelFile);
 	}
 
+	// TODO: same methods for the other classes
 	// TODO: updateFolder method
 
 	/**

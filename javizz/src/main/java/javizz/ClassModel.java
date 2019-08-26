@@ -13,6 +13,10 @@ import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.pamela.factory.AccessibleProxyObject;
 
+// résoudre le problème de l'héritage / unicité modèle
+// pool methode commun, check si héritage, accès classe mère
+// ou : simplement un attribut qui dit que cette classe est fille de telle classe. donc une méthode est rattachée à une unique classe
+
 /**
  * @author Victor Gambier
  *
@@ -20,7 +24,7 @@ import org.openflexo.pamela.factory.AccessibleProxyObject;
 
 @ModelEntity
 @XMLElement
-public interface ClassModel extends AccessibleProxyObject {
+public interface ClassModel extends AccessibleProxyObject, TypeModel {
 
 	// Attributes and methods regarding the name of the class
 
