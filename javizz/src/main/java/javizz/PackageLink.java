@@ -8,13 +8,16 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.openflexo.pamela.ModelContextLibrary;
+import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.pamela.factory.ModelFactory;
 
+@ModelEntity
 public class PackageLink {
 
-	private PackageModel packageModel;
+	private PackageModel packageModel; // the corresponding model
 	private String path; // the path where the package is located
+	private ProjectLink projectLink; // the parent ProjectLink
 
 	public PackageLink(ProjectModel projectModel, String path) throws ModelDefinitionException, FileNotFoundException {
 
@@ -24,8 +27,10 @@ public class PackageLink {
 		// instantiate PackageModel
 		this.packageModel = factory.newInstance(PackageModel.class);
 		this.path = path;
+		this.projectLink = projectModel.getProjectLink();
 
 		packageModel.setName(Testing.pathToFilename(path));
+		packageModel.setPackageLink(this);
 		projectModel.addPackage(packageModel);
 
 		// Looking for all classes
@@ -44,4 +49,21 @@ public class PackageLink {
 			}
 		}
 	}
+
+	/**
+	 * Reads a directory containing .java files, compares it to the existing model, and updates the model
+	 * 
+	 * @throws ModelDefinitionException
+	 * @throws FileNotFoundException
+	 */
+	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
+
+		// Generating a new model based on the input file
+		PackageLink packageLinkFile = new PackageLink(projectLink.getProjectModel(), path);
+		PackageModel packageModelFile = packageLinkFile.packageModel;
+
+		// Updating the model
+		packageModel.updateWith(packageModelFile);
+	}
+
 }

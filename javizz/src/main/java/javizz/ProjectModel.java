@@ -40,6 +40,16 @@ public interface ProjectModel extends AccessibleProxyObject {
 	@Setter(NAME)
 	void setName(String name);
 
+	// Attributes and methods regarding the corresponding ProjectLink
+
+	String LINK = "link";
+
+	@Getter(LINK)
+	ProjectLink getProjectLink();
+
+	@Setter(LINK)
+	void setProjectLink(ProjectLink projectLink);
+
 	// Attributes and methods regarding the children packages:
 
 	String PACKAGES = "packages";

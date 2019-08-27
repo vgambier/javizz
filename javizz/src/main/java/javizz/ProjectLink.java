@@ -10,9 +10,11 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.openflexo.pamela.ModelContextLibrary;
+import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.pamela.factory.ModelFactory;
 
+@ModelEntity
 public class ProjectLink {
 
 	private ProjectModel projectModel;
@@ -38,6 +40,7 @@ public class ProjectLink {
 		this.path = path;
 
 		projectModel.setName(Testing.pathToFilename(path));
+		projectModel.setProjectLink(this);
 
 		/* Looking for all packages
 		 * A package is defined as a folder which contains .java files at its root
@@ -72,14 +75,10 @@ public class ProjectLink {
 	/**
 	 * Reads a directory containing .java files, compares it to the existing model, and updates the model
 	 * 
-	 * @param filepath
-	 *            the path to the directory (including the directory itself)
-	 * @param classModel
-	 *            the reference model
 	 * @throws ModelDefinitionException
 	 * @throws FileNotFoundException
 	 */
-	public static void updateModel(String path, ProjectModel projectModel) throws FileNotFoundException, ModelDefinitionException {
+	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
 
 		// Generating a new model based on the input file
 		ProjectLink projectLinkFile = new ProjectLink(path);

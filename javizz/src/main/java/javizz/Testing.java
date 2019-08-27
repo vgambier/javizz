@@ -145,7 +145,7 @@ public class Testing {
 
 		// Updating the model
 		System.out.println("Updating the model...");
-		ProjectLink.updateModel(folderPath, projectModel);
+		projectLink.updateModel();
 		System.out.println("Done. Here are the attributes as stored in the HelloWorld ClassModel:");
 
 		// Showing that the model has changed
@@ -161,6 +161,12 @@ public class Testing {
 				}
 			}
 		}
+
+		// Quick tests of other updateModel methods
+
+		PackageModel packageModel = projectModel.getPackages().get(0);
+		PackageLink packageLink = packageModel.getPackageLink();
+		packageLink.updateModel();
 
 		// Detecting changes on the disk
 		// TODO
