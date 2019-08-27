@@ -89,16 +89,16 @@ public class ClassLink {
 	// after checking if the two arguments match and differ, determines which one should change to match the other, and applies the needed
 	// changes
 
+	// TODO
+
 	/**
-	 * Reads a .java file, compares it to the existing model, and updates the .java file based on said model using lexical preservation
+	 * Reads a directory containing .java files, compares it to the existing model, and updates the folder
 	 * 
-	 * @param filepath
-	 *            the path to the .java file, including the filename and the extension
-	 * @param classModel
-	 *            the reference model
 	 */
 	public void updateFile() {
-		// TODO
+
+		// calls updateFile() on all AttributeLink and all MethodLink, and also checks if the ClassModel itself should change
+
 	}
 
 	/**

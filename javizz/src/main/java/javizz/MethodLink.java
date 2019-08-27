@@ -31,4 +31,16 @@ public class MethodLink {
 		// TODO: handle actual types
 	}
 
+	// TODO
+
+	/**
+	 * Reads a directory containing .java files, compares it to the existing model, and updates the folder
+	 * 
+	 */
+	public void updateFile() {
+
+		// checks if the method should change, then does it
+
+	}
+
 }

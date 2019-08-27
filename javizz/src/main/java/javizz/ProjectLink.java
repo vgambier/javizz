@@ -88,8 +88,18 @@ public class ProjectLink {
 		projectModel.updateWith(projectModelFile);
 	}
 
+	// TODO
+	/**
+	 * Reads a directory containing .java files, compares it to the existing model, and updates the folder
+	 * 
+	 */
+	public void updateFolder() {
+
+		// calls updateFolder() on all PackageLinks
+
+	}
+
 	// TODO: same methods for the other classes
-	// TODO: updateFolder method
 
 	/**
 	 * @return the projectModel

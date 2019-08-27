@@ -66,4 +66,15 @@ public class PackageLink {
 		packageModel.updateWith(packageModelFile);
 	}
 
+	// TODO
+	/**
+	 * Reads a directory containing .java files, compares it to the existing model, and updates the folder
+	 * 
+	 */
+	public void updateFolder() {
+
+		// calls updateFolder() on all ClassLink, and also checks if the PackageModel itself should change
+
+	}
+
 }

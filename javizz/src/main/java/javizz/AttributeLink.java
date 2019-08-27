@@ -36,4 +36,16 @@ public class AttributeLink {
 
 	}
 
+	// TODO
+
+	/**
+	 * Reads a directory containing .java files, compares it to the existing model, and updates the folder
+	 * 
+	 */
+	public void updateFile() {
+
+		// checks if the attribute should change, then does it
+
+	}
+
 }
