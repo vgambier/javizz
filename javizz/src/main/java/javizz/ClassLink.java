@@ -22,7 +22,7 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 @ModelEntity
 public class ClassLink {
 
-	private ClassModel classModel;
+	private ClassModel classModel; // the corresponding model
 	private String path; // the path where the class is located - uniquely defines the class within the file system
 	private PackageLink packageLink; // the parent PackageLink
 

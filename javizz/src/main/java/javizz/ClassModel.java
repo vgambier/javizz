@@ -47,16 +47,6 @@ public interface ClassModel extends AccessibleProxyObject, TypeModel {
 	@Setter(LINK)
 	void setClassLink(ClassLink classLink);
 
-	// Attributes and methods regarding the parent package:
-
-	String PACKAGE = "package";
-
-	@Getter(PACKAGE)
-	PackageModel getPackage();
-
-	@Setter(PACKAGE)
-	void setPackage(PackageModel packageModel);
-
 	// Attributes and methods regarding the children attributes:
 
 	String ATTRIBUTES = "attributes";

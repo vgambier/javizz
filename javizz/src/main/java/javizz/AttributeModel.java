@@ -6,6 +6,7 @@ import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
+import org.openflexo.pamela.factory.AccessibleProxyObject;
 
 /**
  * @author Victor Gambier
@@ -14,7 +15,7 @@ import org.openflexo.pamela.annotations.XMLElement;
 
 @ModelEntity
 @XMLElement
-public interface AttributeModel {
+public interface AttributeModel extends AccessibleProxyObject {
 
 	// Attributes and methods regarding the name of the attribute:
 
@@ -27,6 +28,16 @@ public interface AttributeModel {
 	@Setter(NAME)
 	void setName(String name);
 
+	// Attributes and methods regarding the corresponding AttributeLink
+
+	String LINK = "link";
+
+	@Getter(LINK)
+	AttributeLink getAttributeLink();
+
+	@Setter(LINK)
+	void setAttributeLink(AttributeLink attributeLink);
+
 	// Attributes and methods regarding the type of the attribute:
 
 	String TYPE = "type";
@@ -37,16 +48,6 @@ public interface AttributeModel {
 
 	@Setter(TYPE)
 	void setType(String type);
-
-	// Attributes and methods regarding the parent class:
-
-	String CLASS = "class";
-
-	@Getter(CLASS)
-	ClassModel getClazz();
-
-	@Setter(CLASS)
-	void setClazz(ClassModel classModel);
 
 	// toString description method
 

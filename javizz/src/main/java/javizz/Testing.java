@@ -170,9 +170,13 @@ public class Testing {
 		PackageLink packageLink = packageModel.getPackageLink();
 		packageLink.updateModel();
 
-		ClassModel classModel = packageModel.getClasses().get(0);
+		ClassModel classModel = packageModel.getClasses().get(1);
 		ClassLink classLink = classModel.getClassLink();
 		classLink.updateModel();
+
+		AttributeModel attributeModel = classModel.getAttributes().get(0);
+		AttributeLink attributeLink = attributeModel.getAttributeLink();
+		attributeLink.updateModel();
 
 		// Detecting changes on the disk
 		// TODO
