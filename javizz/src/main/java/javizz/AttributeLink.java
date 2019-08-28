@@ -11,11 +11,11 @@ import org.openflexo.pamela.factory.ModelFactory;
 public class AttributeLink {
 
 	private AttributeModel attributeModel; // the corresponding model
-	private String name;
 	// TODO need another attribute that uniquely defines the attribute within the file system - possibly an arbitrary key number
 	// the implementation will be similar to that of the path attribute. for now the primary key is the name
-	private ClassLink classLink; // the parent classLink
+	private String name;
 	private String type; // the type of the attribute - will be obsolete once TypeLink is implemented
+	private ClassLink classLink; // the parent classLink
 
 	public AttributeLink(ClassModel classModel, String name, String type) {
 
@@ -31,15 +31,16 @@ public class AttributeLink {
 		}
 
 		this.attributeModel = factory.newInstance(AttributeModel.class);
-		this.name = name;
-		this.classLink = classModel.getClassLink();
-		this.type = type;
 
-		classModel.addAttribute(attributeModel);
+		this.name = name;
+		this.type = type;
+		this.classLink = classModel.getClassLink();
 
 		attributeModel.setName(name);
 		attributeModel.setType(type);
 		attributeModel.setAttributeLink(this);
+
+		classModel.addAttribute(attributeModel);
 
 		// TODO: à partir du nom du type, trouver la classe
 		// correspondante (avoir une fonction qui le fait) -
@@ -60,7 +61,7 @@ public class AttributeLink {
 		AttributeModel attributeModelFile = attributeLinkFile.attributeModel;
 
 		// Updating the model
-		// attributeModel.updateWith(attributeModelFile);
+		attributeModel.updateWith(attributeModelFile);
 	}
 
 	// TODO

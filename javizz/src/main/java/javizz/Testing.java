@@ -178,6 +178,10 @@ public class Testing {
 		AttributeLink attributeLink = attributeModel.getAttributeLink();
 		attributeLink.updateModel();
 
+		MethodModel methodModel = classModel.getMethods().get(0);
+		MethodLink methodLink = methodModel.getMethodLink();
+		methodLink.updateModel();
+
 		// Detecting changes on the disk
 		// TODO
 
