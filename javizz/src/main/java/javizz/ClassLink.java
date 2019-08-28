@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import org.openflexo.pamela.ModelContextLibrary;
+import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.pamela.factory.ModelFactory;
 
@@ -18,10 +19,12 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
 // This object keeps a link between a file on the disk (defined by its filepath, assumed to be constant), and the corresponding model
 
+@ModelEntity
 public class ClassLink {
 
 	private ClassModel classModel;
 	private String path; // the path where the class is located - uniquely defines the class within the file system
+	private PackageLink packageLink; // the parent PackageLink
 
 	public ClassLink(PackageModel packageModel, String path) throws FileNotFoundException, ModelDefinitionException {
 
@@ -31,8 +34,10 @@ public class ClassLink {
 																										// instantiate ClassModel
 		this.classModel = factory.newInstance(ClassModel.class);
 		this.path = path;
+		this.packageLink = packageModel.getPackageLink();
 
 		classModel.setName(Testing.pathToFilename(path));
+		classModel.setClassLink(this);
 		packageModel.addClass(classModel);
 
 		// Looking for methods and attributes within the file
@@ -75,6 +80,22 @@ public class ClassLink {
 		VoidVisitor<?> methodNameVisitor = new MethodNamePrinter();
 		methodNameVisitor.visit(cu, null);
 
+	}
+
+	/**
+	 * Reads a .java file, compares it to the existing model, and updates the model
+	 * 
+	 * @throws ModelDefinitionException
+	 * @throws FileNotFoundException
+	 */
+	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
+
+		// Generating a new model based on the input file
+		ClassLink classLinkFile = new ClassLink(packageLink.getPackageModel(), path);
+		ClassModel classModelFile = classLinkFile.classModel;
+
+		// Updating the model
+		classModel.updateWith(classModelFile);
 	}
 
 	// creates a file corresponding to a given classModel:

@@ -77,4 +77,11 @@ public class PackageLink {
 
 	}
 
+	/**
+	 * @return the packageModel
+	 */
+	public PackageModel getPackageModel() {
+		return packageModel;
+	}
+
 }

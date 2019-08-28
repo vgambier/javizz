@@ -46,6 +46,8 @@ public class Testing {
 		String folderPath = "testFiles"; // a relative path, pointing to the testFiles directory included in the project
 		ProjectLink projectLink = new ProjectLink(folderPath);
 
+		// TODO Setting up a listener to automatically detect all changes made to the files on the disk
+
 		// Testing to see if the data was properly gathered
 		// TODO read the data to see if it works (via XML serialization)
 
@@ -167,6 +169,10 @@ public class Testing {
 		PackageModel packageModel = projectModel.getPackages().get(0);
 		PackageLink packageLink = packageModel.getPackageLink();
 		packageLink.updateModel();
+
+		ClassModel classModel = packageModel.getClasses().get(0);
+		ClassLink classLink = classModel.getClassLink();
+		classLink.updateModel();
 
 		// Detecting changes on the disk
 		// TODO

@@ -17,7 +17,7 @@ import org.openflexo.pamela.factory.ModelFactory;
 @ModelEntity
 public class ProjectLink {
 
-	private ProjectModel projectModel;
+	private ProjectModel projectModel; // the corresponding model
 	private String path; // the path where the project is located
 
 	/**
