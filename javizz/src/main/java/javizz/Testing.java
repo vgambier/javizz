@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -43,6 +44,60 @@ public class Testing {
 		return FilenameUtils.removeExtension(filenameWithExt);
 	}
 
+	public static void editFileTest() throws IOException {
+
+		System.out.println("Editing file...");
+
+		String editPath = "/homes/v17gambi/git/javizz/javizz/testFiles/firstPackage/HelloWorld.java";
+
+		CompilationUnit cuTest = StaticJavaParser.parse(new File(editPath));
+		LexicalPreservingPrinter.setup(cuTest); // enables lexical preservation
+
+		// Change 1 - Retrieving a class and changing its name
+		ClassOrInterfaceDeclaration classDec;
+		try {
+			classDec = cuTest.getClassByName("Empty").orElse(null);
+			classDec.setName("VeryEmpty");
+			System.out.println("from old to very");
+		} catch (NullPointerException e) { // If there is no class by the name of Empty
+			classDec = cuTest.getClassByName("VeryEmpty").orElse(null);
+			classDec.setName("Empty");
+			System.out.println("from very to old");
+
+		}
+
+		// Change 2 - Modifying an attribute
+
+		for (TypeDeclaration<?> typeDec : cuTest.getTypes()) {
+			for (BodyDeclaration<?> member : typeDec.getMembers()) {
+				member.toFieldDeclaration().ifPresent(field -> {
+					for (VariableDeclarator variable : field.getVariables()) {
+						String variableName = variable.getName().asString();
+						if (variableName.equals("newAttribute")) {
+							variable.setName("veryNewAttribute");
+						}
+						else if (variableName.equals("veryNewAttribute")) {
+							variable.setName("newAttribute");
+						}
+					}
+				});
+			}
+		}
+
+		// Writing all changes to the original file
+		BufferedWriter writer = new BufferedWriter(new FileWriter(editPath));
+		writer.write(LexicalPreservingPrinter.print(cuTest));
+		writer.close();
+	}
+
+	public static void showClassModel(ClassModel classModel) {
+
+		List<AttributeModel> attributes = classModel.getAttributes();
+		for (AttributeModel attributeModel : attributes) {
+			System.out.println("\t" + attributeModel.getName());
+		}
+	}
+
 	public static void main(String[] args) throws Exception {
 
 		// Reading a test folder
@@ -51,6 +106,7 @@ public class Testing {
 
 		// Testing to see if the data was properly gathered
 
+		System.out.println("Here is an overview of the models:");
 		ProjectModel projectModel = projectLink.getProjectModel();
 		List<PackageModel> packages = projectModel.getPackages();
 
@@ -72,6 +128,8 @@ public class Testing {
 				}
 			}
 		}
+
+		System.out.println("");
 
 		// XML serialization
 		String xmlPath = "testFiles/XMLFiles/TestSerialization.xml";
@@ -114,88 +172,63 @@ public class Testing {
 		
 		*/
 
-		/* Testing updateModel() */
+		/* Testing all updateModel() methods */
 
-		// Modifying a file
-
-		System.out.println("Editing file...");
-
-		String editPath = "/homes/v17gambi/git/javizz/javizz/testFiles/firstPackage/HelloWorld.java";
-
-		CompilationUnit cuTest = StaticJavaParser.parse(new File(editPath));
-		LexicalPreservingPrinter.setup(cuTest); // enables lexical preservation
-
-		// Change 1 - Retrieving a class and changing its name
-		ClassOrInterfaceDeclaration classDec;
-		try {
-			classDec = cuTest.getClassByName("Empty").orElse(null);
-			classDec.setName("VeryEmpty");
-		} catch (NullPointerException e) { // If there is no class by the name of Empty
-			classDec = cuTest.getClassByName("VeryEmpty").orElse(null);
-			classDec.setName("Empty");
-		}
-
-		// Change 2 - Modifying an attribute
-
-		for (TypeDeclaration<?> typeDec : cuTest.getTypes()) {
-			for (BodyDeclaration<?> member : typeDec.getMembers()) {
-				member.toFieldDeclaration().ifPresent(field -> {
-					for (VariableDeclarator variable : field.getVariables()) {
-						String variableName = variable.getName().asString();
-						if (variableName.equals("newAttribute")) {
-							variable.setName("veryNewAttribute");
-						}
-						else if (variableName.equals("veryNewAttribute")) {
-							variable.setName("newAttribute");
-						}
-					}
-				});
-			}
-		}
-
-		// Writing all changes to the original file
-		BufferedWriter writer = new BufferedWriter(new FileWriter(editPath));
-		writer.write(LexicalPreservingPrinter.print(cuTest));
-		writer.close();
-
-		System.out.println("Done.");
-
-		// Updating the model
-		System.out.println("Updating the model...");
-		projectLink.updateModel();
-		System.out.println("Done. Here are the attributes as stored in the HelloWorld ClassModel:");
-
-		// Showing that the model has changed
+		ClassModel helloClassModel = null;
 
 		for (PackageModel packageModel : packages) {
 			List<ClassModel> classes = packageModel.getClasses();
 			for (ClassModel classModel : classes) {
 				if (classModel.getName().equals("HelloWorld")) {
-					List<AttributeModel> attributes = classModel.getAttributes();
-					for (AttributeModel attributeModel : attributes) {
-						System.out.println("\t" + attributeModel.getName());
-					}
+					helloClassModel = classModel;
+					break;
 				}
 			}
 		}
 
-		// Quick tests of other updateModel methods
+		// For ProjectLink
 
+		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
+		showClassModel(helloClassModel); // Showing the current model
+		editFileTest(); // Modifying a file
+		System.out.println("Updating the model...");
+		projectLink.updateModel();
+		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
+		showClassModel(helloClassModel); // Showing that the model has changed
+
+		// For other classes
+
+		editFileTest();
 		PackageModel packageModel = projectModel.getPackages().get(0);
 		PackageLink packageLink = packageModel.getPackageLink();
+		System.out.println("Updating the model...");
 		packageLink.updateModel();
+		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
+		showClassModel(helloClassModel);
 
+		editFileTest();
 		ClassModel classModel = packageModel.getClasses().get(1);
 		ClassLink classLink = classModel.getClassLink();
+		System.out.println("Updating the model...");
 		classLink.updateModel();
+		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
+		showClassModel(helloClassModel);
 
+		editFileTest();
 		AttributeModel attributeModel = classModel.getAttributes().get(0);
 		AttributeLink attributeLink = attributeModel.getAttributeLink();
+		System.out.println("Updating the model...");
 		attributeLink.updateModel();
+		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
+		showClassModel(helloClassModel);
 
+		editFileTest();
 		MethodModel methodModel = classModel.getMethods().get(0);
 		MethodLink methodLink = methodModel.getMethodLink();
+		System.out.println("Updating the model...");
 		methodLink.updateModel();
+		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
+		showClassModel(helloClassModel);
 
 		// Detecting changes on the disk
 		// TODO

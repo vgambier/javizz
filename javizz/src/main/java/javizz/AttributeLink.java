@@ -60,20 +60,14 @@ public class AttributeLink {
 		attributeModel.updateWith(attributeModelFile);
 	}
 
-	// TODO
-
 	/**
-	 * Reads a directory containing .java files, compares it to the existing model, and updates the folder
+	 * Reads a .java file, compares it to the existing model, and updates the file
 	 * 
 	 */
 	public void updateFile() {
 
-		// Generating a new model based on the input file
-		AttributeLink attributeLinkFile = new AttributeLink(classLink.getClassModel(), name, type);
-		AttributeModel attributeModelFile = attributeLinkFile.attributeModel;
-
-		// checks if the attribute should change, then does it
-
+		// As of now, since an attribute is uniquely defined by its name and type, it can't ever change
+		// There is a similar situation for methods, classes, and packages.
 	}
 
 }
