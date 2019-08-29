@@ -11,7 +11,6 @@ import org.openflexo.pamela.annotations.Remover;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
-import org.openflexo.pamela.factory.AccessibleProxyObject;
 
 /**
  * @author Victor Gambier
@@ -20,7 +19,7 @@ import org.openflexo.pamela.factory.AccessibleProxyObject;
 
 @ModelEntity
 @XMLElement
-public interface PackageModel extends AccessibleProxyObject {
+public interface PackageModel extends AbstractModelObject {
 
 	// Attributes and methods regarding the name of the package
 
@@ -43,11 +42,21 @@ public interface PackageModel extends AccessibleProxyObject {
 	@Setter(LINK)
 	void setPackageLink(PackageLink packageLink);
 
+	// Attributes and methods regarding the parent class project
+
+	String PROJECT = "project";
+
+	@Getter(value = PROJECT, isDerived = true)
+	ProjectModel getProject();
+
+	@Setter(PROJECT)
+	void setProject(ProjectModel projectModel);
+
 	// Attributes and methods regarding the children classes:
 
 	String CLASSES = "classes";
 
-	@Getter(value = CLASSES, cardinality = Cardinality.LIST)
+	@Getter(value = CLASSES, cardinality = Cardinality.LIST, inverse = ClassModel.PACKAGE)
 	@XMLElement
 	@Embedded
 	public List<ClassModel> getClasses();

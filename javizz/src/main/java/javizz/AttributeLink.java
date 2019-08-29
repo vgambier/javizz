@@ -39,6 +39,7 @@ public class AttributeLink {
 		attributeModel.setName(name);
 		attributeModel.setType(type);
 		attributeModel.setAttributeLink(this);
+		attributeModel.setClazz(classModel);
 
 		classModel.addAttribute(attributeModel);
 
@@ -68,6 +69,13 @@ public class AttributeLink {
 
 		// As of now, since an attribute is uniquely defined by its name and type, it can't ever change
 		// There is a similar situation for methods, classes, and packages.
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
 	}
 
 }

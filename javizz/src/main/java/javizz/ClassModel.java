@@ -11,7 +11,6 @@ import org.openflexo.pamela.annotations.Remover;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
-import org.openflexo.pamela.factory.AccessibleProxyObject;
 
 // résoudre le problème de l'héritage / unicité modèle
 // pool methode commun, check si héritage, accès classe mère
@@ -27,7 +26,7 @@ import org.openflexo.pamela.factory.AccessibleProxyObject;
 
 @ModelEntity
 @XMLElement
-public interface ClassModel extends AccessibleProxyObject, TypeModel {
+public interface ClassModel extends TypeModel {
 
 	// Attributes and methods regarding the name of the class
 
@@ -50,11 +49,21 @@ public interface ClassModel extends AccessibleProxyObject, TypeModel {
 	@Setter(LINK)
 	void setClassLink(ClassLink classLink);
 
+	// Attributes and methods regarding the parent package
+
+	String PACKAGE = "package";
+
+	@Getter(value = PACKAGE, isDerived = true)
+	PackageModel getPackage();
+
+	@Setter(PACKAGE)
+	void setPackage(PackageModel packageModel);
+
 	// Attributes and methods regarding the children attributes:
 
 	String ATTRIBUTES = "attributes";
 
-	@Getter(value = ATTRIBUTES, cardinality = Cardinality.LIST)
+	@Getter(value = ATTRIBUTES, cardinality = Cardinality.LIST, inverse = AttributeModel.CLASS)
 	@Embedded
 	@XMLElement
 	public List<AttributeModel> getAttributes();
@@ -80,4 +89,11 @@ public interface ClassModel extends AccessibleProxyObject, TypeModel {
 	@Remover(METHODS)
 	public void removeMethod(MethodModel c);
 
+	abstract class ClassModelImpl extends AbstractModelObjectImpl implements ClassModel {
+
+		@Override
+		public ProjectModel getProject() {
+			return getPackage().getProject();
+		}
+	}
 }

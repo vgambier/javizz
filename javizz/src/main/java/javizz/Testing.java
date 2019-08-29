@@ -48,7 +48,7 @@ public class Testing {
 
 		System.out.println("Editing file...");
 
-		String editPath = "/homes/v17gambi/git/javizz/javizz/testFiles/firstPackage/HelloWorld.java";
+		String editPath = "testFiles/firstPackage/HelloWorld.java";
 
 		CompilationUnit cuTest = StaticJavaParser.parse(new File(editPath));
 		LexicalPreservingPrinter.setup(cuTest); // enables lexical preservation
@@ -160,6 +160,11 @@ public class Testing {
 		// TODO Setting up a listener to automatically detect all changes made to the files on the disk
 
 		/*
+		 * 
+		 * 		regarder les méthodes de java modernes plutôt qu'openflexo
+		par exemple : java nio
+		directory watcher
+		
 		PamelaResourceFactory resourceFactory = new PamelaResourceFactory();
 		FileSystemBasedResourceCenter resourceCenter = new PamelaResourceModelFactory(FileSystemBasedResourceCenter.class);
 		;
@@ -173,6 +178,8 @@ public class Testing {
 		*/
 
 		/* Testing all updateModel() methods */
+
+		projectModel.setWatching(true);
 
 		ClassModel helloClassModel = null;
 
@@ -202,22 +209,38 @@ public class Testing {
 		PackageModel packageModel = projectModel.getPackages().get(0);
 		PackageLink packageLink = packageModel.getPackageLink();
 		System.out.println("Updating the model...");
+		System.out.println("the package is " + packageLink.getPackageModel().getName());
 		packageLink.updateModel();
 		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
-		showClassModel(helloClassModel);
+		// showClassModel(helloClassModel);
+
+		packageModel = packageLink.getPackageModel(); // solves the issue but is not elegant
+
+		System.out.println("double hey");
+		List<ClassModel> classes = packageModel.getClasses();
+		for (ClassModel classModel : classes) {
+			System.out.println("\tclass: " + classModel.getName());
+
+			List<AttributeModel> attributes = classModel.getAttributes();
+			for (AttributeModel attributeModel : attributes) {
+				System.out.println("\t\tattribute: " + attributeModel.getName());
+			}
+		}
 
 		editFileTest();
 		ClassModel classModel = packageModel.getClasses().get(1);
 		ClassLink classLink = classModel.getClassLink();
 		System.out.println("Updating the model...");
+		System.out.println("the class is" + classLink.getClassModel().getName());
 		classLink.updateModel();
 		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
 		showClassModel(helloClassModel);
 
 		editFileTest();
-		AttributeModel attributeModel = classModel.getAttributes().get(0);
+		AttributeModel attributeModel = classModel.getAttributes().get(3);
 		AttributeLink attributeLink = attributeModel.getAttributeLink();
 		System.out.println("Updating the model...");
+		System.out.println("the attribute is" + attributeLink.getName());
 		attributeLink.updateModel();
 		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
 		showClassModel(helloClassModel);

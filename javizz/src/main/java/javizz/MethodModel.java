@@ -5,7 +5,6 @@ import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
-import org.openflexo.pamela.factory.AccessibleProxyObject;
 
 /**
  * @author Victor Gambier
@@ -14,7 +13,7 @@ import org.openflexo.pamela.factory.AccessibleProxyObject;
 
 @ModelEntity
 @XMLElement
-public interface MethodModel extends AccessibleProxyObject {
+public interface MethodModel extends AbstractModelObject {
 
 	// Attributes and methods regarding the name of the method:
 

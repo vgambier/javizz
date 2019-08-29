@@ -6,12 +6,14 @@ import org.openflexo.pamela.annotations.Adder;
 import org.openflexo.pamela.annotations.Embedded;
 import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.Getter.Cardinality;
+import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.Remover;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
-import org.openflexo.pamela.factory.AccessibleProxyObject;
+
+import javizz.ProjectModel.ProjectModelImpl;
 
 /**
  * @author Victor Gambier
@@ -22,7 +24,8 @@ import org.openflexo.pamela.factory.AccessibleProxyObject;
 
 @ModelEntity
 @XMLElement
-public interface ProjectModel extends AccessibleProxyObject {
+@ImplementationClass(ProjectModelImpl.class)
+public interface ProjectModel extends AbstractModelObject {
 
 	// Attributes and methods regarding the name of the project
 
@@ -45,6 +48,15 @@ public interface ProjectModel extends AccessibleProxyObject {
 	@Setter(LINK)
 	void setProjectLink(ProjectLink projectLink);
 
+	// pour faire la différence entre initialisation et changements
+	String WATCHING = "isWatching";
+
+	@Getter(value = WATCHING, defaultValue = "false")
+	boolean isWatching();
+
+	@Setter(WATCHING)
+	void setWatching(boolean isWatching);
+
 	// Attributes and methods regarding the children packages:
 
 	String PACKAGES = "packages";
@@ -59,5 +71,13 @@ public interface ProjectModel extends AccessibleProxyObject {
 
 	@Remover(PACKAGES)
 	public void removePackage(PackageModel c);
+
+	abstract class ProjectModelImpl extends AbstractModelObjectImpl implements ProjectModel {
+
+		@Override
+		public ProjectModel getProject() {
+			return this;
+		}
+	}
 
 }

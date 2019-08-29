@@ -3,6 +3,7 @@ package javizz;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -32,6 +33,7 @@ public class PackageLink {
 		packageModel.setName(Testing.pathToFilename(path));
 		packageModel.setPackageLink(this);
 		projectModel.addPackage(packageModel);
+		packageModel.setProject(projectModel);
 
 		// Looking for all classes
 		// A class is defined as a .java file (at least for now)
@@ -58,12 +60,33 @@ public class PackageLink {
 	 */
 	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
 
+		System.out.println("hey");
+
 		// Generating a new model based on the input file
 		PackageLink packageLinkFile = new PackageLink(projectLink.getProjectModel(), path);
 		PackageModel packageModelFile = packageLinkFile.packageModel;
 
+		List<ClassModel> classes = packageModel.getClasses();
+		for (ClassModel classModel : classes) {
+			System.out.println("\tclass: " + classModel.getName());
+
+			List<AttributeModel> attributes = classModel.getAttributes();
+			for (AttributeModel attributeModel : attributes) {
+				System.out.println("\t\tattribute: " + attributeModel.getName());
+			}
+		}
+
 		// Updating the model
 		packageModel.updateWith(packageModelFile);
+
+		for (ClassModel classModel : classes) {
+			System.out.println("\tclass: " + classModel.getName());
+
+			List<AttributeModel> attributes = classModel.getAttributes();
+			for (AttributeModel attributeModel : attributes) {
+				System.out.println("\t\tattribute: " + attributeModel.getName());
+			}
+		}
 	}
 
 	// TODO

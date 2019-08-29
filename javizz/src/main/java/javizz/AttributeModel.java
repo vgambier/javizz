@@ -1,12 +1,13 @@
 package javizz;
 
 import org.openflexo.pamela.annotations.Getter;
-import org.openflexo.pamela.annotations.Implementation;
+import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
-import org.openflexo.pamela.factory.AccessibleProxyObject;
+
+import javizz.AttributeModel.AttributeModelImpl;
 
 /**
  * @author Victor Gambier
@@ -15,7 +16,8 @@ import org.openflexo.pamela.factory.AccessibleProxyObject;
 
 @ModelEntity
 @XMLElement
-public interface AttributeModel extends AccessibleProxyObject {
+@ImplementationClass(AttributeModelImpl.class)
+public interface AttributeModel extends AbstractModelObject {
 
 	// Attributes and methods regarding the name of the attribute:
 
@@ -38,6 +40,16 @@ public interface AttributeModel extends AccessibleProxyObject {
 	@Setter(LINK)
 	void setAttributeLink(AttributeLink attributeLink);
 
+	// Attributes and methods regarding the parent class
+
+	String CLASS = "class";
+
+	@Getter(value = CLASS, isDerived = true)
+	ClassModel getClazz();
+
+	@Setter(CLASS)
+	void setClazz(ClassModel classModel);
+
 	// Attributes and methods regarding the type of the attribute:
 
 	String TYPE = "type";
@@ -49,17 +61,18 @@ public interface AttributeModel extends AccessibleProxyObject {
 	@Setter(TYPE)
 	void setType(String type);
 
-	// toString description method
+	abstract class AttributeModelImpl extends AbstractModelObjectImpl implements AttributeModel {
 
-	@Override
-	public String toString();
-
-	@Implementation
-	abstract class AttributeModelImpl implements AttributeModel {
+		// si on veut ajouter des méthodes à AttributeModel non gérées par Pamela
 
 		@Override
 		public String toString() {
 			return this.getName() + ": " + this.getType();
+		}
+
+		@Override
+		public ProjectModel getProject() {
+			return getClazz() == null ? null : getClazz().getProject();
 		}
 	}
 }
