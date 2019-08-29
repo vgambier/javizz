@@ -21,7 +21,7 @@ public class AttributeLink {
 
 		// Instantiating attributes
 
-		// we need to define factory to instantiate AttributeModel
+		// We need to define a factory to instantiate AttributeModel
 		ModelFactory factory = null;
 		try {
 			factory = new ModelFactory(ModelContextLibrary.getModelContext(AttributeModel.class));
@@ -42,10 +42,6 @@ public class AttributeLink {
 
 		classModel.addAttribute(attributeModel);
 
-		// TODO: à partir du nom du type, trouver la classe
-		// correspondante (avoir une fonction qui le fait) -
-		// nécessaire sur le type. à terme, ce ne sera plus une string mais un TypeModel
-
 	}
 
 	/**
@@ -56,7 +52,7 @@ public class AttributeLink {
 	 */
 	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
 
-		// Generating a new model based on the input file
+		// Generating a new model based on the existing file
 		AttributeLink attributeLinkFile = new AttributeLink(classLink.getClassModel(), name, type);
 		AttributeModel attributeModelFile = attributeLinkFile.attributeModel;
 
@@ -71,6 +67,10 @@ public class AttributeLink {
 	 * 
 	 */
 	public void updateFile() {
+
+		// Generating a new model based on the input file
+		AttributeLink attributeLinkFile = new AttributeLink(classLink.getClassModel(), name, type);
+		AttributeModel attributeModelFile = attributeLinkFile.attributeModel;
 
 		// checks if the attribute should change, then does it
 

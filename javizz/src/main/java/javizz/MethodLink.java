@@ -42,6 +42,12 @@ public class MethodLink {
 		// TODO: handle actual types
 	}
 
+	/**
+	 * Reads a .java file, compares it to the existing model, and updates the model
+	 * 
+	 * @throws ModelDefinitionException
+	 * @throws FileNotFoundException
+	 */
 	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
 
 		// Generating a new model based on the input file

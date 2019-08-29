@@ -98,6 +98,7 @@ public class ClassLink {
 		classModel.updateWith(classModelFile);
 	}
 
+	// TODO, unless it's no longer necessary
 	// creates a file corresponding to a given classModel:
 	// by using the data contained in the classModel and its child models (like packageModel),
 	// generates a file skeleton
@@ -127,21 +128,6 @@ public class ClassLink {
 	 */
 	public ClassModel getClassModel() {
 		return classModel;
-	}
-
-	/**
-	 * @return the path
-	 */
-	public String getPath() {
-		return path;
-	}
-
-	/**
-	 * @param path
-	 *            the path to set
-	 */
-	public void setPath(String path) {
-		this.path = path;
 	}
 
 }

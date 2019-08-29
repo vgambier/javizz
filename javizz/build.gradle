@@ -7,7 +7,7 @@
  */
 
 buildscript {
-    // nécessaire si il y a des dépendences de build gradle (build script)
+    // nécessaire s"il y a des dépendences de build gradle (build script)
 
     //repositories {
     //    maven { url uri('https://maven.openflexo.org/artifactory/openflexo-deps/') }
@@ -38,6 +38,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 
     compile group: 'org.openflexo', name: 'pamela-core', version: '1.5-SNAPSHOT'
+    compile group: 'org.openflexo', name: 'flexo-foundation', version: '2.0.0-SNAPSHOT'
     implementation 'com.github.javaparser:javaparser-core:3.14.10'
 
 }

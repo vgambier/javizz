@@ -9,6 +9,8 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
+import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.factory.DeserializationPolicy;
 import org.openflexo.pamela.factory.ModelFactory;
 import org.openflexo.pamela.factory.SerializationPolicy;
@@ -26,6 +28,7 @@ import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinte
  *
  */
 
+@ImplementationClass(FileSystemBasedResourceCenter.FileSystemBasedResourceCenterImpl.class)
 public class Testing {
 
 	/**
@@ -46,10 +49,7 @@ public class Testing {
 		String folderPath = "testFiles"; // a relative path, pointing to the testFiles directory included in the project
 		ProjectLink projectLink = new ProjectLink(folderPath);
 
-		// TODO Setting up a listener to automatically detect all changes made to the files on the disk
-
 		// Testing to see if the data was properly gathered
-		// TODO read the data to see if it works (via XML serialization)
 
 		ProjectModel projectModel = projectLink.getProjectModel();
 		List<PackageModel> packages = projectModel.getPackages();
@@ -98,6 +98,21 @@ public class Testing {
 		xmlFile2.createNewFile();
 		FileOutputStream fos2 = new FileOutputStream(xmlFile2);
 		projectFactory.serialize(projectModelClone, fos2, SerializationPolicy.EXTENSIVE, true);
+
+		// TODO Setting up a listener to automatically detect all changes made to the files on the disk
+
+		/*
+		PamelaResourceFactory resourceFactory = new PamelaResourceFactory();
+		FileSystemBasedResourceCenter resourceCenter = new PamelaResourceModelFactory(FileSystemBasedResourceCenter.class);
+		;
+		
+		File folder = new File(folderPath);
+		
+		resourceCenter.fileModified(folder); // Called when a {@link File} has been modified in directory representing this ResourceCenter
+		resourceCenter.fileAdded(folder); // When one has been discovered
+		resourceCenter.fileDeleted(folder); // When one has been deleted
+		
+		*/
 
 		/* Testing updateModel() */
 
@@ -187,9 +202,6 @@ public class Testing {
 
 		// Detecting changes in models
 		// TODO
-
-		// TODO: turn ClassModel into also FileModel which handles all classes and also imports. 3 attributs: la classe publique, la liste
-		// des imports, la liste des classes non publiques (+ le nom, etc.)
 
 		// TODO vérification cohérence : classe publique = nom fichier, nom dossier = déclaration package, etc. implique création de
 		// nouveaux attributs, @Override + changement de nom
