@@ -40,7 +40,6 @@ public class ProjectLink {
 		this.path = path;
 
 		projectModel.setName(Testing.pathToFilename(path));
-		projectModel.setProjectLink(this);
 
 		/* Looking for all packages
 		 * A package is defined as a folder which contains .java files at its root

@@ -14,7 +14,6 @@ public class MethodLink {
 	// TODO need another attribute that uniquely defines the method within the file system - for now the primary key is the name
 	private String name;
 	private String type; // the type of the attribute - will be obsolete once TypeLink is implemented
-	private ClassLink classLink; // the parent classLink
 
 	public MethodLink(ClassModel classModel, String name, String type) {
 
@@ -31,13 +30,13 @@ public class MethodLink {
 
 		this.name = name;
 		this.type = type;
-		this.classLink = classModel.getClassLink();
 
 		methodModel.setName(name);
 		methodModel.setType(type);
-		methodModel.setMethodLink(this);
-
+		methodModel.setClazz(classModel);
 		classModel.addMethod(methodModel);
+
+		methodModel.setMethodLink(this);
 
 		// TODO: handle actual types
 	}
@@ -51,7 +50,7 @@ public class MethodLink {
 	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
 
 		// Generating a new model based on the input file
-		MethodLink methodLinkFile = new MethodLink(classLink.getClassModel(), name, type);
+		MethodLink methodLinkFile = new MethodLink(methodModel.getClazz(), name, type);
 		MethodModel methodModelFile = methodLinkFile.methodModel;
 
 		// Updating the model

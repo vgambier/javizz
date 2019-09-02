@@ -18,7 +18,6 @@ public class PackageLink {
 
 	private PackageModel packageModel; // the corresponding model
 	private String path; // the path where the package is located
-	private ProjectLink projectLink; // the parent ProjectLink
 
 	public PackageLink(ProjectModel projectModel, String path) throws ModelDefinitionException, FileNotFoundException {
 
@@ -28,10 +27,8 @@ public class PackageLink {
 		// instantiate PackageModel
 		this.packageModel = factory.newInstance(PackageModel.class);
 		this.path = path;
-		this.projectLink = projectModel.getProjectLink();
 
 		packageModel.setName(Testing.pathToFilename(path));
-		packageModel.setPackageLink(this);
 		projectModel.addPackage(packageModel);
 		packageModel.setProject(projectModel);
 
@@ -63,7 +60,7 @@ public class PackageLink {
 		System.out.println("hey");
 
 		// Generating a new model based on the input file
-		PackageLink packageLinkFile = new PackageLink(projectLink.getProjectModel(), path);
+		PackageLink packageLinkFile = new PackageLink(packageModel.getProject(), path);
 		PackageModel packageModelFile = packageLinkFile.packageModel;
 
 		List<ClassModel> classes = packageModel.getClasses();

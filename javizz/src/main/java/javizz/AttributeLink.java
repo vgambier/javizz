@@ -15,7 +15,6 @@ public class AttributeLink {
 	// the implementation will be similar to that of the path attribute. for now the primary key is the name
 	private String name;
 	private String type; // the type of the attribute - will be obsolete once TypeLink is implemented
-	private ClassLink classLink; // the parent classLink
 
 	public AttributeLink(ClassModel classModel, String name, String type) {
 
@@ -34,11 +33,9 @@ public class AttributeLink {
 
 		this.name = name;
 		this.type = type;
-		this.classLink = classModel.getClassLink();
 
 		attributeModel.setName(name);
 		attributeModel.setType(type);
-		attributeModel.setAttributeLink(this);
 		attributeModel.setClazz(classModel);
 
 		classModel.addAttribute(attributeModel);
@@ -54,7 +51,7 @@ public class AttributeLink {
 	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
 
 		// Generating a new model based on the existing file
-		AttributeLink attributeLinkFile = new AttributeLink(classLink.getClassModel(), name, type);
+		AttributeLink attributeLinkFile = new AttributeLink(attributeModel.getClazz(), name, type);
 		AttributeModel attributeModelFile = attributeLinkFile.attributeModel;
 
 		// Updating the model

@@ -32,16 +32,6 @@ public interface PackageModel extends AbstractModelObject {
 	@Setter(NAME)
 	void setName(String name);
 
-	// Attributes and methods regarding the corresponding PackageLink
-
-	String LINK = "link";
-
-	@Getter(LINK)
-	PackageLink getPackageLink();
-
-	@Setter(LINK)
-	void setPackageLink(PackageLink packageLink);
-
 	// Attributes and methods regarding the parent class project
 
 	String PROJECT = "project";

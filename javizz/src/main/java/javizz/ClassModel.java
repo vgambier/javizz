@@ -39,16 +39,6 @@ public interface ClassModel extends TypeModel {
 	@Setter(NAME)
 	void setName(String name);
 
-	// Attributes and methods regarding the corresponding ClassLink
-
-	String LINK = "link";
-
-	@Getter(LINK)
-	ClassLink getClassLink();
-
-	@Setter(LINK)
-	void setClassLink(ClassLink classLink);
-
 	// Attributes and methods regarding the parent package
 
 	String PACKAGE = "package";

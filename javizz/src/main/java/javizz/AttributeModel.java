@@ -30,16 +30,6 @@ public interface AttributeModel extends AbstractModelObject {
 	@Setter(NAME)
 	void setName(String name);
 
-	// Attributes and methods regarding the corresponding AttributeLink
-
-	String LINK = "link";
-
-	@Getter(LINK)
-	AttributeLink getAttributeLink();
-
-	@Setter(LINK)
-	void setAttributeLink(AttributeLink attributeLink);
-
 	// Attributes and methods regarding the parent class
 
 	String CLASS = "class";

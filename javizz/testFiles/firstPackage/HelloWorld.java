@@ -38,7 +38,7 @@ public class HelloWorld { // comment
 	private String name;
 	private int age;
 	public String ssn;
-    long veryNewAttribute;
+    long newAttribute;
 
     public static void main(String[] args) {
         // Prints "Hello, World" to the terminal window.
@@ -59,7 +59,7 @@ public class HelloWorld { // comment
 
 }
 
-class VeryEmpty {
+class Empty {
 
     // This class intentionally left blank
 

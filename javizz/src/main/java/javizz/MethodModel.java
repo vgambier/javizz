@@ -36,6 +36,16 @@ public interface MethodModel extends AbstractModelObject {
 	@Setter(LINK)
 	void setMethodLink(MethodLink methodLink);
 
+	// Attributes and methods regarding the parent class
+
+	String CLASS = "class";
+
+	@Getter(value = CLASS, isDerived = true)
+	ClassModel getClazz();
+
+	@Setter(CLASS)
+	void setClazz(ClassModel classModel);
+
 	// Attributes and methods regarding the type of the method:
 
 	String TYPE = "type";

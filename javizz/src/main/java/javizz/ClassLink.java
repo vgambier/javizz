@@ -24,7 +24,6 @@ public class ClassLink {
 
 	private ClassModel classModel; // the corresponding model
 	private String path; // the path where the class is located - uniquely defines the class within the file system
-	private PackageLink packageLink; // the parent PackageLink
 
 	public ClassLink(PackageModel packageModel, String path) throws FileNotFoundException, ModelDefinitionException {
 
@@ -34,11 +33,10 @@ public class ClassLink {
 																										// instantiate ClassModel
 		this.classModel = factory.newInstance(ClassModel.class);
 		this.path = path;
-		this.packageLink = packageModel.getPackageLink();
 
 		classModel.setName(Testing.pathToFilename(path));
-		classModel.setClassLink(this);
 		packageModel.addClass(classModel);
+		classModel.setPackage(packageModel);
 
 		// Looking for methods and attributes within the file
 
@@ -91,7 +89,7 @@ public class ClassLink {
 	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
 
 		// Generating a new model based on the input file
-		ClassLink classLinkFile = new ClassLink(packageLink.getPackageModel(), path);
+		ClassLink classLinkFile = new ClassLink(classModel.getPackage(), path);
 		ClassModel classModelFile = classLinkFile.classModel;
 
 		// Updating the model

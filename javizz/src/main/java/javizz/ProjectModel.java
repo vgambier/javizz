@@ -38,17 +38,9 @@ public interface ProjectModel extends AbstractModelObject {
 	@Setter(NAME)
 	void setName(String name);
 
-	// Attributes and methods regarding the corresponding ProjectLink
-
-	String LINK = "link";
-
-	@Getter(LINK)
-	ProjectLink getProjectLink();
-
-	@Setter(LINK)
-	void setProjectLink(ProjectLink projectLink);
-
-	// pour faire la différence entre initialisation et changements
+	// A flag used to enable or disable the monitoring of projects
+	// When set to true, all changes applies to any of the models (AttributeModel, ClassModel, etc.)
+	// will result in a notification being sent.
 	String WATCHING = "isWatching";
 
 	@Getter(value = WATCHING, defaultValue = "false")
