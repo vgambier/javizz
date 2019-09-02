@@ -176,7 +176,13 @@ public class Testing {
 
 		/* Testing all updateModel() methods */
 
-		projectModel.setWatching(true);
+		projectModel.setIsWatching(true);
+
+		System.out.println("________");
+		System.out.println(projectModel);
+		System.out.println(projectModel.getName());
+		System.out.println(projectModel.getIsWatching());
+		System.out.println("________");
 
 		// We first need to reference the PackageLink, ClassLink, ClassModel, and AttributeLink we'll be working with
 
@@ -230,32 +236,19 @@ public class Testing {
 
 		editFileTest();
 		System.out.println("Updating the attributeModel via the parent ClassLink...");
-		// System.out.println("the class is" + classLink.getClassModel().getName());
 		classLinkTarget.updateModel();
 		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
 		showClassModel(classModelTarget);
 
 		editFileTest();
 		System.out.println("Updating the attributeModel via AttributeLink...");
-		// System.out.println("the attribute is" + attributeLink.getName());
 		attributeLinkTarget.updateModel();
 		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
 		showClassModel(classModelTarget);
 
-		/*
-		
-		editFileTest();
-		System.out.println("Updating the model...");
-		methodLinkTarget.updateModel();
-		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
-		showClassModel(helloClassModel);
-		
-		*/
+		classLinkTarget.getMethodLinks().get(0).updateModel();
 
 		// Detecting changes on the disk
-		// TODO
-
-		// Detecting changes in models
 		// TODO
 
 		// TODO vérification cohérence : classe publique = nom fichier, nom dossier = déclaration package, etc. implique création de

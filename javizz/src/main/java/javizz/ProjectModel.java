@@ -43,11 +43,11 @@ public interface ProjectModel extends AbstractModelObject {
 	// will result in a notification being sent.
 	String WATCHING = "isWatching";
 
-	@Getter(value = WATCHING, defaultValue = "false")
-	boolean isWatching();
+	@Getter(value = WATCHING, defaultValue = "false", isDerived = true)
+	boolean getIsWatching();
 
 	@Setter(WATCHING)
-	void setWatching(boolean isWatching);
+	void setIsWatching(boolean isWatching);
 
 	// Attributes and methods regarding the children packages:
 

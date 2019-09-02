@@ -143,4 +143,11 @@ public class ClassLink {
 		return attributeLinks;
 	}
 
+	/**
+	 * @return the methodLinks
+	 */
+	public List<MethodLink> getMethodLinks() {
+		return methodLinks;
+	}
+
 }
