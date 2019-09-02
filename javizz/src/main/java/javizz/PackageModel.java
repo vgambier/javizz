@@ -36,7 +36,7 @@ public interface PackageModel extends AbstractModelObject {
 
 	String PROJECT = "project";
 
-	@Getter(value = PROJECT, isDerived = true)
+	@Getter(value = PROJECT, isDerived = true) // isDerived flag is set, otherwise updateModel would cause a stack overflow
 	ProjectModel getProject();
 
 	@Setter(PROJECT)

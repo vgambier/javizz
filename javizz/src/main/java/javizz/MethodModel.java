@@ -1,10 +1,13 @@
 package javizz;
 
 import org.openflexo.pamela.annotations.Getter;
+import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
+
+import javizz.MethodModel.MethodModelImpl;
 
 /**
  * @author Victor Gambier
@@ -13,6 +16,7 @@ import org.openflexo.pamela.annotations.XMLElement;
 
 @ModelEntity
 @XMLElement
+@ImplementationClass(MethodModelImpl.class)
 public interface MethodModel extends AbstractModelObject {
 
 	// Attributes and methods regarding the name of the method:
@@ -40,7 +44,7 @@ public interface MethodModel extends AbstractModelObject {
 
 	String CLASS = "class";
 
-	@Getter(value = CLASS, isDerived = true)
+	@Getter(value = CLASS, isDerived = true) // isDerived flag is set, otherwise updateModel would cause a stack overflow
 	ClassModel getClazz();
 
 	@Setter(CLASS)
@@ -56,5 +60,13 @@ public interface MethodModel extends AbstractModelObject {
 
 	@Setter(TYPE)
 	void setType(String type);
+
+	abstract class MethodModelImpl extends AbstractModelObjectImpl implements MethodModel {
+
+		@Override
+		public ProjectModel getProject() {
+			return getClazz() == null ? null : getClazz().getProject();
+		}
+	}
 
 }

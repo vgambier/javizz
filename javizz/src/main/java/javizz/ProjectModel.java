@@ -43,7 +43,8 @@ public interface ProjectModel extends AbstractModelObject {
 	// will result in a notification being sent.
 	String WATCHING = "isWatching";
 
-	@Getter(value = WATCHING, defaultValue = "false", isDerived = true)
+	@Getter(value = WATCHING, defaultValue = "false", isDerived = true) // isDerived flag is set so that updateModel doesn't overwrite
+																		// isWatching
 	boolean getIsWatching();
 
 	@Setter(WATCHING)
@@ -53,7 +54,7 @@ public interface ProjectModel extends AbstractModelObject {
 
 	String PACKAGES = "packages";
 
-	@Getter(value = PACKAGES, cardinality = Cardinality.LIST)
+	@Getter(value = PACKAGES, cardinality = Cardinality.LIST, inverse = PackageModel.PROJECT)
 	@XMLElement
 	@Embedded
 	public List<PackageModel> getPackages();

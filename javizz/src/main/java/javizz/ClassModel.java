@@ -43,7 +43,7 @@ public interface ClassModel extends TypeModel {
 
 	String PACKAGE = "package";
 
-	@Getter(value = PACKAGE, isDerived = true)
+	@Getter(value = PACKAGE, isDerived = true) // isDerived flag is set, otherwise updateModel would cause a stack overflow
 	PackageModel getPackage();
 
 	@Setter(PACKAGE)

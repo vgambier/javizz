@@ -178,12 +178,6 @@ public class Testing {
 
 		projectModel.setIsWatching(true);
 
-		System.out.println("________");
-		System.out.println(projectModel);
-		System.out.println(projectModel.getName());
-		System.out.println(projectModel.getIsWatching());
-		System.out.println("________");
-
 		// We first need to reference the PackageLink, ClassLink, ClassModel, and AttributeLink we'll be working with
 
 		PackageLink packageLinkTarget = null;

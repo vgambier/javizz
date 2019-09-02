@@ -14,12 +14,12 @@ public interface AbstractModelObject extends AccessibleProxyObject {
 		public void setModified(boolean modified) {
 			performSuperSetModified(modified);
 
-			// Code here will triggers whenever one of the models is changed
-			if (getProject() != null && getProject().getIsWatching()) // pour faire la différence entre initialisation et changements
-				System.out.println("@@@@@@@@@" + modified);
-			if (getProject() != null && !getProject().getIsWatching())
-				System.out.println("la classe " + getClass() + " dit que : project = " + getProject());
-
+			// Code here will triggers whenever one of the models is changed (if the flag isWatching is set to true)
+			// isWatching is useful to differentiate between initializations and actual changes
+			if (getProject() != null && getProject().getIsWatching()) {
+				System.out.println("A change in the model has been detected!");
+				System.out.println(this.getClass());
+			}
 		}
 	}
 }

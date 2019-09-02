@@ -34,7 +34,7 @@ public interface AttributeModel extends AbstractModelObject {
 
 	String CLASS = "class";
 
-	@Getter(value = CLASS, isDerived = true)
+	@Getter(value = CLASS, isDerived = true) // isDerived flag is set, otherwise updateModel would cause a stack overflow
 	ClassModel getClazz();
 
 	@Setter(CLASS)
