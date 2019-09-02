@@ -2,6 +2,8 @@ package javizz;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.openflexo.pamela.ModelContextLibrary;
 import org.openflexo.pamela.annotations.ModelEntity;
@@ -24,6 +26,8 @@ public class ClassLink {
 
 	private ClassModel classModel; // the corresponding model
 	private String path; // the path where the class is located - uniquely defines the class within the file system
+	private List<AttributeLink> attributeLinks; // the children AttributeLink
+	private List<MethodLink> methodLinks; // the children methodLink
 
 	public ClassLink(PackageModel packageModel, String path) throws FileNotFoundException, ModelDefinitionException {
 
@@ -33,6 +37,8 @@ public class ClassLink {
 																										// instantiate ClassModel
 		this.classModel = factory.newInstance(ClassModel.class);
 		this.path = path;
+		attributeLinks = new ArrayList<AttributeLink>();
+		methodLinks = new ArrayList<MethodLink>();
 
 		classModel.setName(Testing.pathToFilename(path));
 		packageModel.addClass(classModel);
@@ -53,7 +59,8 @@ public class ClassLink {
 						String name = variable.getName().asString();
 						String type = variable.getType().asString();
 						// This constructor will take care of modelizing the attribute and its contents
-						new AttributeLink(classModel, name, type);
+						AttributeLink attributeLink = new AttributeLink(classModel, name, type);
+						attributeLinks.add(attributeLink);
 					}
 				});
 			}
@@ -70,7 +77,8 @@ public class ClassLink {
 				String name = md.getNameAsString();
 				String type = md.getType().asString();
 				// This constructor will take care of modelizing the method and its contents
-				new MethodLink(classModel, name, type);
+				MethodLink methodLink = new MethodLink(classModel, name, type);
+				methodLinks.add(methodLink);
 
 			}
 		}
@@ -126,6 +134,13 @@ public class ClassLink {
 	 */
 	public ClassModel getClassModel() {
 		return classModel;
+	}
+
+	/**
+	 * @return the attributeLinks
+	 */
+	public List<AttributeLink> getAttributeLinks() {
+		return attributeLinks;
 	}
 
 }

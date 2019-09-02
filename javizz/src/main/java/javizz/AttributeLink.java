@@ -75,4 +75,11 @@ public class AttributeLink {
 		return name;
 	}
 
+	/**
+	 * @return the attributeModel
+	 */
+	public AttributeModel getAttributeModel() {
+		return attributeModel;
+	}
+
 }

@@ -14,11 +14,15 @@ public interface AbstractModelObject extends AccessibleProxyObject {
 		public void setModified(boolean modified) {
 			performSuperSetModified(modified);
 
+			/*
+			
 			// code qui se déclenche quand un changement est apporté au modèle
 			if (getProject() != null && getProject().isWatching()) // pour faire la différence entre initialisation et changements
 				System.out.println("@@@@@@@@@" + modified);
 			if (getProject() != null && !getProject().isWatching())
 				System.out.println("la classe" + getClass() + "dit que : project" + getProject());
+				
+			*/
 		}
 	}
 }

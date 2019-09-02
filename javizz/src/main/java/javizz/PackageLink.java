@@ -2,6 +2,7 @@ package javizz;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class PackageLink {
 
 	private PackageModel packageModel; // the corresponding model
 	private String path; // the path where the package is located
+	private List<ClassLink> classLinks; // the children ClassLink
 
 	public PackageLink(ProjectModel projectModel, String path) throws ModelDefinitionException, FileNotFoundException {
 
@@ -25,8 +27,10 @@ public class PackageLink {
 
 		ModelFactory factory = new ModelFactory(ModelContextLibrary.getModelContext(PackageModel.class)); // we need to define factory to
 		// instantiate PackageModel
+
 		this.packageModel = factory.newInstance(PackageModel.class);
 		this.path = path;
+		classLinks = new ArrayList<ClassLink>();
 
 		packageModel.setName(Testing.pathToFilename(path));
 		projectModel.addPackage(packageModel);
@@ -44,7 +48,9 @@ public class PackageLink {
 			if (FilenameUtils.getExtension(filename).equals("java")) {
 				// If it is, then we assume the current file is a Java class
 				String filePath = file.getPath();
-				new ClassLink(packageModel, filePath); // This constructor will take care of modelizing the class and its contents
+				ClassLink classLink = new ClassLink(packageModel, filePath); // This constructor will take care of modelizing the class and
+																				// its contents
+				classLinks.add(classLink);
 			}
 		}
 	}
@@ -57,33 +63,13 @@ public class PackageLink {
 	 */
 	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
 
-		System.out.println("hey");
-
 		// Generating a new model based on the input file
 		PackageLink packageLinkFile = new PackageLink(packageModel.getProject(), path);
 		PackageModel packageModelFile = packageLinkFile.packageModel;
 
-		List<ClassModel> classes = packageModel.getClasses();
-		for (ClassModel classModel : classes) {
-			System.out.println("\tclass: " + classModel.getName());
-
-			List<AttributeModel> attributes = classModel.getAttributes();
-			for (AttributeModel attributeModel : attributes) {
-				System.out.println("\t\tattribute: " + attributeModel.getName());
-			}
-		}
-
 		// Updating the model
 		packageModel.updateWith(packageModelFile);
 
-		for (ClassModel classModel : classes) {
-			System.out.println("\tclass: " + classModel.getName());
-
-			List<AttributeModel> attributes = classModel.getAttributes();
-			for (AttributeModel attributeModel : attributes) {
-				System.out.println("\t\tattribute: " + attributeModel.getName());
-			}
-		}
 	}
 
 	// TODO
@@ -95,6 +81,13 @@ public class PackageLink {
 
 		// calls updateFolder() on all ClassLink, and also checks if the PackageModel itself should change
 
+	}
+
+	/**
+	 * @return the classLinks
+	 */
+	public List<ClassLink> getClassLinks() {
+		return classLinks;
 	}
 
 	/**

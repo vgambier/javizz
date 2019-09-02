@@ -19,6 +19,7 @@ public class ProjectLink {
 
 	private ProjectModel projectModel; // the corresponding model
 	private String path; // the path where the project is located
+	private List<PackageLink> packageLinks; // the children PackageLink
 
 	/**
 	 * The constructor. Takes the path to a folder containing subfolders and .java files, and modelizes them. Links an instance of
@@ -38,6 +39,7 @@ public class ProjectLink {
 																											// instantiate ProjectModel
 		this.projectModel = factory.newInstance(ProjectModel.class);
 		this.path = path;
+		packageLinks = new ArrayList<PackageLink>();
 
 		projectModel.setName(Testing.pathToFilename(path));
 
@@ -67,7 +69,9 @@ public class ProjectLink {
 
 		// For each package we've found...
 		for (String packagePath : packagePathList) {
-			new PackageLink(projectModel, packagePath); // This constructor will take care of modelizing the package and its contents
+			PackageLink packageLink = new PackageLink(projectModel, packagePath); // This constructor will take care of modelizing the
+																					// package and its contents
+			packageLinks.add(packageLink);
 		}
 	}
 
@@ -99,6 +103,13 @@ public class ProjectLink {
 	}
 
 	// TODO: same methods for the other classes
+
+	/**
+	 * @return the packageLinks
+	 */
+	public List<PackageLink> getPackageLinks() {
+		return packageLinks;
+	}
 
 	/**
 	 * @return the projectModel

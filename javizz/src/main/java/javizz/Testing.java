@@ -35,7 +35,7 @@ public class Testing {
 	/**
 	 * Takes a path and returns the name of filename or folder that it points to, without the extension
 	 * 
-	 * @param path
+	 * @param path'
 	 *            the path that is going to be converted into a filename
 	 * @return the bottom-most filename or folder, as a String
 	 */
@@ -58,12 +58,9 @@ public class Testing {
 		try {
 			classDec = cuTest.getClassByName("Empty").orElse(null);
 			classDec.setName("VeryEmpty");
-			System.out.println("from old to very");
 		} catch (NullPointerException e) { // If there is no class by the name of Empty
 			classDec = cuTest.getClassByName("VeryEmpty").orElse(null);
 			classDec.setName("Empty");
-			System.out.println("from very to old");
-
 		}
 
 		// Change 2 - Modifying an attribute
@@ -181,77 +178,79 @@ public class Testing {
 
 		projectModel.setWatching(true);
 
-		ClassModel helloClassModel = null;
+		// We first need to reference the PackageLink, ClassLink, ClassModel, and AttributeLink we'll be working with
 
-		for (PackageModel packageModel : packages) {
-			List<ClassModel> classes = packageModel.getClasses();
-			for (ClassModel classModel : classes) {
-				if (classModel.getName().equals("HelloWorld")) {
-					helloClassModel = classModel;
-					break;
-				}
+		PackageLink packageLinkTarget = null;
+		List<PackageLink> packageLinks = projectLink.getPackageLinks();
+		for (PackageLink packageLink : packageLinks) {
+			if (packageLink.getPackageModel().getName().equals("firstPackage")) {
+				packageLinkTarget = packageLink;
+				break;
+			}
+		}
+
+		ClassLink classLinkTarget = null;
+		ClassModel classModelTarget = null;
+		List<ClassLink> classLinks = packageLinkTarget.getClassLinks();
+		for (ClassLink classLink : classLinks) {
+			if (classLink.getClassModel().getName().equals("HelloWorld")) {
+				classLinkTarget = classLink;
+				classModelTarget = classLink.getClassModel();
+				break;
+			}
+		}
+
+		AttributeLink attributeLinkTarget = null;
+		List<AttributeLink> attributeLinks = classLinkTarget.getAttributeLinks();
+		for (AttributeLink attributeLink : attributeLinks) {
+			String attributeName = attributeLink.getAttributeModel().getName();
+			if (attributeName.equals("newAttribute") || attributeName.equals("veryNewAttribute")) {
+				attributeLinkTarget = attributeLink;
+				break;
 			}
 		}
 
 		// For ProjectLink
 
 		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
-		showClassModel(helloClassModel); // Showing the current model
+		showClassModel(classModelTarget); // Showing the current model
 		editFileTest(); // Modifying a file
 		System.out.println("Updating the model...");
 		projectLink.updateModel();
 		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
-		showClassModel(helloClassModel); // Showing that the model has changed
+		showClassModel(classModelTarget); // Showing that the model has changed
 
 		// For other classes
 
 		editFileTest();
-		PackageModel packageModel = projectModel.getPackages().get(0);
-		PackageLink packageLink = packageModel.getPackageLink();
-		System.out.println("Updating the model...");
-		System.out.println("the package is " + packageLink.getPackageModel().getName());
-		packageLink.updateModel();
+		System.out.println("Updating the attributeModel via the parent PackageLink...");
+		packageLinkTarget.updateModel();
 		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
-		// showClassModel(helloClassModel);
-
-		packageModel = packageLink.getPackageModel(); // solves the issue but is not elegant
-
-		System.out.println("double hey");
-		List<ClassModel> classes = packageModel.getClasses();
-		for (ClassModel classModel : classes) {
-			System.out.println("\tclass: " + classModel.getName());
-
-			List<AttributeModel> attributes = classModel.getAttributes();
-			for (AttributeModel attributeModel : attributes) {
-				System.out.println("\t\tattribute: " + attributeModel.getName());
-			}
-		}
+		showClassModel(classModelTarget);
 
 		editFileTest();
-		ClassModel classModel = packageModel.getClasses().get(1);
-		ClassLink classLink = classModel.getClassLink();
-		System.out.println("Updating the model...");
-		System.out.println("the class is" + classLink.getClassModel().getName());
-		classLink.updateModel();
+		System.out.println("Updating the attributeModel via the parent ClassLink...");
+		// System.out.println("the class is" + classLink.getClassModel().getName());
+		classLinkTarget.updateModel();
 		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
-		showClassModel(helloClassModel);
+		showClassModel(classModelTarget);
 
 		editFileTest();
-		AttributeModel attributeModel = classModel.getAttributes().get(3);
-		AttributeLink attributeLink = attributeModel.getAttributeLink();
-		System.out.println("Updating the model...");
-		System.out.println("the attribute is" + attributeLink.getName());
-		attributeLink.updateModel();
+		System.out.println("Updating the attributeModel via AttributeLink...");
+		// System.out.println("the attribute is" + attributeLink.getName());
+		attributeLinkTarget.updateModel();
 		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
-		showClassModel(helloClassModel);
+		showClassModel(classModelTarget);
 
+		/*
+		
 		editFileTest();
-		MethodModel methodModel = classModel.getMethods().get(0);
-		MethodLink methodLink = methodModel.getMethodLink();
 		System.out.println("Updating the model...");
-		methodLink.updateModel();
+		methodLinkTarget.updateModel();
 		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
 		showClassModel(helloClassModel);
+		
+		*/
 
 		// Detecting changes on the disk
 		// TODO
