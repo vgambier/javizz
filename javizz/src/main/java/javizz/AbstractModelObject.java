@@ -18,7 +18,6 @@ public interface AbstractModelObject extends AccessibleProxyObject {
 			// isWatching is useful to differentiate between initializations and actual changes
 			if (getProject() != null && getProject().getIsWatching()) {
 				System.out.println("A change in the model has been detected!");
-				System.out.println(this.getClass());
 			}
 		}
 	}

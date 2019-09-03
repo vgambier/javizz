@@ -48,6 +48,7 @@ public class AttributeLink {
 	 * @throws ModelDefinitionException
 	 * @throws FileNotFoundException
 	 */
+
 	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
 
 		// Generating a new model based on the existing file
@@ -56,6 +57,7 @@ public class AttributeLink {
 
 		// Updating the model
 		attributeModel.updateWith(attributeModelFile);
+
 	}
 
 	/**

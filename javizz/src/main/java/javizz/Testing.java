@@ -6,6 +6,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardWatchEventKinds;
+import java.nio.file.WatchService;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -46,7 +50,7 @@ public class Testing {
 
 	public static void editFileTest() throws IOException {
 
-		System.out.println("Editing file...");
+		System.out.println("\nEditing file...");
 
 		String editPath = "testFiles/firstPackage/HelloWorld.java";
 
@@ -97,6 +101,8 @@ public class Testing {
 
 	public static void main(String[] args) throws Exception {
 
+		// TODO: Initializing the watch service?
+
 		// Reading a test folder
 		String folderPath = "testFiles"; // a relative path, pointing to the testFiles directory included in the project
 		ProjectLink projectLink = new ProjectLink(folderPath);
@@ -126,7 +132,7 @@ public class Testing {
 			}
 		}
 
-		System.out.println("");
+		System.out.println("___________");
 
 		// XML serialization
 		String xmlPath = "testFiles/XMLFiles/TestSerialization.xml";
@@ -157,8 +163,7 @@ public class Testing {
 		// TODO Setting up a listener to automatically detect all changes made to the files on the disk
 
 		/*
-		 * 
-		 * 		regarder les méthodes de java modernes plutôt qu'openflexo
+		regarder les méthodes de java modernes plutôt qu'openflexo
 		par exemple : java nio
 		directory watcher
 		
@@ -212,9 +217,9 @@ public class Testing {
 
 		// For ProjectLink
 
-		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
+		System.out.println("\nHere are the attributes as stored in the HelloWorld ClassModel:");
 		showClassModel(classModelTarget); // Showing the current model
-		editFileTest(); // Modifying a file
+		editFileTest(); // Modifying the name of a class and an attribute
 		System.out.println("Updating the model...");
 		projectLink.updateModel();
 		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
@@ -234,18 +239,28 @@ public class Testing {
 		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
 		showClassModel(classModelTarget);
 
-		editFileTest();
-		System.out.println("Updating the attributeModel via AttributeLink...");
-		attributeLinkTarget.updateModel();
-		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
-		showClassModel(classModelTarget);
+		// Note: calling attributeLinkTarget.updateModel(); would result in unexpected behavior
+		// The underlying reason for this is that, as of now, an attribute is uniquely defined by its name
+		// So while it's possible to update a classModel by recreating a model from scratch using its path and updating
+		// everything
+		// that has
+		// changed
+		// The same cannot be said of an attributeModel - if we change its name, any attempt at updating it will fail -
+		// From the constructor's perspective, it's as if it was a completely different attribute
+		// So, in fact, it doesn't make sense to call updateModel on attributeLink if the thing we want to update is the
+		// attributeModel
 
-		classLinkTarget.getMethodLinks().get(0).updateModel();
+		// TODO Test attributeLinkTarget.updateModel() and methodLinkTarget.updateModel() (with well thought-out tests)
 
 		// Detecting changes on the disk
 		// TODO
 
-		// TODO vérification cohérence : classe publique = nom fichier, nom dossier = déclaration package, etc. implique création de
+		Path path = Paths.get(".");
+		WatchService watchService = path.getFileSystem().newWatchService();
+		path.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
+
+		// TODO vérification cohérence : classe publique = nom fichier, nom dossier = déclaration package, etc. implique
+		// création de
 		// nouveaux attributs, @Override + changement de nom
 
 	}
