@@ -101,7 +101,7 @@ public class Testing {
 
 	public static void main(String[] args) throws Exception {
 
-		// TODO: Initializing the watch service?
+		// TODO: Initializing a watch service to track file changes on disk?
 
 		// Reading a test folder
 		String folderPath = "testFiles"; // a relative path, pointing to the testFiles directory included in the project
@@ -142,6 +142,7 @@ public class Testing {
 		FileOutputStream fos = new FileOutputStream(xmlFile);
 		ModelFactory projectFactory = new ModelFactory(ProjectModel.class);
 		projectFactory.serialize(projectModel, fos, SerializationPolicy.EXTENSIVE, true);
+		fos.close();
 
 		// Copying the XML file
 		File xmlFileCopy = new File("testFiles/XMLFiles/TestSerializationCopy.xml");
@@ -151,6 +152,7 @@ public class Testing {
 		FileInputStream fis = new FileInputStream(xmlFileCopy);
 		ProjectModel projectModelClone = (ProjectModel) projectFactory.deserialize(fis, DeserializationPolicy.RESTRICTIVE);
 		xmlFileCopy.delete(); // we can delete the copy now
+		fis.close();
 
 		// XML reserialization of the model
 		String xmlPath2 = "testFiles/XMLFiles/TestReserialization.xml";
@@ -159,8 +161,7 @@ public class Testing {
 		xmlFile2.createNewFile();
 		FileOutputStream fos2 = new FileOutputStream(xmlFile2);
 		projectFactory.serialize(projectModelClone, fos2, SerializationPolicy.EXTENSIVE, true);
-
-		// TODO Setting up a listener to automatically detect all changes made to the files on the disk
+		fos2.close();
 
 		/*
 		regarder les méthodes de java modernes plutôt qu'openflexo
