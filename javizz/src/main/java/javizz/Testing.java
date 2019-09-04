@@ -270,8 +270,9 @@ public class Testing {
 		// nouveaux attributs, @Override + changement de nom
 
 		// Results of the file watcher
-		fm.run();
-		fm.stop(); // doesn't seem to work
+		fm.run(); // stalls everything
+		fm.stop(); // is inaccessible
+		System.out.println("not printed"); // is inaccessible
 
 	}
 }
