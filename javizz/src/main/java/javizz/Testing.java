@@ -6,14 +6,14 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardWatchEventKinds;
-import java.nio.file.WatchService;
+import java.nio.file.FileSystems;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.vfs2.FileSystemManager;
+import org.apache.commons.vfs2.VFS;
+import org.apache.commons.vfs2.impl.DefaultFileMonitor;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.factory.DeserializationPolicy;
@@ -101,7 +101,16 @@ public class Testing {
 
 	public static void main(String[] args) throws Exception {
 
-		// TODO: Initializing a watch service to track file changes on disk?
+		// Initializing a watch service to track file changes on disk
+
+		FileSystemManager fsManager = VFS.getManager();
+		String absolutePath = FileSystems.getDefault().getPath("testFiles/firstPackage/HelloWorld.java").normalize().toAbsolutePath()
+				.toString(); // converting the relative path into an absolute path
+		org.apache.commons.vfs2.FileObject listendir = fsManager.resolveFile(absolutePath);
+		DefaultFileMonitor fm = new DefaultFileMonitor(new CustomFileListener());
+		fm.setRecursive(true);
+		fm.addFile(listendir);
+		fm.start();
 
 		// Reading a test folder
 		String folderPath = "testFiles"; // a relative path, pointing to the testFiles directory included in the project
@@ -256,13 +265,13 @@ public class Testing {
 		// Detecting changes on the disk
 		// TODO
 
-		Path path = Paths.get(".");
-		WatchService watchService = path.getFileSystem().newWatchService();
-		path.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
-
 		// TODO vérification cohérence : classe publique = nom fichier, nom dossier = déclaration package, etc. implique
 		// création de
 		// nouveaux attributs, @Override + changement de nom
+
+		// Results of the file watcher
+		fm.run();
+		fm.stop(); // doesn't seem to work
 
 	}
 }
