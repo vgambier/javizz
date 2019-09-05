@@ -255,11 +255,12 @@ public class Testing {
 		classLinkTarget.updateModel();
 		showClassModel(classModelTarget);
 
-		System.out.println("\nUsing setNameInFile to edit the file...");
-		attributeLinkTarget.setTypeInFile("attributeDefault");
+		System.out.println("\nUsing setTypeInFile to edit the file...");
+		attributeLinkTarget.setTypeInFile("int");
 		System.out.println("Updating the model...");
 		classLinkTarget.updateModel();
 		showClassModel(classModelTarget);
+		attributeLinkTarget.setTypeInFile("long"); // Reverting the change
 
 		// Detecting changes on the disk
 		// TODO

@@ -111,10 +111,11 @@ public class AttributeLink {
 	 * 
 	 * @param newType
 	 *            the new type of the attribute
-	 * @throws FileNotFoundException
+	 * @throws IOException
 	 * 
 	 */
-	public void updateTypeInFile(String newType) throws FileNotFoundException {
+
+	public void setTypeInFile(String newType) throws IOException {
 
 		String path = attributeModel.getClazz().getPath(); // Retrieving the path of the file where the attribute is located
 
@@ -127,9 +128,9 @@ public class AttributeLink {
 			for (BodyDeclaration<?> member : typeDec.getMembers()) {
 				member.toFieldDeclaration().ifPresent(field -> {
 					for (VariableDeclarator variable : field.getVariables()) {
-						String oldName = variable.getName().asString();
-						if (oldName.equals(getAttributeModel().getName()))
-							variable.setName(newName);
+						String oldType = variable.getType().asString();
+						if (oldType.equals(getAttributeModel().getType()))
+							variable.setType(newType);
 					}
 				});
 			}

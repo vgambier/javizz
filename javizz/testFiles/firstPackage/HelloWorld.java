@@ -36,7 +36,7 @@
 public class HelloWorld { // comment
 	
 	private String name;
-	private int age;
+	private long age;
 	public String ssn;
     long attributeDefault;
 
@@ -59,7 +59,7 @@ public class HelloWorld { // comment
 
 }
 
-class Empty {
+class VeryEmpty {
 
     // This class intentionally left blank
 

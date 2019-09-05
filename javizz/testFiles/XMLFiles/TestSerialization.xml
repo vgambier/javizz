@@ -7,7 +7,7 @@
       <MethodModel id="5" name="uselessMethod" type="void" />
       <MethodModel id="6" name="returnTwo" type="int" />
       <AttributeModel id="7" name="name" type="String" />
-      <AttributeModel id="8" name="age" type="int" />
+      <AttributeModel id="8" name="age" type="long" />
       <AttributeModel id="9" name="ssn" type="String" />
       <AttributeModel id="10" name="attributeDefault" type="long" />
     </ClassModel>
