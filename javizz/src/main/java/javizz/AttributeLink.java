@@ -93,11 +93,8 @@ public class AttributeLink {
 				member.toFieldDeclaration().ifPresent(field -> {
 					for (VariableDeclarator variable : field.getVariables()) {
 						String oldName = variable.getName().asString();
-						if (oldName.equals(getAttributeModel().getName())) {
-							System.out
-									.println("this being printed means that the name of the attribute in the file is now attributeDefault");
+						if (oldName.equals(getAttributeModel().getName()))
 							variable.setName(newName);
-						}
 					}
 				});
 			}
@@ -107,7 +104,6 @@ public class AttributeLink {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
 		writer.write(LexicalPreservingPrinter.print(cu));
 		writer.close();
-
 	}
 
 	/**
@@ -131,13 +127,18 @@ public class AttributeLink {
 			for (BodyDeclaration<?> member : typeDec.getMembers()) {
 				member.toFieldDeclaration().ifPresent(field -> {
 					for (VariableDeclarator variable : field.getVariables()) {
-						String oldType = variable.getType().asString();
-						if (oldType.equals(this.type))
-							variable.setType(newType);
+						String oldName = variable.getName().asString();
+						if (oldName.equals(getAttributeModel().getName()))
+							variable.setName(newName);
 					}
 				});
 			}
 		}
+
+		// Writing all changes to the original file
+		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+		writer.write(LexicalPreservingPrinter.print(cu));
+		writer.close();
 	}
 
 	/**

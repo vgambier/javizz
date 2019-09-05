@@ -70,8 +70,7 @@ public class PackageLink {
 		// Updating the model
 		packageModel.updateWith(packageModelFile);
 
-		// The Link instance still has the old Model as an attribute - let's update it
-		this.packageModel = packageModel;
+		// TODO: The Link instance still has the old Model as an attribute
 
 	}
 

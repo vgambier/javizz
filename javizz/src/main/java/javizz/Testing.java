@@ -93,7 +93,7 @@ public class Testing {
 
 		List<AttributeModel> attributes = classModel.getAttributes();
 		for (AttributeModel attributeModel : attributes) {
-			System.out.println("\t" + attributeModel.getName());
+			System.out.println("\t" + attributeModel.getType() + " " + attributeModel.getName());
 		}
 	}
 
@@ -112,20 +112,20 @@ public class Testing {
 		List<PackageModel> packages = projectModel.getPackages();
 
 		for (PackageModel packageModel : packages) {
-			System.out.println("package: " + packageModel.getName());
+			System.out.println("\tpackage: " + packageModel.getName());
 
 			List<ClassModel> classes = packageModel.getClasses();
 			for (ClassModel classModel : classes) {
-				System.out.println("\tclass: " + classModel.getName());
+				System.out.println("\t\tclass: " + classModel.getName());
 
 				List<AttributeModel> attributes = classModel.getAttributes();
 				for (AttributeModel attributeModel : attributes) {
-					System.out.println("\t\tattribute: " + attributeModel.getName());
+					System.out.println("\t\t\tattribute: " + attributeModel.getName());
 				}
 
 				List<MethodModel> methods = classModel.getMethods();
 				for (MethodModel methodModel : methods) {
-					System.out.println("\t\tmethod: " + methodModel.getName());
+					System.out.println("\t\t\tmethod: " + methodModel.getName());
 				}
 			}
 		}
@@ -249,15 +249,17 @@ public class Testing {
 
 		// Testing file writes
 
-		// TODO attributeLink isn't attributeModel so when i change the model the file is not edited.
-
-		System.out.println("\nUsing updateNameInFile to edit the file...");
+		System.out.println("\nUsing setNameInFile to edit the file...");
 		attributeLinkTarget.setNameInFile("attributeDefault");
 		System.out.println("Updating the model...");
 		classLinkTarget.updateModel();
-		showClassModel(classModelTarget); // Showing that the model has changed
+		showClassModel(classModelTarget);
 
-		// so the file IS changed but not the model, even after updateModel?
+		System.out.println("\nUsing setNameInFile to edit the file...");
+		attributeLinkTarget.setTypeInFile("attributeDefault");
+		System.out.println("Updating the model...");
+		classLinkTarget.updateModel();
+		showClassModel(classModelTarget);
 
 		// Detecting changes on the disk
 		// TODO
