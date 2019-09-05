@@ -41,8 +41,9 @@ public class ClassLink {
 		methodLinks = new ArrayList<MethodLink>();
 
 		classModel.setName(Testing.pathToFilename(path));
-		packageModel.addClass(classModel);
+		classModel.setPath(path);
 		classModel.setPackage(packageModel);
+		packageModel.addClass(classModel);
 
 		// Looking for methods and attributes within the file
 

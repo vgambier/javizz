@@ -1,11 +1,22 @@
 package javizz;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import org.openflexo.pamela.ModelContextLibrary;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.pamela.factory.ModelFactory;
+
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.BodyDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
 
 @ModelEntity
 public class AttributeLink {
@@ -61,13 +72,72 @@ public class AttributeLink {
 	}
 
 	/**
-	 * Reads a .java file, compares it to the existing model, and updates the file
+	 * Reads a .java file, and changes the name of the current attribute to match the input argument. Does not affect the model.
+	 * 
+	 * @param newName
+	 *            the new name of the attribute
+	 * @throws IOException
 	 * 
 	 */
-	public void updateFile() {
+	public void setNameInFile(String newName) throws IOException {
 
-		// As of now, since an attribute is uniquely defined by its name and type, it can't ever change
-		// There is a similar situation for methods, classes, and packages.
+		String path = attributeModel.getClazz().getPath(); // Retrieving the path of the file where the attribute is located
+
+		// Initializing the compilation unit
+		CompilationUnit cu = StaticJavaParser.parse(new File(path));
+		LexicalPreservingPrinter.setup(cu); // enables lexical preservation
+
+		// Retrieving the attribute (based on its current name)
+		for (TypeDeclaration<?> typeDec : cu.getTypes()) {
+			for (BodyDeclaration<?> member : typeDec.getMembers()) {
+				member.toFieldDeclaration().ifPresent(field -> {
+					for (VariableDeclarator variable : field.getVariables()) {
+						String oldName = variable.getName().asString();
+						if (oldName.equals(getAttributeModel().getName())) {
+							System.out
+									.println("this being printed means that the name of the attribute in the file is now attributeDefault");
+							variable.setName(newName);
+						}
+					}
+				});
+			}
+		}
+
+		// Writing all changes to the original file
+		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+		writer.write(LexicalPreservingPrinter.print(cu));
+		writer.close();
+
+	}
+
+	/**
+	 * Reads a .java file, and changes the type of the current attribute to match the input argument. Does not affect the model.
+	 * 
+	 * @param newType
+	 *            the new type of the attribute
+	 * @throws FileNotFoundException
+	 * 
+	 */
+	public void updateTypeInFile(String newType) throws FileNotFoundException {
+
+		String path = attributeModel.getClazz().getPath(); // Retrieving the path of the file where the attribute is located
+
+		// Initializing the compilation unit
+		CompilationUnit cu = StaticJavaParser.parse(new File(path));
+		LexicalPreservingPrinter.setup(cu); // enables lexical preservation
+
+		// Retrieving the attribute (based on its current name)
+		for (TypeDeclaration<?> typeDec : cu.getTypes()) {
+			for (BodyDeclaration<?> member : typeDec.getMembers()) {
+				member.toFieldDeclaration().ifPresent(field -> {
+					for (VariableDeclarator variable : field.getVariables()) {
+						String oldType = variable.getType().asString();
+						if (oldType.equals(this.type))
+							variable.setType(newType);
+					}
+				});
+			}
+		}
 	}
 
 	/**

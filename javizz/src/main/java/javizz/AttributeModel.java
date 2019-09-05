@@ -56,11 +56,6 @@ public interface AttributeModel extends AbstractModelObject {
 		// si on veut ajouter des méthodes à AttributeModel non gérées par Pamela
 
 		@Override
-		public String toString() {
-			return this.getName() + ": " + this.getType();
-		}
-
-		@Override
 		public ProjectModel getProject() {
 			return getClazz() == null ? null : getClazz().getProject();
 		}

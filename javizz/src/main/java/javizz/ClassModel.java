@@ -39,6 +39,16 @@ public interface ClassModel extends TypeModel {
 	@Setter(NAME)
 	void setName(String name);
 
+	// Attributes and methods regarding the path of the file
+
+	String PATH = "path";
+
+	@Getter(PATH)
+	String getPath();
+
+	@Setter(PATH)
+	void setPath(String path);
+
 	// Attributes and methods regarding the parent package
 
 	String PACKAGE = "package";

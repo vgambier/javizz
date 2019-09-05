@@ -9,7 +9,7 @@
       <AttributeModel id="7" name="name" type="String" />
       <AttributeModel id="8" name="age" type="int" />
       <AttributeModel id="9" name="ssn" type="String" />
-      <AttributeModel id="10" name="veryNewAttribute" type="long" />
+      <AttributeModel id="10" name="attributeDefault" type="long" />
     </ClassModel>
     <ClassModel id="11" name="NoMethodsNoAttributes" />
     <ClassModel id="12" name="NoPackage" />

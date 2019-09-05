@@ -6,14 +6,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.FileSystems;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.vfs2.FileSystemManager;
-import org.apache.commons.vfs2.VFS;
-import org.apache.commons.vfs2.impl.DefaultFileMonitor;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.factory.DeserializationPolicy;
@@ -74,11 +70,11 @@ public class Testing {
 				member.toFieldDeclaration().ifPresent(field -> {
 					for (VariableDeclarator variable : field.getVariables()) {
 						String variableName = variable.getName().asString();
-						if (variableName.equals("newAttribute")) {
-							variable.setName("veryNewAttribute");
+						if (variableName.equals("attributeAlpha")) {
+							variable.setName("attributeBeta");
 						}
-						else if (variableName.equals("veryNewAttribute")) {
-							variable.setName("newAttribute");
+						else if (variableName.equals("attributeBeta") || variableName.equals("attributeDefault")) {
+							variable.setName("attributeAlpha");
 						}
 					}
 				});
@@ -93,6 +89,8 @@ public class Testing {
 
 	public static void showClassModel(ClassModel classModel) {
 
+		System.out.println("\nHere are the attributes as stored in the HelloWorld ClassModel:");
+
 		List<AttributeModel> attributes = classModel.getAttributes();
 		for (AttributeModel attributeModel : attributes) {
 			System.out.println("\t" + attributeModel.getName());
@@ -101,16 +99,7 @@ public class Testing {
 
 	public static void main(String[] args) throws Exception {
 
-		// Initializing a watch service to track file changes on disk
-
-		FileSystemManager fsManager = VFS.getManager();
-		String absolutePath = FileSystems.getDefault().getPath("testFiles/firstPackage/HelloWorld.java").normalize().toAbsolutePath()
-				.toString(); // converting the relative path into an absolute path
-		org.apache.commons.vfs2.FileObject listendir = fsManager.resolveFile(absolutePath);
-		DefaultFileMonitor fm = new DefaultFileMonitor(new CustomFileListener());
-		fm.setRecursive(true);
-		fm.addFile(listendir);
-		fm.start();
+		// TODO: Initializing a watch service to track file changes on disk
 
 		// Reading a test folder
 		String folderPath = "testFiles"; // a relative path, pointing to the testFiles directory included in the project
@@ -219,7 +208,7 @@ public class Testing {
 		List<AttributeLink> attributeLinks = classLinkTarget.getAttributeLinks();
 		for (AttributeLink attributeLink : attributeLinks) {
 			String attributeName = attributeLink.getAttributeModel().getName();
-			if (attributeName.equals("newAttribute") || attributeName.equals("veryNewAttribute")) {
+			if (attributeName.equals("attributeDefault")) {
 				attributeLinkTarget = attributeLink;
 				break;
 			}
@@ -227,12 +216,10 @@ public class Testing {
 
 		// For ProjectLink
 
-		System.out.println("\nHere are the attributes as stored in the HelloWorld ClassModel:");
 		showClassModel(classModelTarget); // Showing the current model
 		editFileTest(); // Modifying the name of a class and an attribute
-		System.out.println("Updating the model...");
+		System.out.println("Updating the attributeModel via the parent ProjectLink...");
 		projectLink.updateModel();
-		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
 		showClassModel(classModelTarget); // Showing that the model has changed
 
 		// For other classes
@@ -240,13 +227,11 @@ public class Testing {
 		editFileTest();
 		System.out.println("Updating the attributeModel via the parent PackageLink...");
 		packageLinkTarget.updateModel();
-		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
 		showClassModel(classModelTarget);
 
 		editFileTest();
 		System.out.println("Updating the attributeModel via the parent ClassLink...");
 		classLinkTarget.updateModel();
-		System.out.println("Here are the attributes as stored in the HelloWorld ClassModel:");
 		showClassModel(classModelTarget);
 
 		// Note: calling attributeLinkTarget.updateModel(); would result in unexpected behavior
@@ -262,17 +247,24 @@ public class Testing {
 
 		// TODO Test attributeLinkTarget.updateModel() and methodLinkTarget.updateModel() (with well thought-out tests)
 
+		// Testing file writes
+
+		// TODO attributeLink isn't attributeModel so when i change the model the file is not edited.
+
+		System.out.println("\nUsing updateNameInFile to edit the file...");
+		attributeLinkTarget.setNameInFile("attributeDefault");
+		System.out.println("Updating the model...");
+		classLinkTarget.updateModel();
+		showClassModel(classModelTarget); // Showing that the model has changed
+
+		// so the file IS changed but not the model, even after updateModel?
+
 		// Detecting changes on the disk
 		// TODO
 
 		// TODO vérification cohérence : classe publique = nom fichier, nom dossier = déclaration package, etc. implique
 		// création de
 		// nouveaux attributs, @Override + changement de nom
-
-		// Results of the file watcher
-		fm.run(); // stalls everything
-		fm.stop(); // is inaccessible
-		System.out.println("not printed"); // is inaccessible
 
 	}
 }
