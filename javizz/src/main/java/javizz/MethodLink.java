@@ -90,10 +90,8 @@ public class MethodLink {
 				super.visit(md, arg);
 
 				String oldName = md.getNameAsString();
-				if (oldName.equals(methodModel.getName())) {
+				if (oldName.equals(methodModel.getName()))
 					md.setName(newName);
-					System.out.println("reverted");
-				}
 			}
 		}
 
@@ -128,8 +126,11 @@ public class MethodLink {
 				super.visit(md, arg);
 
 				String oldName = md.getNameAsString();
-				if (oldName.equals(methodModel.getName()))
+				System.out.println(oldName + "\t" + methodModel.getName());
+				if (oldName.equals(methodModel.getName())) {
 					md.setType(newType);
+					System.out.println("helloo");
+				}
 			}
 		}
 

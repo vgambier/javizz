@@ -47,4 +47,4 @@ dependencies {
 
 apply plugin: 'application'
 
-mainClassName = 'javizz.Testing'
+mainClassName = 'javizz.Demonstration'

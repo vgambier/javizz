@@ -32,7 +32,7 @@ public class PackageLink {
 		this.path = path;
 		classLinks = new ArrayList<ClassLink>();
 
-		packageModel.setName(Testing.pathToFilename(path));
+		packageModel.setName(Demonstration.pathToFilename(path));
 		projectModel.addPackage(packageModel);
 		packageModel.setProject(projectModel);
 

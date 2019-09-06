@@ -45,7 +45,7 @@ public class HelloWorld { // comment
         System.out.println("Hello, World");
     }
 
-    public int uselessMethod() {				// useless comment
+    public long uselessMethod() {				// useless comment
         // does nothing of note
     }
 
@@ -59,7 +59,7 @@ public class HelloWorld { // comment
 
 }
 
-class Empty {
+class VeryEmpty {
 
     // This class intentionally left blank
 

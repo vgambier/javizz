@@ -4,7 +4,7 @@
     <ClassModel id="2" name="BrandNew" />
     <ClassModel id="3" name="HelloWorld">
       <MethodModel id="4" name="main" type="void" />
-      <MethodModel id="5" name="uselessMethod" type="int" />
+      <MethodModel id="5" name="uselessMethod" type="long" />
       <MethodModel id="6" name="returnTwo" type="int" />
       <AttributeModel id="7" name="name" type="String" />
       <AttributeModel id="8" name="age" type="int" />

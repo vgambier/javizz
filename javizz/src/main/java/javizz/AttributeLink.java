@@ -128,7 +128,7 @@ public class AttributeLink {
 			for (BodyDeclaration<?> member : typeDec.getMembers()) {
 				member.toFieldDeclaration().ifPresent(field -> {
 					for (VariableDeclarator variable : field.getVariables()) {
-						String oldName = variable.getName().asString();
+						String oldName = variable.getNameAsString();
 						if (oldName.equals(attributeModel.getName()))
 							variable.setType(newType);
 					}

@@ -38,7 +38,7 @@ import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinte
  */
 
 @ImplementationClass(FileSystemBasedResourceCenter.FileSystemBasedResourceCenterImpl.class)
-public class Testing {
+public class Demonstration {
 
 	final static int WAITING_TIME = 1000; // the number of milliseconds the program will stall after each file change to let the file
 											// monitoring
@@ -81,7 +81,7 @@ public class Testing {
 			for (BodyDeclaration<?> member : typeDec.getMembers()) {
 				member.toFieldDeclaration().ifPresent(field -> {
 					for (VariableDeclarator variable : field.getVariables()) {
-						String variableName = variable.getName().asString();
+						String variableName = variable.getNameAsString();
 						if (variableName.equals("attributeAlpha")) {
 							variable.setName("attributeBeta");
 						}
@@ -347,9 +347,8 @@ public class Testing {
 		Thread.sleep(WAITING_TIME);
 
 		// Reverting the change
-		System.out.println("revert");
-		methodLinkTarget.setNameInFile("uselessMethod");
 		methodLinkTarget.setTypeInFile("long");
+		methodLinkTarget.setNameInFile("uselessMethod");
 
 		Thread.sleep(WAITING_TIME);
 

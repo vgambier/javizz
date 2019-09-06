@@ -2,6 +2,7 @@ package javizz;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class ClassLink {
 		attributeLinks = new ArrayList<AttributeLink>();
 		methodLinks = new ArrayList<MethodLink>();
 
-		classModel.setName(Testing.pathToFilename(path));
+		classModel.setName(Demonstration.pathToFilename(path));
 		classModel.setPath(path);
 		classModel.setPackage(packageModel);
 		packageModel.addClass(classModel);
@@ -57,8 +58,8 @@ public class ClassLink {
 				member.toFieldDeclaration().ifPresent(field -> {
 					for (VariableDeclarator variable : field.getVariables()) {
 						// Grabbing relevant data
-						String name = variable.getName().asString();
-						String type = variable.getType().asString();
+						String name = variable.getNameAsString();
+						String type = variable.getTypeAsString();
 						// This constructor will take care of modelizing the attribute and its contents
 						AttributeLink attributeLink = new AttributeLink(classModel, name, type);
 						attributeLinks.add(attributeLink);
@@ -76,7 +77,7 @@ public class ClassLink {
 
 				// Grabbing relevant data
 				String name = md.getNameAsString();
-				String type = md.getType().asString();
+				String type = md.getTypeAsString();
 				// This constructor will take care of modelizing the method and its contents
 				MethodLink methodLink = new MethodLink(classModel, name, type);
 				methodLinks.add(methodLink);
@@ -103,6 +104,19 @@ public class ClassLink {
 
 		// Updating the model
 		classModel.updateWith(classModelFile);
+	}
+
+	/**
+	 * Reads a .java file, and changes the name of the class to match the input argument. Does not affect the model. For now, only edits the
+	 * contents of the file, and doesn't rename the filename. This may change in the future.
+	 * 
+	 * @param newName
+	 *            the new name of the attribute
+	 * @throws IOException
+	 * 
+	 */
+	public void setNameInFile(String newName) throws IOException {
+		// TODO
 	}
 
 	// TODO, unless it's no longer necessary
