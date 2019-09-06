@@ -36,8 +36,8 @@
 public class HelloWorld { // comment
 	
 	private String name;
-	private long age;
-	public String ssn;
+	private int age;
+	public long ssn;
     long attributeDefault;
 
     public static void main(String[] args) {
@@ -45,7 +45,7 @@ public class HelloWorld { // comment
         System.out.println("Hello, World");
     }
 
-    public void uselessMethod() {				// useless comment
+    public int uselessMethod() {				// useless comment
         // does nothing of note
     }
 

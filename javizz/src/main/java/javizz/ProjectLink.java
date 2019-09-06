@@ -91,7 +91,6 @@ public class ProjectLink {
 		projectModel.updateWith(projectModelFile);
 	}
 
-	// TODO
 	/**
 	 * Reads a directory containing .java files, compares it to the existing model, and updates the folder
 	 * 

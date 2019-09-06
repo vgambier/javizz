@@ -68,5 +68,4 @@ public interface MethodModel extends AbstractModelObject {
 			return getClazz() == null ? null : getClazz().getProject();
 		}
 	}
-
 }

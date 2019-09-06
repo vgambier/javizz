@@ -93,7 +93,7 @@ public class AttributeLink {
 				member.toFieldDeclaration().ifPresent(field -> {
 					for (VariableDeclarator variable : field.getVariables()) {
 						String oldName = variable.getName().asString();
-						if (oldName.equals(getAttributeModel().getName()))
+						if (oldName.equals(attributeModel.getName()))
 							variable.setName(newName);
 					}
 				});
@@ -128,8 +128,8 @@ public class AttributeLink {
 			for (BodyDeclaration<?> member : typeDec.getMembers()) {
 				member.toFieldDeclaration().ifPresent(field -> {
 					for (VariableDeclarator variable : field.getVariables()) {
-						String oldType = variable.getType().asString();
-						if (oldType.equals(getAttributeModel().getType()))
+						String oldName = variable.getName().asString();
+						if (oldName.equals(attributeModel.getName()))
 							variable.setType(newType);
 					}
 				});

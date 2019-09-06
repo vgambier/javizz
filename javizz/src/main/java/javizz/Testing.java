@@ -40,6 +40,10 @@ import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinte
 @ImplementationClass(FileSystemBasedResourceCenter.FileSystemBasedResourceCenterImpl.class)
 public class Testing {
 
+	final static int WAITING_TIME = 1000; // the number of milliseconds the program will stall after each file change to let the file
+											// monitoring
+	// thread enough time to run
+
 	/**
 	 * Takes a path and returns the name of filename or folder that it points to, without the extension
 	 * 
@@ -95,13 +99,23 @@ public class Testing {
 		writer.close();
 	}
 
-	public static void showClassModel(ClassModel classModel) {
+	public static void showClassModelAttributes(ClassModel classModel) {
 
 		System.out.println("\nHere are the attributes as stored in the HelloWorld ClassModel:");
 
 		List<AttributeModel> attributes = classModel.getAttributes();
 		for (AttributeModel attributeModel : attributes) {
 			System.out.println("\t" + attributeModel.getType() + " " + attributeModel.getName());
+		}
+	}
+
+	public static void showClassModelMethods(ClassModel classModel) {
+
+		System.out.println("\nHere are the methods as stored in the HelloWorld ClassModel:");
+
+		List<MethodModel> methods = classModel.getMethods();
+		for (MethodModel methodModel : methods) {
+			System.out.println("\t" + methodModel.getType() + " " + methodModel.getName());
 		}
 	}
 
@@ -246,31 +260,42 @@ public class Testing {
 			}
 		}
 
+		MethodLink methodLinkTarget = null;
+		List<MethodLink> methodLinks = classLinkTarget.getMethodLinks();
+		for (MethodLink methodLink : methodLinks) {
+			String methodName = methodLink.getMethodModel().getName();
+			System.out.println(methodName);
+			if (methodName.equals("uselessMethod")) {
+				methodLinkTarget = methodLink;
+				break;
+			}
+		}
+
 		// For ProjectLink
 
-		showClassModel(classModelTarget); // Showing the current model
+		showClassModelAttributes(classModelTarget); // Showing the current model
 		editFileTest(); // Modifying the name of a class and an attribute
 		System.out.println("Updating the attributeModel via the parent ProjectLink...");
 		projectLink.updateModel();
-		showClassModel(classModelTarget); // Showing that the model has changed
+		showClassModelAttributes(classModelTarget); // Showing that the model has changed
 
-		Thread.sleep(1000); // to give time to the other thread to run and detect the changes
+		Thread.sleep(WAITING_TIME); // to give time to the other thread to run and detect the changes
 
 		// For other classes
 
 		editFileTest();
 		System.out.println("Updating the attributeModel via the parent PackageLink...");
 		packageLinkTarget.updateModel();
-		showClassModel(classModelTarget);
+		showClassModelAttributes(classModelTarget);
 
-		Thread.sleep(1000);
+		Thread.sleep(WAITING_TIME);
 
 		editFileTest();
 		System.out.println("Updating the attributeModel via the parent ClassLink...");
 		classLinkTarget.updateModel();
-		showClassModel(classModelTarget);
+		showClassModelAttributes(classModelTarget);
 
-		Thread.sleep(1000);
+		Thread.sleep(WAITING_TIME);
 
 		// Note: calling attributeLinkTarget.updateModel(); would result in unexpected behavior
 		// The underlying reason for this is that, as of now, an attribute is uniquely defined by its name
@@ -287,22 +312,46 @@ public class Testing {
 
 		// Testing file writes
 
-		System.out.println("\nUsing setNameInFile to edit the file...");
+		System.out.println("\nUsing setNameInFile to edit the name of an attribute in the file...");
 		attributeLinkTarget.setNameInFile("attributeDefault");
-		System.out.println("Updating the model...");
+		System.out.println("Updating the file...");
 		classLinkTarget.updateModel();
-		showClassModel(classModelTarget);
+		showClassModelAttributes(classModelTarget);
 
-		Thread.sleep(1000);
+		Thread.sleep(WAITING_TIME);
 
-		System.out.println("\nUsing setTypeInFile to edit the file...");
+		System.out.println("\nUsing setTypeInFile to edit the type of an attribute in the file...");
 		attributeLinkTarget.setTypeInFile("int");
-		System.out.println("Updating the model...");
+		System.out.println("Updating the file...");
 		classLinkTarget.updateModel();
-		showClassModel(classModelTarget);
+		showClassModelAttributes(classModelTarget);
 		attributeLinkTarget.setTypeInFile("long"); // Reverting the change
 
-		Thread.sleep(1000);
+		Thread.sleep(WAITING_TIME);
+
+		showClassModelMethods(classModelTarget);
+		System.out.println("\nUsing setNameInFile to edit the name of a method in the file...");
+		methodLinkTarget.setNameInFile("veryFastMethod");
+		System.out.println("Updating the file...");
+		classLinkTarget.updateModel();
+		showClassModelMethods(classModelTarget);
+
+		Thread.sleep(WAITING_TIME);
+
+		System.out.println("\nUsing setTypeInFile to edit the type of a method in the file...");
+		methodLinkTarget.setTypeInFile("int");
+		System.out.println("Updating the file...");
+		classLinkTarget.updateModel();
+		showClassModelMethods(classModelTarget);
+
+		Thread.sleep(WAITING_TIME);
+
+		// Reverting the change
+		System.out.println("revert");
+		methodLinkTarget.setNameInFile("uselessMethod");
+		methodLinkTarget.setTypeInFile("long");
+
+		Thread.sleep(WAITING_TIME);
 
 		// TODO vérification cohérence : classe publique = nom fichier, nom dossier = déclaration package, etc. implique
 		// création de
