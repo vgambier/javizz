@@ -126,11 +126,8 @@ public class MethodLink {
 				super.visit(md, arg);
 
 				String oldName = md.getNameAsString();
-				System.out.println(oldName + "\t" + methodModel.getName());
-				if (oldName.equals(methodModel.getName())) {
+				if (oldName.equals(methodModel.getName()))
 					md.setType(newType);
-					System.out.println("helloo");
-				}
 			}
 		}
 
