@@ -60,7 +60,7 @@ public class Demonstration {
 
 		System.out.println("\nEditing file...");
 
-		String editPath = "testFiles/firstPackage/HelloWorld.java";
+		String editPath = "src/main/resources/firstPackage/HelloWorld.java";
 
 		CompilationUnit cuTest = StaticJavaParser.parse(new File(editPath));
 		LexicalPreservingPrinter.setup(cuTest); // enables lexical preservation
@@ -121,6 +121,9 @@ public class Demonstration {
 
 	public static void main(String[] args) throws Exception {
 
+		File file = new File("src/main/resources");
+		System.out.println(file.getAbsolutePath());
+
 		// Initializing a watch service to track file changes on disk on a separate thread
 
 		Executor runner = Executors.newFixedThreadPool(1);
@@ -131,7 +134,7 @@ public class Demonstration {
 				org.apache.commons.vfs2.FileObject listendir = null;
 				try {
 					FileSystemManager fsManager = VFS.getManager();
-					String absolutePath = "/homes/v17gambi/git/javizz/javizz/testFiles/firstPackage/HelloWorld.java";
+					String absolutePath = "/homes/v17gambi/git/javizz/javizz/src/main/resources/firstPackage/HelloWorld.java";
 					listendir = fsManager.resolveFile(absolutePath);
 				} catch (FileSystemException e) {
 					// TODO Auto-generated catch block
@@ -165,7 +168,7 @@ public class Demonstration {
 		// In a separate thread, run the demonstration
 
 		// Reading a test folder
-		String folderPath = "testFiles"; // a relative path, pointing to the testFiles directory included in the project
+		String folderPath = "src/main/resources"; // a relative path, pointing to the resources directory included in the project
 		ProjectLink projectLink = new ProjectLink(folderPath);
 
 		// Testing to see if the data was properly gathered
@@ -196,7 +199,7 @@ public class Demonstration {
 		System.out.println("___________");
 
 		// XML serialization
-		String xmlPath = "testFiles/XMLFiles/TestSerialization.xml";
+		String xmlPath = "src/main/resources/XMLFiles/TestSerialization.xml";
 		File xmlFile = new File(xmlPath);
 		xmlFile.delete(); // deleting the previous instance
 		xmlFile.createNewFile();
@@ -206,7 +209,7 @@ public class Demonstration {
 		fos.close();
 
 		// Copying the XML file
-		File xmlFileCopy = new File("testFiles/XMLFiles/TestSerializationCopy.xml");
+		File xmlFileCopy = new File("src/main/resources/XMLFiles/TestSerializationCopy.xml");
 		FileUtils.copyFile(xmlFile, xmlFileCopy);
 
 		// XML deserialization (of the copy) to obtain a model
@@ -216,7 +219,7 @@ public class Demonstration {
 		fis.close();
 
 		// XML reserialization of the model
-		String xmlPath2 = "testFiles/XMLFiles/TestReserialization.xml";
+		String xmlPath2 = "src/main/resources/XMLFiles/TestReserialization.xml";
 		File xmlFile2 = new File(xmlPath2);
 		xmlFile2.delete(); // deleting the previous instance
 		xmlFile2.createNewFile();
