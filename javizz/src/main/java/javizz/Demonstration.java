@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.FileSystemException;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -14,7 +15,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.vfs2.FileChangeEvent;
 import org.apache.commons.vfs2.FileListener;
-import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.FileSystemManager;
 import org.apache.commons.vfs2.VFS;
 import org.apache.commons.vfs2.impl.DefaultFileMonitor;
@@ -273,7 +273,6 @@ public class Demonstration {
 		List<MethodLink> methodLinks = classLinkTarget.getMethodLinks();
 		for (MethodLink methodLink : methodLinks) {
 			String methodName = methodLink.getMethodModel().getName();
-			System.out.println(methodName);
 			if (methodName.equals("uselessMethod")) {
 				methodLinkTarget = methodLink;
 				break;
