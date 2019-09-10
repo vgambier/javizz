@@ -25,10 +25,6 @@ import models.ClassModel;
 public class AttributeLink {
 
 	private AttributeModel attributeModel; // the corresponding model
-	// TODO need another attribute that uniquely defines the attribute within the file system - possibly an arbitrary key number
-	// the implementation will be similar to that of the path attribute. for now the primary key is the name
-	private String name;
-	private String type; // the type of the attribute - will be obsolete once TypeLink is implemented
 
 	public AttributeLink(ClassModel classModel, String name, String type) {
 
@@ -44,9 +40,6 @@ public class AttributeLink {
 		}
 
 		this.attributeModel = factory.newInstance(AttributeModel.class);
-
-		this.name = name;
-		this.type = type;
 
 		attributeModel.setName(name);
 		attributeModel.setType(type);
@@ -66,7 +59,7 @@ public class AttributeLink {
 	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
 
 		// Generating a new model based on the existing file
-		AttributeLink attributeLinkFile = new AttributeLink(attributeModel.getClazz(), name, type);
+		AttributeLink attributeLinkFile = new AttributeLink(attributeModel.getClazz(), attributeModel.getName(), attributeModel.getType());
 		AttributeModel attributeModelFile = attributeLinkFile.attributeModel;
 
 		// Updating the model
@@ -143,13 +136,6 @@ public class AttributeLink {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
 		writer.write(LexicalPreservingPrinter.print(cu));
 		writer.close();
-	}
-
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
 	}
 
 	/**
