@@ -25,6 +25,8 @@ import models.MethodModel;
 public class MethodLink {
 
 	private MethodModel methodModel;
+	// TODO need another attribute that uniquely defines the method within the file system - for now the primary key is the name
+	private String name;
 
 	public MethodLink(ClassModel classModel, String name, String type) {
 
@@ -38,6 +40,8 @@ public class MethodLink {
 		}
 
 		this.methodModel = factory.newInstance(MethodModel.class);
+
+		this.name = name;
 
 		methodModel.setName(name);
 		methodModel.setType(type);
@@ -58,7 +62,7 @@ public class MethodLink {
 	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
 
 		// Generating a new model based on the input file
-		MethodLink methodLinkFile = new MethodLink(methodModel.getClazz(), methodModel.getName(), methodModel.getType());
+		MethodLink methodLinkFile = new MethodLink(methodModel.getClazz(), name, methodModel.getType());
 		MethodModel methodModelFile = methodLinkFile.methodModel;
 
 		// Updating the model
