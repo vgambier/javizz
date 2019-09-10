@@ -6,15 +6,15 @@ package javizz;
  *
  */
 
-public class ModelException extends Exception {
+public class JavizzException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
-	public ModelException() {
+	public JavizzException() {
 		super();
 	}
 
-	public ModelException(String motif) {
+	public JavizzException(String motif) {
 		super(motif);
 	}
 }
