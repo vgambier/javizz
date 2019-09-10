@@ -1,7 +1,9 @@
 package javizz;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,7 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
 
 import models.ClassModel;
 import models.PackageModel;
@@ -110,8 +113,8 @@ public class ClassLink {
 	}
 
 	/**
-	 * Reads a .java file, and changes the name of the class to match the input argument. Does not affect the model. For now, only edits the
-	 * contents of the file, and doesn't rename the filename. This may change in the future.
+	 * Reads a .java file, and changes the name of the class to match the input argument. Changes the model accordingly. For now, only edits
+	 * the contents of the file and doesn't rename the filename. This may change in the future.
 	 * 
 	 * @param newName
 	 *            the new name of the attribute
@@ -119,7 +122,33 @@ public class ClassLink {
 	 * 
 	 */
 	public void setNameInFile(String newName) throws IOException {
-		// TODO
+
+		// Initializing the compilation unit
+		CompilationUnit cu = StaticJavaParser.parse(new File(path));
+		LexicalPreservingPrinter.setup(cu); // enables lexical preservation
+
+		// Retrieving the name of the current class
+		String name = classModel.getName();
+
+		// Editing the contents of the file
+		TypeDeclaration<?> primaryNamefffd = cu.getClassByName(name).orElse(null);
+		primaryNamefffd.setName(newName);
+
+		/*
+		
+		TypeDeclaration<?> primaryNameff = cu.getPrimaryType().orElse(null);
+		primaryNameff.setName(newName);
+		*/
+
+		// Writing all changes to the original file
+		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+		writer.write(LexicalPreservingPrinter.print(cu));
+		writer.close();
+
+		// Modifying the name of the class in the model
+
+		classModel.setName(newName);
+
 	}
 
 	// TODO, unless it's no longer necessary

@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.FileSystemException;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -142,7 +141,7 @@ public class Demonstration {
 					FileSystemManager fsManager = VFS.getManager();
 					String absolutePath = "/homes/v17gambi/git/javizz/javizz/src/main/resources/firstPackage/HelloWorld.java";
 					listendir = fsManager.resolveFile(absolutePath);
-				} catch (FileSystemException e) {
+				} catch (org.apache.commons.vfs2.FileSystemException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -363,6 +362,12 @@ public class Demonstration {
 		// TODO vérification cohérence : classe publique = nom fichier, nom dossier = déclaration package, etc. implique
 		// création de
 		// nouveaux attributs, @Override + changement de nom
+
+		// Testing setNameInFile for ClassLink
+		System.out.println("\nUsing setTypeInFile to edit the name of a class in the file...");
+		classLinkTarget.setNameInFile("HelloWorldRemastered");
+		Thread.sleep(WAITING_TIME);
+		classLinkTarget.setNameInFile("HelloWorld"); // Reverting the change
 
 		System.exit(0); // Terminating all threads
 
