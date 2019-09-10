@@ -20,6 +20,9 @@ import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
+import models.ClassModel;
+import models.PackageModel;
+
 // This object keeps a link between a file on the disk (defined by its filepath, assumed to be constant), and the corresponding model
 
 @ModelEntity

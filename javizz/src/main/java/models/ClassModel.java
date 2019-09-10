@@ -1,4 +1,4 @@
-package javizz;
+package models;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package javizz;
+package models;
 
 public interface TypeModel extends AbstractModelObject { // contient attribut name
 

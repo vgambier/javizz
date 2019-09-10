@@ -14,6 +14,9 @@ import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.pamela.factory.ModelFactory;
 
+import models.PackageModel;
+import models.ProjectModel;
+
 @ModelEntity
 public class PackageLink {
 

@@ -1,4 +1,4 @@
-package javizz;
+package models;
 
 import java.util.List;
 
@@ -6,14 +6,15 @@ import org.openflexo.pamela.annotations.Adder;
 import org.openflexo.pamela.annotations.Embedded;
 import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.Getter.Cardinality;
+
+import models.ProjectModel.ProjectModelImpl;
+
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.Remover;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
-
-import javizz.ProjectModel.ProjectModelImpl;
 
 /**
  * @author Victor Gambier

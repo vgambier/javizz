@@ -1,4 +1,4 @@
-package javizz;
+package models;
 
 import org.openflexo.pamela.annotations.Implementation;
 import org.openflexo.pamela.factory.AccessibleProxyObject;

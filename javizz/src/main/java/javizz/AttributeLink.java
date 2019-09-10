@@ -18,6 +18,9 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
 
+import models.AttributeModel;
+import models.ClassModel;
+
 @ModelEntity
 public class AttributeLink {
 

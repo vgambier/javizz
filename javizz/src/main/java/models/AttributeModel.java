@@ -1,4 +1,4 @@
-package javizz;
+package models;
 
 import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.ImplementationClass;
@@ -7,7 +7,7 @@ import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
 
-import javizz.MethodModel.MethodModelImpl;
+import models.AttributeModel.AttributeModelImpl;
 
 /**
  * @author Victor Gambier
@@ -16,10 +16,10 @@ import javizz.MethodModel.MethodModelImpl;
 
 @ModelEntity
 @XMLElement
-@ImplementationClass(MethodModelImpl.class)
-public interface MethodModel extends AbstractModelObject {
+@ImplementationClass(AttributeModelImpl.class)
+public interface AttributeModel extends AbstractModelObject {
 
-	// Attributes and methods regarding the name of the method:
+	// Attributes and methods regarding the name of the attribute:
 
 	String NAME = "name";
 
@@ -29,16 +29,6 @@ public interface MethodModel extends AbstractModelObject {
 
 	@Setter(NAME)
 	void setName(String name);
-
-	// Attributes and methods regarding the corresponding MethodLink
-
-	String LINK = "link";
-
-	@Getter(LINK)
-	MethodLink getMethodLink();
-
-	@Setter(LINK)
-	void setMethodLink(MethodLink methodLink);
 
 	// Attributes and methods regarding the parent class
 
@@ -50,7 +40,7 @@ public interface MethodModel extends AbstractModelObject {
 	@Setter(CLASS)
 	void setClazz(ClassModel classModel);
 
-	// Attributes and methods regarding the type of the method:
+	// Attributes and methods regarding the type of the attribute:
 
 	String TYPE = "type";
 
@@ -61,7 +51,9 @@ public interface MethodModel extends AbstractModelObject {
 	@Setter(TYPE)
 	void setType(String type);
 
-	abstract class MethodModelImpl extends AbstractModelObjectImpl implements MethodModel {
+	abstract class AttributeModelImpl extends AbstractModelObjectImpl implements AttributeModel {
+
+		// si on veut ajouter des méthodes à AttributeModel non gérées par Pamela
 
 		@Override
 		public ProjectModel getProject() {

@@ -18,6 +18,9 @@ import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
 
+import models.ClassModel;
+import models.MethodModel;
+
 @ModelEntity
 public class MethodLink {
 
