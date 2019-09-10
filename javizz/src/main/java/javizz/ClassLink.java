@@ -117,7 +117,7 @@ public class ClassLink {
 	 * the contents of the file and doesn't rename the filename. This may change in the future.
 	 * 
 	 * @param newName
-	 *            the new name of the attribute
+	 *            the new name of the class
 	 * @throws IOException
 	 * 
 	 */
@@ -131,14 +131,8 @@ public class ClassLink {
 		String name = classModel.getName();
 
 		// Editing the contents of the file
-		TypeDeclaration<?> primaryNamefffd = cu.getClassByName(name).orElse(null);
-		primaryNamefffd.setName(newName);
-
-		/*
-		
-		TypeDeclaration<?> primaryNameff = cu.getPrimaryType().orElse(null);
-		primaryNameff.setName(newName);
-		*/
+		TypeDeclaration<?> primaryClass = cu.getClassByName(name).orElse(null);
+		primaryClass.setName(newName);
 
 		// Writing all changes to the original file
 		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
@@ -146,7 +140,6 @@ public class ClassLink {
 		writer.close();
 
 		// Modifying the name of the class in the model
-
 		classModel.setName(newName);
 
 	}

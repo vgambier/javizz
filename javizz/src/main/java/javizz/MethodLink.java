@@ -109,7 +109,7 @@ public class MethodLink {
 	 * Reads a .java file, and changes the type of the current method to match the input argument. Does not affect the model.
 	 * 
 	 * @param newName
-	 *            the new name of the attribute
+	 *            the new name of the method
 	 * @throws IOException
 	 * 
 	 */

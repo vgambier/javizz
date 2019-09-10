@@ -369,6 +369,18 @@ public class Demonstration {
 		Thread.sleep(WAITING_TIME);
 		classLinkTarget.setNameInFile("HelloWorld"); // Reverting the change
 
+		// Testing renameFolder for PackageLink
+		System.out.println("\nUsing renameFolder to edit the name of a package folder...");
+		packageLinkTarget.renameFolder("betterPackage");
+		Thread.sleep(WAITING_TIME);
+		packageLinkTarget.renameFolder("firstPackage"); // Reverting the change
+
+		// Testing renameFolder for ProjectLink
+		System.out.println("\nUsing renameFolder to edit the name of a project folder...");
+		projectLink.renameFolder("testing");
+		Thread.sleep(WAITING_TIME);
+		projectLink.renameFolder("resources"); // Reverting the change
+
 		System.exit(0); // Terminating all threads
 
 	}

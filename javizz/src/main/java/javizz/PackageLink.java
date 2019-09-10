@@ -77,6 +77,31 @@ public class PackageLink {
 
 	}
 
+	/**
+	 * Renames the current package's folder in the file system. Changes the model accordingly.
+	 * 
+	 * @param newName
+	 *            the new name of the folder
+	 * @throws JavizzException
+	 *             if the rename was not successful
+	 * 
+	 */
+	public void renameFolder(String newName) throws JavizzException {
+
+		File sourceFolder = new File(path);
+		String newPath = path.substring(0, path.lastIndexOf("/") + 1) + newName; // same path but with the folder at the end changed
+		File destFolder = new File(newPath);
+
+		if (sourceFolder.renameTo(destFolder)) { // This attempts to rename the folder, and returns true if the folder was renamed
+			// If the rename was successful, we change the models accordingly
+			this.path = newPath;
+			packageModel.setName(newName);
+		}
+		else {
+			throw new JavizzException("Failed to rename directory");
+		}
+	}
+
 	// TODO
 	/**
 	 * Reads a directory containing .java files, compares it to the existing model, and updates the folder
