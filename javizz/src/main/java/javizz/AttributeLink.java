@@ -98,8 +98,14 @@ public class AttributeLink {
 				member.toFieldDeclaration().ifPresent(field -> {
 					for (VariableDeclarator variable : field.getVariables()) {
 						String oldName = variable.getName().asString();
-						if (oldName.equals(attributeModel.getName()))
+						if (oldName.equals(attributeModel.getName())) {
+
 							variable.setName(newName);
+							if (true) { // TODO: global attribute check - only change the model if "synch mode" is enabled
+								this.name = newName;
+								attributeModel.setName(newName);
+							}
+						}
 					}
 				});
 			}
@@ -134,8 +140,13 @@ public class AttributeLink {
 				member.toFieldDeclaration().ifPresent(field -> {
 					for (VariableDeclarator variable : field.getVariables()) {
 						String oldName = variable.getNameAsString();
-						if (oldName.equals(attributeModel.getName()))
+						if (oldName.equals(attributeModel.getName())) {
+
 							variable.setType(newType);
+							if (true) { // TODO: global attribute check - only change the model if "synch mode" is enabled
+								attributeModel.setType(newType);
+							}
+						}
 					}
 				});
 			}

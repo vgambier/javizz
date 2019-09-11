@@ -93,11 +93,20 @@ public class MethodLink {
 		final class MethodNamePrinter extends VoidVisitorAdapter<Void> {
 			@Override
 			public void visit(MethodDeclaration md, Void arg) {
-				super.visit(md, arg);
 
+				super.visit(md, arg);
 				String oldName = md.getNameAsString();
-				if (oldName.equals(methodModel.getName()))
+
+				if (oldName.equals(methodModel.getName())) {
+
 					md.setName(newName);
+					if (true) { // TODO: global attribute check - only change the model if "synch mode" is enabled
+						System.out.println("name@@@@@@@@" + name);
+						name = newName;
+						System.out.println("name@@@@@@@@" + name);
+						methodModel.setName(newName);
+					}
+				}
 			}
 		}
 
@@ -129,11 +138,17 @@ public class MethodLink {
 		final class MethodNamePrinter extends VoidVisitorAdapter<Void> {
 			@Override
 			public void visit(MethodDeclaration md, Void arg) {
-				super.visit(md, arg);
 
+				super.visit(md, arg);
 				String oldName = md.getNameAsString();
-				if (oldName.equals(methodModel.getName()))
+
+				if (oldName.equals(methodModel.getName())) {
+
 					md.setType(newType);
+					if (true) { // TODO: global attribute check - only change the model if "synch mode" is enabled
+						methodModel.setType(newType);
+					}
+				}
 			}
 		}
 

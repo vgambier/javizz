@@ -114,9 +114,13 @@ public class ProjectLink {
 		File destFolder = new File(newPath);
 
 		if (sourceFolder.renameTo(destFolder)) { // This attempts to rename the folder, and returns true if the folder was renamed
-			// If the rename was successful, we change the models accordingly
-			this.path = newPath;
-			projectModel.setName(newName);
+
+			// If the rename was successful, we can change the models accordingly
+
+			if (true) { // TODO: global attribute check - only change the model if "synch mode" is enabled
+				this.path = newPath;
+				projectModel.setName(newName);
+			}
 		}
 		else {
 			throw new JavizzException("Failed to rename directory");

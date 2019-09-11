@@ -322,7 +322,6 @@ public class Demonstration {
 		System.out.println("\nUsing setNameInFile to edit the name of an attribute in the file...");
 		attributeLinkTarget.setNameInFile("attributeDefault");
 		System.out.println("Updating the file...");
-		classLinkTarget.updateModel();
 		showClassModelAttributes(classModelTarget);
 
 		Thread.sleep(WAITING_TIME);
@@ -330,7 +329,6 @@ public class Demonstration {
 		System.out.println("\nUsing setTypeInFile to edit the type of an attribute in the file...");
 		attributeLinkTarget.setTypeInFile("int");
 		System.out.println("Updating the file...");
-		classLinkTarget.updateModel();
 		showClassModelAttributes(classModelTarget);
 		attributeLinkTarget.setTypeInFile("long"); // Reverting the change
 
@@ -340,7 +338,6 @@ public class Demonstration {
 		System.out.println("\nUsing setNameInFile to edit the name of a method in the file...");
 		methodLinkTarget.setNameInFile("veryFastMethod");
 		System.out.println("Updating the file...");
-		classLinkTarget.updateModel();
 		showClassModelMethods(classModelTarget);
 
 		Thread.sleep(WAITING_TIME);
@@ -348,7 +345,6 @@ public class Demonstration {
 		System.out.println("\nUsing setTypeInFile to edit the type of a method in the file...");
 		methodLinkTarget.setTypeInFile("int");
 		System.out.println("Updating the file...");
-		classLinkTarget.updateModel();
 		showClassModelMethods(classModelTarget);
 
 		Thread.sleep(WAITING_TIME);
@@ -358,10 +354,6 @@ public class Demonstration {
 		methodLinkTarget.setNameInFile("uselessMethod");
 
 		Thread.sleep(WAITING_TIME);
-
-		// TODO vérification cohérence : classe publique = nom fichier, nom dossier = déclaration package, etc. implique
-		// création de
-		// nouveaux attributs, @Override + changement de nom
 
 		// Testing setNameInFile for ClassLink
 		System.out.println("\nUsing setTypeInFile to edit the name of a class in the file...");
@@ -380,6 +372,10 @@ public class Demonstration {
 		projectLink.renameFolder("testing");
 		Thread.sleep(WAITING_TIME);
 		projectLink.renameFolder("resources"); // Reverting the change
+
+		// TODO vérification cohérence : classe publique = nom fichier, nom dossier = déclaration package, etc. implique
+		// création de
+		// nouveaux attributs, @Override + changement de nom
 
 		System.exit(0); // Terminating all threads
 
