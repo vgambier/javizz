@@ -21,6 +21,11 @@ import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinte
 import models.ClassModel;
 import models.MethodModel;
 
+/**
+ * @author Victor Gambier
+ *
+ */
+
 @ModelEntity
 public class MethodLink {
 

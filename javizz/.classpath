@@ -16,5 +16,7 @@
 	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
 	<classpathentry kind="src" path="/javaparser-core"/>
 	<classpathentry kind="src" path="/pamela-core"/>
+	<classpathentry kind="lib" path="/homes/v17gambi/Documents/stage-ete-2019/commons-vfs2-2.4.1.jar"/>
+	<classpathentry kind="src" path="/flexo-foundation"/>
 	<classpathentry kind="output" path="bin/default"/>
 </classpath>

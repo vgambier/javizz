@@ -21,6 +21,11 @@ import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinte
 import models.AttributeModel;
 import models.ClassModel;
 
+/**
+ * @author Victor Gambier
+ *
+ */
+
 @ModelEntity
 public class AttributeLink {
 

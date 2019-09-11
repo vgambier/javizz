@@ -12,6 +12,11 @@ import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
 
+/**
+ * @author Victor Gambier
+ *
+ */
+
 // résoudre le problème de l'héritage / unicité modèle
 // pool methode commun, check si héritage, accès classe mère
 // ou : simplement un attribut qui dit que cette classe est fille de telle classe. donc une méthode est rattachée à une unique classe

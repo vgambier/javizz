@@ -1,5 +1,10 @@
 package models;
 
+/**
+ * @author Victor Gambier
+ *
+ */
+
 public interface TypeModel extends AbstractModelObject { // contient attribut name
 
 	// mère de: prédef (enumerate), class, ->interface<-

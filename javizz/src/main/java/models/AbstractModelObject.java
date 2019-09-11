@@ -3,6 +3,11 @@ package models;
 import org.openflexo.pamela.annotations.Implementation;
 import org.openflexo.pamela.factory.AccessibleProxyObject;
 
+/**
+ * @author Victor Gambier
+ *
+ */
+
 public interface AbstractModelObject extends AccessibleProxyObject {
 
 	ProjectModel getProject();

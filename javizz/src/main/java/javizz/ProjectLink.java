@@ -16,6 +16,11 @@ import org.openflexo.pamela.factory.ModelFactory;
 
 import models.ProjectModel;
 
+/**
+ * @author Victor Gambier
+ *
+ */
+
 @ModelEntity
 public class ProjectLink {
 

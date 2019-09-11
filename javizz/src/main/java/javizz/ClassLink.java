@@ -26,6 +26,11 @@ import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinte
 import models.ClassModel;
 import models.PackageModel;
 
+/**
+ * @author Victor Gambier
+ *
+ */
+
 // This object keeps a link between a file on the disk (defined by its filepath, assumed to be constant), and the corresponding model
 
 @ModelEntity
