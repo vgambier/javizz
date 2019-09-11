@@ -101,9 +101,7 @@ public class MethodLink {
 
 					md.setName(newName);
 					if (true) { // TODO: global attribute check - only change the model if "synch mode" is enabled
-						System.out.println("name@@@@@@@@" + name);
 						name = newName;
-						System.out.println("name@@@@@@@@" + name);
 						methodModel.setName(newName);
 					}
 				}

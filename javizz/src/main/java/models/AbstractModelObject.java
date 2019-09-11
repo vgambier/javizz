@@ -12,6 +12,8 @@ public interface AbstractModelObject extends AccessibleProxyObject {
 
 	ProjectModel getProject();
 
+	String getName();
+
 	@Implementation
 	abstract class AbstractModelObjectImpl implements AbstractModelObject {
 
@@ -22,7 +24,9 @@ public interface AbstractModelObject extends AccessibleProxyObject {
 			// Code here will triggers whenever one of the models is changed (if the flag isWatching is set to true)
 			// isWatching is useful to differentiate between initializations and actual changes
 			if (getProject() != null && getProject().getIsWatching()) {
-				System.out.println("A change in the model has been detected!");
+				String simpleName = getClass().getSimpleName();
+				String shortName = simpleName.substring(0, simpleName.indexOf("$"));
+				System.out.println("A change in the " + getName() + " " + shortName + " has been detected!");
 			}
 		}
 	}
