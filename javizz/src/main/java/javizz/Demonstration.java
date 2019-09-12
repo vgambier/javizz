@@ -127,9 +127,6 @@ public class Demonstration {
 
 	public static void main(String[] args) throws Exception {
 
-		File file = new File("src/main/resources");
-		System.out.println(file.getAbsolutePath());
-
 		// Initializing a watch service to track file changes on disk on a separate thread
 
 		Executor runner = Executors.newFixedThreadPool(1);
@@ -153,21 +150,21 @@ public class Demonstration {
 					public void fileDeleted(FileChangeEvent event) throws Exception {
 						String fullPath = event.getFile().getName().getPath();
 						String shortPath = fullPath.substring(fullPath.indexOf("main"));
-						System.out.println(shortPath + " deleted.");
+						System.out.println("\t" + shortPath + " deleted.");
 					}
 
 					@Override
 					public void fileCreated(FileChangeEvent event) throws Exception {
 						String fullPath = event.getFile().getName().getPath();
 						String shortPath = fullPath.substring(fullPath.indexOf("main"));
-						System.out.println(shortPath + " created.");
+						System.out.println("\t" + shortPath + " created.");
 					}
 
 					@Override
 					public void fileChanged(FileChangeEvent event) throws Exception {
 						String fullPath = event.getFile().getName().getPath();
 						String shortPath = fullPath.substring(fullPath.indexOf("main"));
-						System.out.println(shortPath + " changed.");
+						System.out.println("\t" + shortPath + " changed.");
 					}
 				});
 
@@ -199,17 +196,15 @@ public class Demonstration {
 
 				List<AttributeModel> attributes = classModel.getAttributes();
 				for (AttributeModel attributeModel : attributes) {
-					System.out.println("\t\t\tattribute: " + attributeModel.getName());
+					System.out.println("\t\t\tattribute: " + attributeModel.getType() + " " + attributeModel.getName());
 				}
 
 				List<MethodModel> methods = classModel.getMethods();
 				for (MethodModel methodModel : methods) {
-					System.out.println("\t\t\tmethod: " + methodModel.getName());
+					System.out.println("\t\t\tmethod: " + methodModel.getType() + " " + methodModel.getName());
 				}
 			}
 		}
-
-		System.out.println("___________");
 
 		// XML serialization
 		String xmlPath = "src/main/resources/XMLFiles/TestSerialization.xml";
@@ -242,7 +237,7 @@ public class Demonstration {
 
 		/* Testing all updateModel() methods */
 
-		projectModel.setIsWatching(true);
+		projectModel.setIsWatching(true); // Enabling real-time model monitoring
 
 		// We first need to reference the PackageLink, ClassLink, ClassModel, and AttributeLink we'll be working with
 
@@ -288,13 +283,12 @@ public class Demonstration {
 
 		// For ProjectLink
 
-		showClassModelAttributes(classModelTarget); // Showing the current model
 		editFileTest(); // Modifying the name of a class and an attribute
 		System.out.println("Updating the attributeModel via the parent ProjectLink...");
 		projectLink.updateModel();
 		showClassModelAttributes(classModelTarget); // Showing that the model has changed
 
-		Thread.sleep(WAITING_TIME); // to give time to the other thread to run and detect the changes
+		Thread.sleep(WAITING_TIME); // We wait in order to give time to the other thread to run and detect the changes
 
 		// For other classes
 

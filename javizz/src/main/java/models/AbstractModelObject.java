@@ -26,7 +26,7 @@ public interface AbstractModelObject extends AccessibleProxyObject {
 			if (getProject() != null && getProject().getIsWatching()) {
 				String simpleName = getClass().getSimpleName();
 				String shortName = simpleName.substring(0, simpleName.indexOf("$"));
-				System.out.println("A change in the " + getName() + " " + shortName + " has been detected!");
+				System.out.println("\tA change in the " + getName() + " " + shortName + " has been detected!");
 			}
 		}
 	}
