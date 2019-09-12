@@ -3,25 +3,25 @@
   <PackageModel id="1" name="firstPackage">
     <ClassModel id="2" name="BrandNew" />
     <ClassModel id="3" name="HelloWorld">
-      <MethodModel id="4" name="main" type="void" />
-      <MethodModel id="5" name="uselessMethod" type="long" />
-      <MethodModel id="6" name="returnTwo" type="int" />
-      <AttributeModel id="7" name="name" type="String" />
-      <AttributeModel id="8" name="age" type="int" />
-      <AttributeModel id="9" name="ssn" type="long" />
-      <AttributeModel id="10" name="attributeDefault" type="long" />
+      <MethodModel id="4" name="main" />
+      <MethodModel id="5" name="uselessMethod" />
+      <MethodModel id="6" name="returnTwo" />
+      <AttributeModel id="7" name="name" />
+      <AttributeModel id="8" name="age" />
+      <AttributeModel id="9" name="ssn" />
+      <AttributeModel id="10" name="attributeDefault" />
     </ClassModel>
     <ClassModel id="11" name="NoMethodsNoAttributes" />
     <ClassModel id="12" name="NoPackage" />
   </PackageModel>
   <PackageModel id="13" name="secondPackage">
     <ClassModel id="14" name="GoodbyeWorld">
-      <MethodModel id="15" name="main" type="void" />
-      <MethodModel id="16" name="uselessMethod" type="void" />
-      <MethodModel id="17" name="returnThree" type="int" />
-      <AttributeModel id="18" name="address" type="String" />
-      <AttributeModel id="19" name="relatives" type="LinkedList&lt;String&gt;" />
-      <AttributeModel id="20" name="isTrue" type="boolean" />
+      <MethodModel id="15" name="main" />
+      <MethodModel id="16" name="uselessMethod" />
+      <MethodModel id="17" name="returnThree" />
+      <AttributeModel id="18" name="address" />
+      <AttributeModel id="19" name="relatives" />
+      <AttributeModel id="20" name="isTrue" />
     </ClassModel>
   </PackageModel>
 </ProjectModel>

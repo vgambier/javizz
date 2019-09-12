@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Iterator;
 
 import org.openflexo.pamela.ModelContextLibrary;
 import org.openflexo.pamela.annotations.ModelEntity;
@@ -14,6 +15,7 @@ import org.openflexo.pamela.factory.ModelFactory;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.BodyDeclaration;
+import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
@@ -34,7 +36,7 @@ public class AttributeLink {
 	// the implementation will be similar to that of the path attribute. for now the primary key is the name
 	private String name;
 
-	public AttributeLink(ClassModel classModel, String name, String type) {
+	public AttributeLink(ClassModel classModel, String name) {
 
 		// Instantiating attributes
 
@@ -51,7 +53,6 @@ public class AttributeLink {
 		this.name = name;
 
 		attributeModel.setName(name);
-		attributeModel.setType(type);
 		attributeModel.setClazz(classModel);
 
 		classModel.addAttribute(attributeModel);
@@ -68,7 +69,7 @@ public class AttributeLink {
 	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
 
 		// Generating a new model based on the existing file
-		AttributeLink attributeLinkFile = new AttributeLink(attributeModel.getClazz(), name, attributeModel.getType());
+		AttributeLink attributeLinkFile = new AttributeLink(attributeModel.getClazz(), name);
 		AttributeModel attributeModelFile = attributeLinkFile.attributeModel;
 
 		// Updating the model
@@ -97,6 +98,7 @@ public class AttributeLink {
 			for (BodyDeclaration<?> member : typeDec.getMembers()) {
 				member.toFieldDeclaration().ifPresent(field -> {
 					for (VariableDeclarator variable : field.getVariables()) {
+
 						String oldName = variable.getName().asString();
 						if (oldName.equals(attributeModel.getName())) {
 
@@ -139,6 +141,7 @@ public class AttributeLink {
 			for (BodyDeclaration<?> member : typeDec.getMembers()) {
 				member.toFieldDeclaration().ifPresent(field -> {
 					for (VariableDeclarator variable : field.getVariables()) {
+
 						String oldName = variable.getNameAsString();
 						if (oldName.equals(attributeModel.getName())) {
 
@@ -156,6 +159,68 @@ public class AttributeLink {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
 		writer.write(LexicalPreservingPrinter.print(cu));
 		writer.close();
+	}
+
+	/**
+	 * Moves the attribute from its current class to another class (i.e.: in a different file). Uses lexical preservation.
+	 * 
+	 * @param newClass
+	 *            the ClassLink corresponding to the class where the attribute will be moved
+	 * @throws IOException
+	 */
+	// TODO: this method doesn't work properly if there are comments in the line where the attribute is declared
+	public void moveToNewClass(ClassLink newClass) throws IOException {
+
+		/* Retrieve and remove the attribute from the original file */
+
+		String pathOld = attributeModel.getClazz().getPath(); // Retrieving the path of the file where the attribute is located
+
+		// Initializing the compilation unit
+		CompilationUnit cuOld = StaticJavaParser.parse(new File(pathOld));
+		LexicalPreservingPrinter.setup(cuOld); // enables lexical preservation
+
+		// Retrieving the attribute (based on its current name)
+		BodyDeclaration<?> memberWanted = null;
+		boolean found = false; // is set to true when the attribute is found
+		for (TypeDeclaration<?> typeDec : cuOld.getTypes()) {
+			Iterator<BodyDeclaration<?>> iterator = typeDec.getMembers().iterator();
+			while (!found && iterator.hasNext()) {
+				BodyDeclaration<?> member = iterator.next();
+				if (member.toFieldDeclaration() != null) {
+					FieldDeclaration fieldDec = member.toFieldDeclaration().orElse(null);
+					for (VariableDeclarator variable : fieldDec.getVariables()) {
+						if (name.equals(variable.getNameAsString())) { // If we have found the right attribute
+							found = true;
+							memberWanted = member; // We remember the attribute declaration
+							member.remove(); // Then remove it
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		// Writing this change to the file
+		BufferedWriter writerOld = new BufferedWriter(new FileWriter(pathOld));
+		writerOld.write(LexicalPreservingPrinter.print(cuOld));
+		writerOld.close();
+
+		/* Retrieve the new class and add the attribute to it */
+
+		String pathNew = newClass.getPath(); // Retrieving the path of the file where the attribute is located
+
+		// Initializing the compilation unit
+		CompilationUnit cuNew = StaticJavaParser.parse(new File(pathNew));
+		LexicalPreservingPrinter.setup(cuNew); // enables lexical preservation
+
+		TypeDeclaration<?> typeDec = cuNew.getPrimaryType().orElse(null); // We'll add the attribute to the primary class
+		typeDec.addMember(memberWanted); // We add the attribute that was previously retrieved
+
+		// Writing this change to the file
+		BufferedWriter writerNew = new BufferedWriter(new FileWriter(pathNew));
+		writerNew.write(LexicalPreservingPrinter.print(cuNew));
+		writerNew.close();
+
 	}
 
 	/**

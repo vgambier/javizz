@@ -72,7 +72,7 @@ public class ClassLink {
 						String name = variable.getNameAsString();
 						String type = variable.getTypeAsString();
 						// This constructor will take care of modelizing the attribute and its contents
-						AttributeLink attributeLink = new AttributeLink(classModel, name, type);
+						AttributeLink attributeLink = new AttributeLink(classModel, name);
 						attributeLinks.add(attributeLink);
 					}
 				});
@@ -90,7 +90,7 @@ public class ClassLink {
 				String name = md.getNameAsString();
 				String type = md.getTypeAsString();
 				// This constructor will take care of modelizing the method and its contents
-				MethodLink methodLink = new MethodLink(classModel, name, type);
+				MethodLink methodLink = new MethodLink(classModel, name);
 				methodLinks.add(methodLink);
 
 			}
@@ -192,6 +192,13 @@ public class ClassLink {
 	 */
 	public List<MethodLink> getMethodLinks() {
 		return methodLinks;
+	}
+
+	/**
+	 * @return the path
+	 */
+	public String getPath() {
+		return path;
 	}
 
 }

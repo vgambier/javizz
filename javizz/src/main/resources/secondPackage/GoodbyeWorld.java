@@ -19,11 +19,10 @@ public class GoodbyeWorld { // comment
         // does nothing of note
     }
 
-    // method with weird indentation
-        public int returnThree() {
-        	int notAMainAttribute = 3;
-            return notAMainAttribute;
-        }
-
+    public int returnThree() {
+     	int notAMainAttribute = 3;
+         return notAMainAttribute;
+    }
+    
 }
 
