@@ -146,6 +146,15 @@ public class ClassLink {
 
 		// Modifying the name of the class in the model
 		classModel.setName(newName);
+	}
+
+	/**
+	 * Reads a directory containing .java files, compares it to the existing model, and updates the folder
+	 * 
+	 */
+	public void updateFile() {
+
+		// calls updateFile() on all AttributeLink and all MethodLink, and also checks if the ClassModel itself should change
 
 	}
 
@@ -163,16 +172,6 @@ public class ClassLink {
 	// changes
 
 	// TODO
-
-	/**
-	 * Reads a directory containing .java files, compares it to the existing model, and updates the folder
-	 * 
-	 */
-	public void updateFile() {
-
-		// calls updateFile() on all AttributeLink and all MethodLink, and also checks if the ClassModel itself should change
-
-	}
 
 	/**
 	 * @return the classModel

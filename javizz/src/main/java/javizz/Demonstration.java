@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -139,7 +140,8 @@ public class Demonstration {
 				org.apache.commons.vfs2.FileObject listendir = null;
 				try {
 					FileSystemManager fsManager = VFS.getManager();
-					String absolutePath = "/homes/v17gambi/git/javizz/javizz/src/main/resources/firstPackage/HelloWorld.java";
+					String relativePath = "src/main";
+					String absolutePath = FileSystems.getDefault().getPath(relativePath).normalize().toAbsolutePath().toString();
 					listendir = fsManager.resolveFile(absolutePath);
 				} catch (org.apache.commons.vfs2.FileSystemException e) {
 					// TODO Auto-generated catch block
@@ -149,17 +151,23 @@ public class Demonstration {
 
 					@Override
 					public void fileDeleted(FileChangeEvent event) throws Exception {
-						System.out.println(event.getFile().getName().getPath() + " Deleted.");
+						String fullPath = event.getFile().getName().getPath();
+						String shortPath = fullPath.substring(fullPath.indexOf("main"));
+						System.out.println(shortPath + " deleted.");
 					}
 
 					@Override
 					public void fileCreated(FileChangeEvent event) throws Exception {
-						System.out.println(event.getFile().getName().getPath() + " Created.");
+						String fullPath = event.getFile().getName().getPath();
+						String shortPath = fullPath.substring(fullPath.indexOf("main"));
+						System.out.println(shortPath + " created.");
 					}
 
 					@Override
 					public void fileChanged(FileChangeEvent event) throws Exception {
-						System.out.println(event.getFile().getName().getPath() + " Changed.");
+						String fullPath = event.getFile().getName().getPath();
+						String shortPath = fullPath.substring(fullPath.indexOf("main"));
+						System.out.println(shortPath + " changed.");
 					}
 				});
 
@@ -307,9 +315,7 @@ public class Demonstration {
 		// Note: calling attributeLinkTarget.updateModel(); would result in unexpected behavior
 		// The underlying reason for this is that, as of now, an attribute is uniquely defined by its name
 		// So while it's possible to update a classModel by recreating a model from scratch using its path and updating
-		// everything
-		// that has
-		// changed
+		// everything that has changed
 		// The same cannot be said of an attributeModel - if we change its name, any attempt at updating it will fail -
 		// From the constructor's perspective, it's as if it was a completely different attribute
 		// So, in fact, it doesn't make sense to call updateModel on attributeLink if the thing we want to update is the
