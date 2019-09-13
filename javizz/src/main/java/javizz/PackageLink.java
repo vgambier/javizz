@@ -18,6 +18,8 @@ import models.PackageModel;
 import models.ProjectModel;
 
 /**
+ * Instances of this class are used to maintain a link between the package existing on the disk and the corresponding model.
+ * 
  * @author Victor Gambier
  *
  */
@@ -29,7 +31,19 @@ public class PackageLink {
 	private String path; // the path where the package is located
 	private List<ClassLink> classLinks; // the children ClassLink
 
-	public PackageLink(ProjectModel projectModel, String path) throws ModelDefinitionException, FileNotFoundException {
+	/**
+	 * The constructor
+	 * 
+	 * @param projectModel
+	 *            the parent project
+	 * @param path
+	 *            the path pointing to the package
+	 * @throws ModelDefinitionException
+	 *             if something went wrong upon calling .getModelContext()
+	 * @throws FileNotFoundException
+	 *             if one of the package files could not be parsed
+	 */
+	public PackageLink(ProjectModel projectModel, String path) throws FileNotFoundException, ModelDefinitionException {
 
 		// Instantiating attributes
 
@@ -41,8 +55,9 @@ public class PackageLink {
 		classLinks = new ArrayList<ClassLink>();
 
 		packageModel.setName(Demonstration.pathToFilename(path));
-		projectModel.addPackage(packageModel);
 		packageModel.setProject(projectModel);
+
+		projectModel.addPackage(packageModel);
 
 		// Looking for all classes
 		// A class is defined as a .java file (at least for now)
@@ -64,10 +79,13 @@ public class PackageLink {
 	}
 
 	/**
-	 * Reads a directory containing .java files, compares it to the existing model, and updates the model
+	 * Reads a directory containing .java files, compares it to the existing model, and updates the model accordingly
 	 * 
 	 * @throws ModelDefinitionException
+	 *             if something went wrong during the constructor call
 	 * @throws FileNotFoundException
+	 *             if one of the files in the package could not be read during the constructor call
+	 * 
 	 */
 	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
 
@@ -109,17 +127,6 @@ public class PackageLink {
 		else {
 			throw new JavizzException("Failed to rename directory");
 		}
-	}
-
-	// TODO
-	/**
-	 * Reads a directory containing .java files, compares it to the existing model, and updates the folder
-	 * 
-	 */
-	public void updateFolder() {
-
-		// calls updateFolder() on all ClassLink, and also checks if the PackageModel itself should change
-
 	}
 
 	/**

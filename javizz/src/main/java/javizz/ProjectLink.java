@@ -17,6 +17,8 @@ import org.openflexo.pamela.factory.ModelFactory;
 import models.ProjectModel;
 
 /**
+ * Instances of this class are used to maintain a link between the project existing on the disk and the corresponding model.
+ * 
  * @author Victor Gambier
  *
  */
@@ -36,7 +38,9 @@ public class ProjectLink {
 	 * @param path
 	 *            the path of the folder that is going to be parsed and modelized as a project
 	 * @throws ModelDefinitionException
+	 *             if something went wrong upon calling .getModelContext()
 	 * @throws FileNotFoundException
+	 *             if one of the package's files could not be parsed
 	 */
 	public ProjectLink(String path) throws ModelDefinitionException, FileNotFoundException {
 
@@ -126,18 +130,6 @@ public class ProjectLink {
 			throw new JavizzException("Failed to rename directory");
 		}
 	}
-
-	/**
-	 * Reads a directory containing .java files, compares it to the existing model, and updates the folder
-	 * 
-	 */
-	public void updateFolder() {
-
-		// calls updateFolder() on all PackageLinks
-
-	}
-
-	// TODO: same methods for the other classes
 
 	/**
 	 * @return the packageLinks

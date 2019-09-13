@@ -2,7 +2,6 @@ package javizz;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -22,6 +21,8 @@ import models.ClassModel;
 import models.MethodModel;
 
 /**
+ * Instances of this class are used to maintain a link between the method existing on the disk and the corresponding model.
+ * 
  * @author Victor Gambier
  *
  */
@@ -30,7 +31,6 @@ import models.MethodModel;
 public class MethodLink {
 
 	private MethodModel methodModel;
-	// TODO need another attribute that uniquely defines the method within the file system - for now the primary key is the name
 	private String name;
 
 	public MethodLink(ClassModel classModel, String name, String type) {
@@ -45,26 +45,22 @@ public class MethodLink {
 		}
 
 		this.methodModel = factory.newInstance(MethodModel.class);
-
 		this.name = name;
 
 		methodModel.setName(name);
 		methodModel.setType(type);
 		methodModel.setClazz(classModel);
-		classModel.addMethod(methodModel);
-
 		methodModel.setMethodLink(this);
 
-		// TODO: handle actual types
+		classModel.addMethod(methodModel);
+
 	}
 
 	/**
-	 * Reads a .java file, compares it to the existing model, and updates the model
+	 * Reads a .java file, compares it to the existing model, and updates the model accordingly
 	 * 
-	 * @throws ModelDefinitionException
-	 * @throws FileNotFoundException
 	 */
-	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
+	public void updateModel() {
 
 		// Generating a new model based on the input file
 		MethodLink methodLinkFile = new MethodLink(methodModel.getClazz(), name, methodModel.getType());
@@ -80,6 +76,7 @@ public class MethodLink {
 	 * @param newName
 	 *            the new name of the attribute
 	 * @throws IOException
+	 *             if there was an issue during the file parsing or the file write
 	 * 
 	 */
 	public void setNameInFile(String newName) throws IOException {
@@ -123,6 +120,7 @@ public class MethodLink {
 	 * @param newName
 	 *            the new name of the method
 	 * @throws IOException
+	 *             if there was an issue during the file parsing or the file write
 	 * 
 	 */
 	public void setTypeInFile(String newType) throws IOException {
@@ -157,18 +155,6 @@ public class MethodLink {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
 		writer.write(LexicalPreservingPrinter.print(cu));
 		writer.close();
-	}
-
-	// TODO
-
-	/**
-	 * Reads a directory containing .java files, compares it to the existing model, and updates the folder
-	 * 
-	 */
-	public void updateFile() {
-
-		// checks if the method should change, then does it
-
 	}
 
 	/**

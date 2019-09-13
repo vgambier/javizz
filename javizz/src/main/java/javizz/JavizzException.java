@@ -1,6 +1,7 @@
 package javizz;
 
 /**
+ * Custom exception that is thrown when a problem specific to the Javizz project occurs
  * 
  * @author Victor Gambier
  *

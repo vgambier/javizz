@@ -2,7 +2,6 @@ package javizz;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Iterator;
@@ -24,6 +23,8 @@ import models.AttributeModel;
 import models.ClassModel;
 
 /**
+ * Instances of this class are used to maintain a link between the attribute existing on the disk and the corresponding model.
+ * 
  * @author Victor Gambier
  *
  */
@@ -32,15 +33,13 @@ import models.ClassModel;
 public class AttributeLink {
 
 	private AttributeModel attributeModel; // the corresponding model
-	// TODO need another attribute that uniquely defines the attribute within the file system - possibly an arbitrary key number
-	// the implementation will be similar to that of the path attribute. for now the primary key is the name
 	private String name;
 
 	public AttributeLink(ClassModel classModel, String name, String type) {
 
 		// Instantiating attributes
 
-		// We need to define a factory to instantiate AttributeModel
+		// We first need to define a factory to instantiate AttributeModel
 		ModelFactory factory = null;
 		try {
 			factory = new ModelFactory(ModelContextLibrary.getModelContext(AttributeModel.class));
@@ -61,13 +60,11 @@ public class AttributeLink {
 	}
 
 	/**
-	 * Reads a .java file, compares it to the existing model, and updates the model
+	 * Reads a .java file, compares it to the existing model, and updates the model accordingly
 	 * 
-	 * @throws ModelDefinitionException
-	 * @throws FileNotFoundException
 	 */
 
-	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
+	public void updateModel() {
 
 		// Generating a new model based on the existing file
 		AttributeLink attributeLinkFile = new AttributeLink(attributeModel.getClazz(), name, attributeModel.getType());
@@ -84,6 +81,7 @@ public class AttributeLink {
 	 * @param newName
 	 *            the new name of the attribute
 	 * @throws IOException
+	 *             if there was an issue during the file parsing or the file write
 	 * 
 	 */
 	public void setNameInFile(String newName) throws IOException {
@@ -126,6 +124,7 @@ public class AttributeLink {
 	 * @param newType
 	 *            the new type of the attribute
 	 * @throws IOException
+	 *             if there was an issue during the file parsing or the file write
 	 * 
 	 */
 
@@ -168,6 +167,7 @@ public class AttributeLink {
 	 * @param newClass
 	 *            the ClassLink corresponding to the class where the attribute will be moved
 	 * @throws IOException
+	 *             if there was an issue during the file parsing or the file write
 	 */
 	// TODO: this method doesn't work properly if there are comments in the line where the attribute is declared
 	public void moveToNewClass(ClassLink newClass) throws IOException {
@@ -206,7 +206,7 @@ public class AttributeLink {
 		writerOld.write(LexicalPreservingPrinter.print(cuOld));
 		writerOld.close();
 
-		/* Retrieve the new class and add the attribute to it */
+		/* Retrieving the new class and adding the attribute to it */
 
 		String pathNew = newClass.getPath(); // Retrieving the path of the file where the attribute is located
 

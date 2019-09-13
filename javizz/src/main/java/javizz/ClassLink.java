@@ -27,11 +27,11 @@ import models.ClassModel;
 import models.PackageModel;
 
 /**
+ * Instances of this class are used to maintain a link between the class existing on the disk and the corresponding model.
+ * 
  * @author Victor Gambier
  *
  */
-
-// This object keeps a link between a file on the disk (defined by its filepath, assumed to be constant), and the corresponding model
 
 @ModelEntity
 public class ClassLink {
@@ -41,6 +41,13 @@ public class ClassLink {
 	private List<AttributeLink> attributeLinks; // the children AttributeLink
 	private List<MethodLink> methodLinks; // the children methodLink
 
+	/**
+	 * @param packageModel
+	 * @param path
+	 * @throws FileNotFoundException
+	 *             if the file containing the class could not be parsed
+	 * @throws ModelDefinitionException
+	 */
 	public ClassLink(PackageModel packageModel, String path) throws FileNotFoundException, ModelDefinitionException {
 
 		// Instantiating attributes
@@ -55,6 +62,7 @@ public class ClassLink {
 		classModel.setName(Demonstration.pathToFilename(path));
 		classModel.setPath(path);
 		classModel.setPackage(packageModel);
+
 		packageModel.addClass(classModel);
 
 		// Looking for methods and attributes within the file
@@ -102,7 +110,7 @@ public class ClassLink {
 	}
 
 	/**
-	 * Reads a .java file, compares it to the existing model, and updates the model
+	 * Reads a .java file, compares it to the existing model, and updates the model accordingly
 	 * 
 	 * @throws ModelDefinitionException
 	 * @throws FileNotFoundException
@@ -124,6 +132,7 @@ public class ClassLink {
 	 * @param newName
 	 *            the new name of the class
 	 * @throws IOException
+	 *             if there was an issue during the file parsing or the file write
 	 * 
 	 */
 	public void setNameInFile(String newName) throws IOException {
@@ -147,31 +156,6 @@ public class ClassLink {
 		// Modifying the name of the class in the model
 		classModel.setName(newName);
 	}
-
-	/**
-	 * Reads a directory containing .java files, compares it to the existing model, and updates the folder
-	 * 
-	 */
-	public void updateFile() {
-
-		// calls updateFile() on all AttributeLink and all MethodLink, and also checks if the ClassModel itself should change
-
-	}
-
-	// TODO, unless it's no longer necessary
-	// creates a file corresponding to a given classModel:
-	// by using the data contained in the classModel and its child models (like packageModel),
-	// generates a file skeleton
-
-	public void createFile(ClassModel classModel) {
-
-	}
-
-	// sync (might become more than one method)
-	// after checking if the two arguments match and differ, determines which one should change to match the other, and applies the needed
-	// changes
-
-	// TODO
 
 	/**
 	 * @return the classModel
