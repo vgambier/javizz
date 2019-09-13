@@ -390,11 +390,14 @@ public class Demonstration {
 		projectLink.renameFolder("testing");
 		Thread.sleep(WAITING_TIME);
 		projectLink.renameFolder("resources"); // Reverting the change
+		Thread.sleep(WAITING_TIME);
 
 		// Testing moveToNewClass
+		/*
 		System.out.println("\nUsing moveToNewClass to move the ssn attribute to GoodbyeWorld...");
-		// attributeLinkSsn.moveToNewClass(classLinkGoodbye);
+		attributeLinkSsn.moveToNewClass(classLinkGoodbye);
 		Thread.sleep(WAITING_TIME);
+		*/
 
 		// TODO vérification cohérence : classe publique = nom fichier, nom dossier = déclaration package, etc. implique
 		// création de

@@ -33,7 +33,7 @@ public class MethodLink {
 	// TODO need another attribute that uniquely defines the method within the file system - for now the primary key is the name
 	private String name;
 
-	public MethodLink(ClassModel classModel, String name) {
+	public MethodLink(ClassModel classModel, String name, String type) {
 
 		// we need to define factory to instantiate AttributeModel
 		ModelFactory factory = null;
@@ -49,6 +49,7 @@ public class MethodLink {
 		this.name = name;
 
 		methodModel.setName(name);
+		methodModel.setType(type);
 		methodModel.setClazz(classModel);
 		classModel.addMethod(methodModel);
 
@@ -66,7 +67,7 @@ public class MethodLink {
 	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
 
 		// Generating a new model based on the input file
-		MethodLink methodLinkFile = new MethodLink(methodModel.getClazz(), name);
+		MethodLink methodLinkFile = new MethodLink(methodModel.getClazz(), name, methodModel.getType());
 		MethodModel methodModelFile = methodLinkFile.methodModel;
 
 		// Updating the model
