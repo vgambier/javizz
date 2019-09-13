@@ -81,8 +81,8 @@ public class ProjectLink {
 
 		// For each package we've found...
 		for (String packagePath : packagePathList) {
-			PackageLink packageLink = new PackageLink(projectModel, packagePath); // This constructor will take care of modelizing the
-																					// package and its contents
+			PackageLink packageLink = new PackageLink(this, packagePath); // This constructor will take care of modelizing the
+																			// package and its contents
 			packageLinks.add(packageLink);
 		}
 	}

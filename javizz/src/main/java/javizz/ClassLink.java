@@ -40,6 +40,7 @@ public class ClassLink {
 	private String path; // the path where the class is located - uniquely defines the class within the file system
 	private List<AttributeLink> attributeLinks; // the children AttributeLink
 	private List<MethodLink> methodLinks; // the children methodLink
+	private PackageLink packageLink; // the parent package
 
 	/**
 	 * The constructor. Takes the path to a .java file, and modelizes that file. Links an instance of ClassLink with an instance of
@@ -55,7 +56,9 @@ public class ClassLink {
 	 * @throws ModelDefinitionException
 	 *             if something went wrong upon calling .getModelContext()
 	 */
-	public ClassLink(PackageModel packageModel, String path) throws FileNotFoundException, ModelDefinitionException {
+	public ClassLink(PackageLink packageLink, String path) throws FileNotFoundException, ModelDefinitionException {
+
+		PackageModel packageModel = packageLink.getPackageModel();
 
 		// Instantiating attributes
 
@@ -66,6 +69,7 @@ public class ClassLink {
 		this.path = path;
 		attributeLinks = new ArrayList<AttributeLink>();
 		methodLinks = new ArrayList<MethodLink>();
+		this.packageLink = packageLink;
 
 		classModel.setName(Demonstration.pathToFilename(path));
 		classModel.setPath(path);
@@ -84,11 +88,11 @@ public class ClassLink {
 			for (BodyDeclaration<?> member : typeDec.getMembers()) {
 				member.toFieldDeclaration().ifPresent(field -> {
 					for (VariableDeclarator variable : field.getVariables()) {
-						// Grabbing relevant data
+						// Retrieving relevant data
 						String name = variable.getNameAsString();
 						String type = variable.getTypeAsString();
 						// This constructor will take care of modelizing the attribute and its contents
-						AttributeLink attributeLink = new AttributeLink(classModel, name, type);
+						AttributeLink attributeLink = new AttributeLink(this, name, type);
 						attributeLinks.add(attributeLink);
 					}
 				});
@@ -106,7 +110,7 @@ public class ClassLink {
 				String name = md.getNameAsString();
 				String type = md.getTypeAsString();
 				// This constructor will take care of modelizing the method and its contents
-				MethodLink methodLink = new MethodLink(classModel, name, type);
+				MethodLink methodLink = new MethodLink(getClassLink(), name, type);
 				methodLinks.add(methodLink);
 
 			}
@@ -126,7 +130,7 @@ public class ClassLink {
 	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
 
 		// Generating a new model based on the input file
-		ClassLink classLinkFile = new ClassLink(classModel.getPackage(), path);
+		ClassLink classLinkFile = new ClassLink(packageLink, path);
 		ClassModel classModelFile = classLinkFile.classModel;
 
 		// Updating the model
@@ -191,6 +195,13 @@ public class ClassLink {
 	 */
 	public String getPath() {
 		return path;
+	}
+
+	/**
+	 * @return the ClassLink itself
+	 */
+	public ClassLink getClassLink() {
+		return this;
 	}
 
 }

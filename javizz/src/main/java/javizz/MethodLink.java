@@ -30,8 +30,9 @@ import models.MethodModel;
 @ModelEntity
 public class MethodLink {
 
-	private MethodModel methodModel;
-	private String name;
+	private MethodModel methodModel; // the corresponding model
+	private String name; // the name of the class
+	private ClassLink classLink; // the parent class
 
 	/**
 	 * The constructor. Takes information about the method and modelizes it. Links an instance of MethodLink with an instance of MethodModel
@@ -43,7 +44,9 @@ public class MethodLink {
 	 * @param type
 	 *            the type of the method
 	 */
-	public MethodLink(ClassModel classModel, String name, String type) {
+	public MethodLink(ClassLink classLink, String name, String type) {
+
+		ClassModel classModel = classLink.getClassModel();
 
 		// We first need to define a factory to instantiate AttributeModel
 		ModelFactory factory = null;
@@ -56,6 +59,7 @@ public class MethodLink {
 
 		this.methodModel = factory.newInstance(MethodModel.class);
 		this.name = name;
+		this.classLink = classLink;
 
 		methodModel.setName(name);
 		methodModel.setType(type);
@@ -73,7 +77,7 @@ public class MethodLink {
 	public void updateModel() {
 
 		// Generating a new model based on the input file
-		MethodLink methodLinkFile = new MethodLink(methodModel.getClazz(), name, methodModel.getType());
+		MethodLink methodLinkFile = new MethodLink(classLink, name, methodModel.getType());
 		MethodModel methodModelFile = methodLinkFile.methodModel;
 
 		// Updating the model

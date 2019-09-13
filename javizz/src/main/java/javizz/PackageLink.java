@@ -30,6 +30,7 @@ public class PackageLink {
 	private PackageModel packageModel; // the corresponding model
 	private String path; // the path where the package is located
 	private List<ClassLink> classLinks; // the children ClassLink
+	private ProjectLink projectLink; // the parent project
 
 	/**
 	 * The constructor. Takes the path to a folder containing .java files, and modelizes that folder. Links an instance of PackageLink with
@@ -44,7 +45,9 @@ public class PackageLink {
 	 * @throws FileNotFoundException
 	 *             if one of the package files could not be parsed
 	 */
-	public PackageLink(ProjectModel projectModel, String path) throws FileNotFoundException, ModelDefinitionException {
+	public PackageLink(ProjectLink projectLink, String path) throws FileNotFoundException, ModelDefinitionException {
+
+		ProjectModel projectModel = projectLink.getProjectModel();
 
 		// Instantiating attributes
 
@@ -54,6 +57,7 @@ public class PackageLink {
 		this.packageModel = factory.newInstance(PackageModel.class);
 		this.path = path;
 		classLinks = new ArrayList<ClassLink>();
+		this.projectLink = projectLink;
 
 		packageModel.setName(Demonstration.pathToFilename(path));
 		packageModel.setProject(projectModel);
@@ -72,8 +76,8 @@ public class PackageLink {
 			if (FilenameUtils.getExtension(filename).equals("java")) {
 				// If it is, then we assume the current file is a Java class
 				String filePath = file.getPath();
-				ClassLink classLink = new ClassLink(packageModel, filePath); // This constructor will take care of modelizing the class and
-																				// its contents
+				ClassLink classLink = new ClassLink(this, filePath); // This constructor will take care of modelizing the class and
+																		// its contents
 				classLinks.add(classLink);
 			}
 		}
@@ -91,7 +95,7 @@ public class PackageLink {
 	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
 
 		// Generating a new model based on the input file
-		PackageLink packageLinkFile = new PackageLink(packageModel.getProject(), path);
+		PackageLink packageLinkFile = new PackageLink(projectLink, path);
 		PackageModel packageModelFile = packageLinkFile.packageModel;
 
 		// Updating the model

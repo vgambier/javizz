@@ -33,7 +33,8 @@ import models.ClassModel;
 public class AttributeLink {
 
 	private AttributeModel attributeModel; // the corresponding model
-	private String name;
+	private String name; // the name of the attribute
+	private ClassLink classLink; // the parent class
 
 	/**
 	 * The constructor. Takes information about the attribute and modelizes it. Links an instance of AttributeLink with an instance of
@@ -46,7 +47,9 @@ public class AttributeLink {
 	 * @param type
 	 *            the type of the attribute
 	 */
-	public AttributeLink(ClassModel classModel, String name, String type) {
+	public AttributeLink(ClassLink classLink, String name, String type) {
+
+		ClassModel classModel = classLink.getClassModel();
 
 		// Instantiating attributes
 
@@ -61,6 +64,7 @@ public class AttributeLink {
 
 		this.attributeModel = factory.newInstance(AttributeModel.class);
 		this.name = name;
+		this.classLink = classLink;
 
 		attributeModel.setName(name);
 		attributeModel.setType(type);
@@ -78,7 +82,7 @@ public class AttributeLink {
 	public void updateModel() {
 
 		// Generating a new model based on the existing file
-		AttributeLink attributeLinkFile = new AttributeLink(attributeModel.getClazz(), name, attributeModel.getType());
+		AttributeLink attributeLinkFile = new AttributeLink(classLink, name, attributeModel.getType());
 		AttributeModel attributeModelFile = attributeLinkFile.attributeModel;
 
 		// Updating the model
