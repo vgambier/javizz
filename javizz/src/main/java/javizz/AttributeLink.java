@@ -35,6 +35,17 @@ public class AttributeLink {
 	private AttributeModel attributeModel; // the corresponding model
 	private String name;
 
+	/**
+	 * The constructor. Takes information about the attribute and modelizes it. Links an instance of AttributeLink with an instance of
+	 * AttributeModel
+	 * 
+	 * @param classModel
+	 *            the parent class
+	 * @param name
+	 *            the name of the attribute
+	 * @param type
+	 *            the type of the attribute
+	 */
 	public AttributeLink(ClassModel classModel, String name, String type) {
 
 		// Instantiating attributes

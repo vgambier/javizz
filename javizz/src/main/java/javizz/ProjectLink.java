@@ -31,9 +31,9 @@ public class ProjectLink {
 	private List<PackageLink> packageLinks; // the children PackageLink
 
 	/**
-	 * The constructor. Takes the path to a folder containing subfolders and .java files, and modelizes them. Links an instance of
-	 * ProjectLink with an instance of ProjectModel. Also calls other package model constructors to modelize the packages contained within
-	 * the folders.
+	 * The constructor. Takes the path to a folder containing subfolders and .java files, and modelizes that folder. Links an instance of
+	 * ProjectLink with an instance of ProjectModel. Also calls the PackageModel constructor to modelize the packages contained within the
+	 * folders.
 	 * 
 	 * @param path
 	 *            the path of the folder that is going to be parsed and modelized as a project
@@ -46,8 +46,9 @@ public class ProjectLink {
 
 		// Instantiating attributes
 
-		ModelFactory factory = new ModelFactory(ModelContextLibrary.getModelContext(ProjectModel.class)); // we need to define factory to
-																											// instantiate ProjectModel
+		// We first need to define a factory to instantiate ProjectModel
+
+		ModelFactory factory = new ModelFactory(ModelContextLibrary.getModelContext(ProjectModel.class));
 		this.projectModel = factory.newInstance(ProjectModel.class);
 		this.path = path;
 		packageLinks = new ArrayList<PackageLink>();

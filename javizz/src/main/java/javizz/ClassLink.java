@@ -42,18 +42,26 @@ public class ClassLink {
 	private List<MethodLink> methodLinks; // the children methodLink
 
 	/**
+	 * The constructor. Takes the path to a .java file, and modelizes that file. Links an instance of ClassLink with an instance of
+	 * ClassModel. Also calls the MethodModel and AttributeModel constructors to modelize the methods and attributes contained within the
+	 * class.
+	 * 
 	 * @param packageModel
+	 *            the parent package
 	 * @param path
+	 *            the path where the class is located
 	 * @throws FileNotFoundException
 	 *             if the file containing the class could not be parsed
 	 * @throws ModelDefinitionException
+	 *             if something went wrong upon calling .getModelContext()
 	 */
 	public ClassLink(PackageModel packageModel, String path) throws FileNotFoundException, ModelDefinitionException {
 
 		// Instantiating attributes
 
-		ModelFactory factory = new ModelFactory(ModelContextLibrary.getModelContext(ClassModel.class)); // we need to define factory to
-																										// instantiate ClassModel
+		// We first need to define a factory to instantiate AttributeModel
+		ModelFactory factory = new ModelFactory(ModelContextLibrary.getModelContext(ClassModel.class));
+
 		this.classModel = factory.newInstance(ClassModel.class);
 		this.path = path;
 		attributeLinks = new ArrayList<AttributeLink>();

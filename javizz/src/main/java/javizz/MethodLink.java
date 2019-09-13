@@ -33,9 +33,19 @@ public class MethodLink {
 	private MethodModel methodModel;
 	private String name;
 
+	/**
+	 * The constructor. Takes information about the method and modelizes it. Links an instance of MethodLink with an instance of MethodModel
+	 * 
+	 * @param classModel
+	 *            the parent class
+	 * @param name
+	 *            the name of the method
+	 * @param type
+	 *            the type of the method
+	 */
 	public MethodLink(ClassModel classModel, String name, String type) {
 
-		// we need to define factory to instantiate AttributeModel
+		// We first need to define a factory to instantiate AttributeModel
 		ModelFactory factory = null;
 		try {
 			factory = new ModelFactory(ModelContextLibrary.getModelContext(MethodModel.class));

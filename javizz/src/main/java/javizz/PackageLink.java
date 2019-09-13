@@ -32,7 +32,8 @@ public class PackageLink {
 	private List<ClassLink> classLinks; // the children ClassLink
 
 	/**
-	 * The constructor
+	 * The constructor. Takes the path to a folder containing .java files, and modelizes that folder. Links an instance of PackageLink with
+	 * an instance of PackageModel. Also calls the ClassModel constructor to modelize the classes contained within the folders.
 	 * 
 	 * @param projectModel
 	 *            the parent project
@@ -47,8 +48,8 @@ public class PackageLink {
 
 		// Instantiating attributes
 
-		ModelFactory factory = new ModelFactory(ModelContextLibrary.getModelContext(PackageModel.class)); // we need to define factory to
-		// instantiate PackageModel
+		// We first need to define a factory to instantiate PackageModel
+		ModelFactory factory = new ModelFactory(ModelContextLibrary.getModelContext(PackageModel.class));
 
 		this.packageModel = factory.newInstance(PackageModel.class);
 		this.path = path;
