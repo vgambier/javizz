@@ -13,18 +13,8 @@ import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
 
 /**
- * @author Victor Gambier
- *
- */
-
-// résoudre le problème de l'héritage / unicité modèle
-// pool methode commun, check si héritage, accès classe mère
-// ou : simplement un attribut qui dit que cette classe est fille de telle classe. donc une méthode est rattachée à une unique classe
-
-// TODO: turn ClassModel into also FileModel which handles all classes and also imports. 3 attributs: la classe publique, la liste
-// des imports, la liste des classes non publiques (+ le nom, etc.)
-
-/**
+ * Instances of this class represent a single file.
+ * 
  * @author Victor Gambier
  *
  */
@@ -98,7 +88,7 @@ public interface ClassModel extends TypeModel {
 
 		@Override
 		public ProjectModel getProject() {
-			return getPackage().getProject();
+			return getPackage().getProject(); // returns the parent project
 		}
 	}
 }

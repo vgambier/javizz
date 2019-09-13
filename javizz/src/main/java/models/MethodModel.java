@@ -11,6 +11,8 @@ import javizz.MethodLink;
 import models.MethodModel.MethodModelImpl;
 
 /**
+ * Instances of this class represent a single method.
+ * 
  * @author Victor Gambier
  *
  */
@@ -66,7 +68,7 @@ public interface MethodModel extends AbstractModelObject {
 
 		@Override
 		public ProjectModel getProject() {
-			return getClazz() == null ? null : getClazz().getProject();
+			return getClazz() == null ? null : getClazz().getProject(); // returns the parent project
 		}
 	}
 }

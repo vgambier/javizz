@@ -10,6 +10,8 @@ import org.openflexo.pamela.annotations.XMLElement;
 import models.AttributeModel.AttributeModelImpl;
 
 /**
+ * Instances of this class represent a single attribute.
+ * 
  * @author Victor Gambier
  *
  */
@@ -30,16 +32,6 @@ public interface AttributeModel extends AbstractModelObject {
 	@Setter(NAME)
 	void setName(String name);
 
-	// Attributes and methods regarding the parent class
-
-	String CLASS = "class";
-
-	@Getter(value = CLASS, isDerived = true) // isDerived flag is set, otherwise updateModel would cause a stack overflow
-	ClassModel getClazz();
-
-	@Setter(CLASS)
-	void setClazz(ClassModel classModel);
-
 	// Attributes and methods regarding the type of the attribute:
 
 	String TYPE = "type";
@@ -51,13 +43,21 @@ public interface AttributeModel extends AbstractModelObject {
 	@Setter(TYPE)
 	void setType(String type);
 
-	abstract class AttributeModelImpl extends AbstractModelObjectImpl implements AttributeModel {
+	// Attributes and methods regarding the parent class
 
-		// si on veut ajouter des méthodes à AttributeModel non gérées par Pamela
+	String CLASS = "class";
+
+	@Getter(value = CLASS, isDerived = true) // isDerived flag is set, otherwise updateModel would cause a stack overflow
+	ClassModel getClazz();
+
+	@Setter(CLASS)
+	void setClazz(ClassModel classModel);
+
+	abstract class AttributeModelImpl extends AbstractModelObjectImpl implements AttributeModel {
 
 		@Override
 		public ProjectModel getProject() {
-			return getClazz() == null ? null : getClazz().getProject();
+			return getClazz() == null ? null : getClazz().getProject(); // returns the parent project
 		}
 	}
 }

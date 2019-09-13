@@ -13,6 +13,8 @@ import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
 
 /**
+ * Instances of this class represent a single package.
+ * 
  * @author Victor Gambier
  *
  */

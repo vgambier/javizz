@@ -6,9 +6,6 @@ import org.openflexo.pamela.annotations.Adder;
 import org.openflexo.pamela.annotations.Embedded;
 import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.Getter.Cardinality;
-
-import models.ProjectModel.ProjectModelImpl;
-
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.Remover;
@@ -16,12 +13,15 @@ import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
 
+import models.ProjectModel.ProjectModelImpl;
+
 /**
+ * Instances of this class represent a single project, i.e.: a collection of packages. For now that means a single folder (all packages are
+ * necessarily in the same directory).
+ * 
  * @author Victor Gambier
  *
  */
-
-// modélise l'espace de travail, c'est-à-dire le dossier sont les sous-dossiers sont gérés par la modélisation
 
 @ModelEntity
 @XMLElement
@@ -73,5 +73,4 @@ public interface ProjectModel extends AbstractModelObject {
 			return this;
 		}
 	}
-
 }
