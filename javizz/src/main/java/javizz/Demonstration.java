@@ -47,37 +47,47 @@ import models.ProjectModel;
 public class Demonstration {
 
 	final static int WAITING_TIME = 1000; // the number of milliseconds the program will stall after each file change to let the file
-											// monitoring
-	// thread enough time to run
+											// monitoring thread enough time to run
 
 	/**
 	 * Takes a path and returns the name of filename or folder that it points to, without the extension
 	 * 
 	 * @param path'
 	 *            the path that is going to be converted into a filename
-	 * @return the bottom-most filename or folder, as a String
+	 * @return the name of the file or folder that the path points to, as a String
 	 */
 	public static String pathToFilename(String path) {
 		String filenameWithExt = path.substring(path.lastIndexOf("/") + 1);
 		return FilenameUtils.removeExtension(filenameWithExt);
 	}
 
+	/**
+	 * This method will apply two changes in HelloWorld.java -1) rename the Empty class to VeryEmpty (and vice versa); and 2) rename the
+	 * attributeBeta / attributeDefault attribute to attributeAlpha, or rename attributeAlpha to attributeBeta. That way, if called several
+	 * times in a row, the class name will alternate between Empty and VeryEmpty, while the attribute name will alternate between
+	 * attributeAlpha and attributeBeta
+	 * 
+	 * @throws IOException
+	 *             if there was an issue during the file parsing or the file write
+	 */
 	public static void editFileTest() throws IOException {
 
 		System.out.println("\nEditing file...");
 
-		String editPath = "src/main/resources/firstPackage/HelloWorld.java";
+		String editPath = "src/main/resources/firstPackage/HelloWorld.java"; // the file we'll modify
 
 		CompilationUnit cuTest = StaticJavaParser.parse(new File(editPath));
 		LexicalPreservingPrinter.setup(cuTest); // enables lexical preservation
 
 		// Change 1 - Retrieving a class and changing its name
 		ClassOrInterfaceDeclaration classDec;
-		try {
-			classDec = cuTest.getClassByName("Empty").orElse(null);
-			classDec.setName("VeryEmpty");
-		} catch (NullPointerException e) { // If there is no class by the name of Empty
-			classDec = cuTest.getClassByName("VeryEmpty").orElse(null);
+
+		classDec = cuTest.getClassByName("Empty").orElse(null);
+
+		if (classDec != null) // if the Empty class exists
+			classDec.setName("VeryEmpty"); // we change its name
+		else { // if it doesn't...
+			classDec = cuTest.getClassByName("VeryEmpty").orElse(null); // we rename the VeryEmpty class instead
 			classDec.setName("Empty");
 		}
 
@@ -105,9 +115,15 @@ public class Demonstration {
 		writer.close();
 	}
 
+	/**
+	 * Displays an overview of the attributes stored in the input ClassModel
+	 * 
+	 * @param classModel
+	 *            the ClassModel whose attributes will be displayed
+	 */
 	public static void showClassModelAttributes(ClassModel classModel) {
 
-		System.out.println("\nHere are the attributes as stored in the HelloWorld ClassModel:");
+		System.out.println("\nHere are the attributes as stored in the " + classModel.getName() + " ClassModel:");
 
 		List<AttributeModel> attributes = classModel.getAttributes();
 		for (AttributeModel attributeModel : attributes) {
@@ -115,9 +131,15 @@ public class Demonstration {
 		}
 	}
 
+	/**
+	 * Displays an overview of the methods stored in the input ClassModel
+	 * 
+	 * @param classModel
+	 *            the ClassModel whose methods will be displayed
+	 */
 	public static void showClassModelMethods(ClassModel classModel) {
 
-		System.out.println("\nHere are the methods as stored in the HelloWorld ClassModel:");
+		System.out.println("\nHere are the methods as stored in the " + classModel.getName() + " ClassModel:");
 
 		List<MethodModel> methods = classModel.getMethods();
 		for (MethodModel methodModel : methods) {
@@ -134,20 +156,25 @@ public class Demonstration {
 
 			@Override
 			public void run() {
+
+				// Defining the folder we want to monitor as a FileObject
 				org.apache.commons.vfs2.FileObject listendir = null;
 				try {
 					FileSystemManager fsManager = VFS.getManager();
-					String relativePath = "src/main";
+					String relativePath = "src/main"; // the folder we want to monitor
 					String absolutePath = FileSystems.getDefault().getPath(relativePath).normalize().toAbsolutePath().toString();
 					listendir = fsManager.resolveFile(absolutePath);
 				} catch (org.apache.commons.vfs2.FileSystemException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+
+				// Defining what will happen upon file change detection
 				DefaultFileMonitor fm = new DefaultFileMonitor(new FileListener() {
 
 					@Override
 					public void fileDeleted(FileChangeEvent event) throws Exception {
+						// Code here will trigger whenever the file monitoring detects a file has been deleted
 						String fullPath = event.getFile().getName().getPath();
 						String shortPath = fullPath.substring(fullPath.indexOf("main"));
 						System.out.println("\t" + shortPath + " deleted.");
@@ -155,6 +182,7 @@ public class Demonstration {
 
 					@Override
 					public void fileCreated(FileChangeEvent event) throws Exception {
+						// Code here will trigger whenever the file monitoring detects a file has been created
 						String fullPath = event.getFile().getName().getPath();
 						String shortPath = fullPath.substring(fullPath.indexOf("main"));
 						System.out.println("\t" + shortPath + " created.");
@@ -162,15 +190,16 @@ public class Demonstration {
 
 					@Override
 					public void fileChanged(FileChangeEvent event) throws Exception {
+						// Code here will trigger whenever the file monitoring detects a file has been edited
 						String fullPath = event.getFile().getName().getPath();
 						String shortPath = fullPath.substring(fullPath.indexOf("main"));
 						System.out.println("\t" + shortPath + " changed.");
 					}
 				});
 
-				fm.setRecursive(true);
+				fm.setRecursive(true); // enables monitoring for subfolders
 				fm.addFile(listendir);
-				fm.start();
+				fm.start(); // start monitoring
 
 			}
 		});
@@ -207,6 +236,9 @@ public class Demonstration {
 		}
 
 		// XML serialization
+
+		System.out.println("XML serialization...");
+
 		String xmlPath = "src/main/resources/XMLFiles/TestSerialization.xml";
 		File xmlFile = new File(xmlPath);
 		xmlFile.delete(); // deleting the previous instance
@@ -234,6 +266,8 @@ public class Demonstration {
 		FileOutputStream fos2 = new FileOutputStream(xmlFile2);
 		projectFactory.serialize(projectModelClone, fos2, SerializationPolicy.EXTENSIVE, true);
 		fos2.close();
+
+		Thread.sleep(WAITING_TIME);
 
 		/* Testing all updateModel() methods */
 
@@ -324,29 +358,16 @@ public class Demonstration {
 
 		Thread.sleep(WAITING_TIME);
 
-		// Note: calling attributeLinkTarget.updateModel(); would result in unexpected behavior
-		// The underlying reason for this is that, as of now, an attribute is uniquely defined by its name
-		// So while it's possible to update a classModel by recreating a model from scratch using its path and updating
-		// everything that has changed
-		// The same cannot be said of an attributeModel - if we change its name, any attempt at updating it will fail -
-		// From the constructor's perspective, it's as if it was a completely different attribute
-		// So, in fact, it doesn't make sense to call updateModel on attributeLink if the thing we want to update is the
-		// attributeModel
-
-		// TODO Test attributeLinkTarget.updateModel() and methodLinkTarget.updateModel() (with well thought-out tests)
-
 		// Testing file writes
 
 		System.out.println("\nUsing setNameInFile to edit the name of an attribute in the file...");
 		attributeLinkTarget.setNameInFile("attributeDefault");
-		System.out.println("Updating the file...");
 		showClassModelAttributes(classModelHello);
 
 		Thread.sleep(WAITING_TIME);
 
 		System.out.println("\nUsing setTypeInFile to edit the type of an attribute in the file...");
 		attributeLinkTarget.setTypeInFile("int");
-		System.out.println("Updating the file...");
 		showClassModelAttributes(classModelHello);
 		attributeLinkTarget.setTypeInFile("long"); // Reverting the change
 
@@ -355,19 +376,17 @@ public class Demonstration {
 		showClassModelMethods(classModelHello);
 		System.out.println("\nUsing setNameInFile to edit the name of a method in the file...");
 		methodLinkTarget.setNameInFile("veryFastMethod");
-		System.out.println("Updating the file...");
 		showClassModelMethods(classModelHello);
 
 		Thread.sleep(WAITING_TIME);
 
 		System.out.println("\nUsing setTypeInFile to edit the type of a method in the file...");
 		methodLinkTarget.setTypeInFile("int");
-		System.out.println("Updating the file...");
 		showClassModelMethods(classModelHello);
 
 		Thread.sleep(WAITING_TIME);
 
-		// Reverting the change
+		// Reverting the changes
 		methodLinkTarget.setTypeInFile("long");
 		methodLinkTarget.setNameInFile("uselessMethod");
 
@@ -390,7 +409,6 @@ public class Demonstration {
 		projectLink.renameFolder("testing");
 		Thread.sleep(WAITING_TIME);
 		projectLink.renameFolder("resources"); // Reverting the change
-		Thread.sleep(WAITING_TIME);
 
 		// Testing moveToNewClass
 		/*
@@ -399,9 +417,7 @@ public class Demonstration {
 		Thread.sleep(WAITING_TIME);
 		*/
 
-		// TODO vérification cohérence : classe publique = nom fichier, nom dossier = déclaration package, etc. implique
-		// création de
-		// nouveaux attributs, @Override + changement de nom
+		Thread.sleep(WAITING_TIME);
 
 		System.exit(0); // Terminating all threads
 
