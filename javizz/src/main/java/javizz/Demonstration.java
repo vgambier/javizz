@@ -13,8 +13,6 @@ import java.util.concurrent.Executors;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.vfs2.FileChangeEvent;
-import org.apache.commons.vfs2.FileListener;
 import org.apache.commons.vfs2.FileSystemManager;
 import org.apache.commons.vfs2.VFS;
 import org.apache.commons.vfs2.impl.DefaultFileMonitor;
@@ -171,46 +169,7 @@ public class Demonstration {
 				}
 
 				// Defining what will happen upon file change detection
-				DefaultFileMonitor fm = new DefaultFileMonitor(new FileListener() {
-
-					@Override
-					public void fileDeleted(FileChangeEvent event) throws Exception {
-
-						// Code here will trigger whenever the file monitoring detects a file has been deleted
-						String fullPath = event.getFile().getName().getPath();
-						String shortPath = fullPath.substring(fullPath.indexOf("main"));
-						System.out.println("\t" + shortPath + " deleted.");
-					}
-
-					@Override
-					public void fileCreated(FileChangeEvent event) throws Exception {
-
-						// Code here will trigger whenever the file monitoring detects a file has been created
-						String fullPath = event.getFile().getName().getPath();
-						String shortPath = fullPath.substring(fullPath.indexOf("main"));
-						System.out.println("\t" + shortPath + " created.");
-					}
-
-					@Override
-					public void fileChanged(FileChangeEvent event) throws Exception {
-
-						// Code here will trigger whenever the file monitoring detects a file has been edited
-
-						String fullPath = event.getFile().getName().getPath();
-						String shortPath = fullPath.substring(fullPath.indexOf("main"));
-						System.out.println("\t" + shortPath + " changed.");
-
-						if (syncMode) { // Upon noticing the change, we only act if "sync mode" has been enabled
-
-							System.out.println("Updating the model...");
-
-							// Retrieving the model
-							// TODO
-
-							System.out.println(event.getFile().getFileOperations());
-						}
-					}
-				});
+				DefaultFileMonitor fm = new DefaultFileMonitor(new CustomFileListener());
 
 				fm.setRecursive(true); // enables monitoring for subfolders
 				fm.addFile(listendir);
