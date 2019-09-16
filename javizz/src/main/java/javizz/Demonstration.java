@@ -46,8 +46,9 @@ import models.ProjectModel;
 @ImplementationClass(FileSystemBasedResourceCenter.FileSystemBasedResourceCenterImpl.class)
 public class Demonstration {
 
-	final static int WAITING_TIME = 1000; // the number of milliseconds the program will stall after each file change to let the file
-											// monitoring thread enough time to run
+	final static int WAITING_TIME = 20; // the number of milliseconds the program will stall after each file change to let the file
+										// monitoring thread enough time to run
+	static boolean syncMode = false;
 
 	/**
 	 * Takes a path and returns the name of filename or folder that it points to, without the extension
@@ -174,6 +175,7 @@ public class Demonstration {
 
 					@Override
 					public void fileDeleted(FileChangeEvent event) throws Exception {
+
 						// Code here will trigger whenever the file monitoring detects a file has been deleted
 						String fullPath = event.getFile().getName().getPath();
 						String shortPath = fullPath.substring(fullPath.indexOf("main"));
@@ -182,6 +184,7 @@ public class Demonstration {
 
 					@Override
 					public void fileCreated(FileChangeEvent event) throws Exception {
+
 						// Code here will trigger whenever the file monitoring detects a file has been created
 						String fullPath = event.getFile().getName().getPath();
 						String shortPath = fullPath.substring(fullPath.indexOf("main"));
@@ -190,15 +193,28 @@ public class Demonstration {
 
 					@Override
 					public void fileChanged(FileChangeEvent event) throws Exception {
+
 						// Code here will trigger whenever the file monitoring detects a file has been edited
+
 						String fullPath = event.getFile().getName().getPath();
 						String shortPath = fullPath.substring(fullPath.indexOf("main"));
 						System.out.println("\t" + shortPath + " changed.");
+
+						if (syncMode) { // Upon noticing the change, we only act if "sync mode" has been enabled
+
+							System.out.println("Updating the model...");
+
+							// Retrieving the model
+							// TODO
+
+							System.out.println(event.getFile().getFileOperations());
+						}
 					}
 				});
 
 				fm.setRecursive(true); // enables monitoring for subfolders
 				fm.addFile(listendir);
+				fm.setDelay(WAITING_TIME); // we'll check the filesystem for changes every X milliseconds
 				fm.start(); // start monitoring
 
 			}
@@ -234,6 +250,8 @@ public class Demonstration {
 				}
 			}
 		}
+
+		syncMode = true; // Enables real-time file system monitoring
 
 		// XML serialization
 
