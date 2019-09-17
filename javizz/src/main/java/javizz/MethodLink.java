@@ -108,14 +108,8 @@ public class MethodLink {
 				super.visit(md, arg);
 				String oldName = md.getNameAsString();
 
-				if (oldName.equals(methodModel.getName())) {
-
+				if (oldName.equals(methodModel.getName()))
 					md.setName(newName);
-					if (true) { // TODO: global attribute check - only change the model if "synch mode" is enabled
-						name = newName;
-						methodModel.setName(newName);
-					}
-				}
 			}
 		}
 
@@ -152,13 +146,8 @@ public class MethodLink {
 				super.visit(md, arg);
 				String oldName = md.getNameAsString();
 
-				if (oldName.equals(methodModel.getName())) {
-
+				if (oldName.equals(methodModel.getName()))
 					md.setType(newType);
-					if (true) { // TODO: global attribute check - only change the model if "synch mode" is enabled
-						methodModel.setType(newType);
-					}
-				}
 			}
 		}
 

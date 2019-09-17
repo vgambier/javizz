@@ -120,18 +120,8 @@ public class PackageLink {
 		String newPath = path.substring(0, path.lastIndexOf("/") + 1) + newName; // same path but with the folder at the end changed
 		File destFolder = new File(newPath);
 
-		if (sourceFolder.renameTo(destFolder)) { // This attempts to rename the folder, and returns true if the folder was renamed
-
-			// If the rename was successful, we can change the models accordingly
-
-			if (true) { // TODO: global attribute check - only change the model if "synch mode" is enabled
-				this.path = newPath;
-				packageModel.setName(newName);
-			}
-		}
-		else {
+		if (!sourceFolder.renameTo(destFolder)) // This attempts to rename the folder, and returns true if the folder was not renamed
 			throw new JavizzException("Failed to rename directory");
-		}
 	}
 
 	/**

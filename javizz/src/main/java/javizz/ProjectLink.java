@@ -37,6 +37,7 @@ public class ProjectLink {
 	private ProjectModel projectModel; // the corresponding model
 	private String path; // the path where the project is located
 	private List<PackageLink> packageLinks; // the children PackageLink
+	private boolean monitoring = false; // if set to true, the file system will be monitored
 
 	/**
 	 * The constructor. Takes the path to a folder containing subfolders and .java files, and modelizes that folder. Links an instance of
@@ -46,7 +47,7 @@ public class ProjectLink {
 	 * @param path
 	 *            the path of the folder that is going to be parsed and modelized as a project
 	 * @param monitoring
-	 *            an optional boolean that when true, triggers the file monitoring process
+	 *            an optional boolean that when true, enables the file monitoring process
 	 * @throws ModelDefinitionException
 	 *             if something went wrong upon calling .getModelContext()
 	 * @throws FileNotFoundException
@@ -58,6 +59,8 @@ public class ProjectLink {
 
 		if (monitoring.length > 1)
 			throw new JavizzException("Error: ProjectLink constructor can only be called with 0 or 1 boolean");
+		else if (monitoring.length == 1 && monitoring[0])
+			this.monitoring = true;
 
 		// Instantiating attributes
 
@@ -101,10 +104,9 @@ public class ProjectLink {
 			packageLinks.add(packageLink);
 		}
 
-		// Initializing a watch service to track file changes on disk on a separate thread
+		// Initializing a watch service (on a separate thread) to track file changes on disk on a separate thread
+		startFileSystemMonitoring();
 
-		if (monitoring.length == 1 && monitoring[0])
-			startFileSystemMonitoring();
 	}
 
 	/**
@@ -139,18 +141,8 @@ public class ProjectLink {
 		String newPath = path.substring(0, path.lastIndexOf("/") + 1) + newName; // same path but with the folder at the end changed
 		File destFolder = new File(newPath);
 
-		if (sourceFolder.renameTo(destFolder)) { // This attempts to rename the folder, and returns true if the folder was renamed
-
-			// If the rename was successful, we can change the models accordingly
-
-			if (true) { // TODO: global attribute check - only change the model if "synch mode" is enabled
-				this.path = newPath;
-				projectModel.setName(newName);
-			}
-		}
-		else {
+		if (!sourceFolder.renameTo(destFolder)) // This attempts to rename the folder, and returns true if the folder was renamed
 			throw new JavizzException("Failed to rename directory");
-		}
 	}
 
 	public void startFileSystemMonitoring() {
@@ -200,6 +192,20 @@ public class ProjectLink {
 	}
 
 	/**
+	 * @return the monitoring
+	 */
+	public boolean getMonitoring() {
+		return monitoring;
+	}
+	
+	/**
+	 * @param monitoring the monitoring to set
+	 */
+	public void setMonitoring(boolean monitoring) {
+		this.monitoring = monitoring;
+	}
+
+	/**
 	 * @return the projectLink itself
 	 */
 	public ProjectLink getProjectLink() {
@@ -235,21 +241,10 @@ public class ProjectLink {
 			String shortPath = fullPath.substring(fullPath.indexOf("main"));
 			System.out.println("\t" + shortPath + " changed.");
 
-			System.out.println("@@@@@@@@@@@@@@@@");
-
-			if (getSyncMode()) { // Upon noticing the change, we only act if "sync mode" has been enabled
-
+			if (getMonitoring()) { // Upon noticing the change, we only act if "monitoring mode" has been enabled
 				System.out.println("Updating the model...");
-
 				getProjectLink().updateModel();
-
 			}
 		}
-
-		public boolean getSyncMode() {
-			return Demonstration.syncMode;
-		}
-
 	}
-
 }

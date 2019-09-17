@@ -40,7 +40,6 @@ public class Demonstration {
 
 	final static int WAITING_TIME = 500; // the number of milliseconds the program will stall after each file change to let the file
 											// monitoring thread enough time to run
-	static boolean syncMode = false;
 
 	/**
 	 * Takes a path and returns the name of filename or folder that it points to, without the extension
@@ -142,11 +141,32 @@ public class Demonstration {
 
 	public static void main(String[] args) throws Exception {
 
-		// In a separate thread, run the demonstration
+		// We need to rename two folders that may have been renamed during the last iteration of this
+		File firstFolder = new File("src/main/testing");
+		if (firstFolder.exists()) {
+			if (!firstFolder.renameTo(new File("src/main/resources"))) // Renaming the folder
+				throw new JavizzException("Failed to rename directory"); // Triggered if the renaming failed
+		}
+
+		File secondFolder = new File("src/main/resources/betterPackage");
+		if (secondFolder.exists()) {
+			if (!secondFolder.renameTo(new File("src/main/resources/firstPackage")))
+				throw new JavizzException("Failed to rename directory");
+		}
+
+		// Copying the file template onto the file we'll be modifying for the demonstration
+		String templatePath = "src/main/resources/template";
+		String testPath = "src/main/resources/firstPackage/HelloWorld.java";
+		System.out.println("Copying the template onto HelloWorld.java...");
+		CompilationUnit cuTemplate = StaticJavaParser.parse(new File(templatePath));
+		LexicalPreservingPrinter.setup(cuTemplate);
+		BufferedWriter writer = new BufferedWriter(new FileWriter(testPath));
+		writer.write(LexicalPreservingPrinter.print(cuTemplate));
+		writer.close();
 
 		// Reading a test folder
 		String folderPath = "src/main/resources"; // a relative path, pointing to the resources directory included in the project
-		ProjectLink projectLink = new ProjectLink(folderPath, true);
+		ProjectLink projectLink = new ProjectLink(folderPath); // Instantiating ProjectLink, with file monitoring enabled
 
 		// Testing to see if the data was properly gathered
 
@@ -173,11 +193,9 @@ public class Demonstration {
 			}
 		}
 
-		syncMode = true; // Enables real-time file system monitoring
-
 		// XML serialization
 
-		System.out.println("XML serialization...");
+		System.out.println("\nXML serialization...");
 
 		String xmlPath = "src/main/resources/XMLFiles/TestSerialization.xml";
 		File xmlFile = new File(xmlPath);
@@ -207,9 +225,11 @@ public class Demonstration {
 		projectFactory.serialize(projectModelClone, fos2, SerializationPolicy.EXTENSIVE, true);
 		fos2.close();
 
-		Thread.sleep(WAITING_TIME);
+		Thread.sleep(WAITING_TIME); // TODO is this necessary?
 
 		/* Testing all updateModel() methods */
+
+		System.out.println("Testing non-automatic updateModel methods...");
 
 		projectModel.setIsWatching(true); // Enabling real-time model monitoring
 
@@ -300,6 +320,9 @@ public class Demonstration {
 
 		// Testing file writes
 
+		System.out.println("Testing file writes");
+		projectLink.setMonitoring(true); // Enabling real-time file monitoring
+
 		System.out.println("\nUsing setNameInFile to edit the name of an attribute in the file...");
 		attributeLinkTarget.setNameInFile("attributeDefault");
 		showClassModelAttributes(classModelHello);
@@ -309,7 +332,6 @@ public class Demonstration {
 		System.out.println("\nUsing setTypeInFile to edit the type of an attribute in the file...");
 		attributeLinkTarget.setTypeInFile("int");
 		showClassModelAttributes(classModelHello);
-		attributeLinkTarget.setTypeInFile("long"); // Reverting the change
 
 		Thread.sleep(WAITING_TIME);
 
@@ -326,29 +348,20 @@ public class Demonstration {
 
 		Thread.sleep(WAITING_TIME);
 
-		// Reverting the changes
-		methodLinkTarget.setTypeInFile("long");
-		methodLinkTarget.setNameInFile("uselessMethod");
-
-		Thread.sleep(WAITING_TIME);
-
 		// Testing setNameInFile for ClassLink
 		System.out.println("\nUsing setTypeInFile to edit the name of a class in the file...");
 		classLinkHello.setNameInFile("HelloWorldRemastered");
 		Thread.sleep(WAITING_TIME);
-		classLinkHello.setNameInFile("HelloWorld"); // Reverting the change
 
 		// Testing renameFolder for PackageLink
 		System.out.println("\nUsing renameFolder to edit the name of a package folder...");
 		packageLinkFirst.renameFolder("betterPackage");
 		Thread.sleep(WAITING_TIME);
-		packageLinkFirst.renameFolder("firstPackage"); // Reverting the change
 
 		// Testing renameFolder for ProjectLink
 		System.out.println("\nUsing renameFolder to edit the name of a project folder...");
 		projectLink.renameFolder("testing");
 		Thread.sleep(WAITING_TIME);
-		projectLink.renameFolder("resources"); // Reverting the change
 
 		// Testing moveToNewClass
 		/*

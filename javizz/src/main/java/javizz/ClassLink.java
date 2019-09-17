@@ -165,8 +165,6 @@ public class ClassLink {
 		writer.write(LexicalPreservingPrinter.print(cu));
 		writer.close();
 
-		// Modifying the name of the class in the model
-		classModel.setName(newName);
 	}
 
 	/**
