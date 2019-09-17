@@ -2,13 +2,19 @@ package javizz;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.file.FileSystems;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
+import org.apache.commons.vfs2.FileSystemManager;
+import org.apache.commons.vfs2.VFS;
+import org.apache.commons.vfs2.impl.DefaultFileMonitor;
 import org.openflexo.pamela.ModelContextLibrary;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
@@ -37,12 +43,19 @@ public class ProjectLink {
 	 * 
 	 * @param path
 	 *            the path of the folder that is going to be parsed and modelized as a project
+	 * @param monitoring
+	 *            an optional boolean that when true, triggers the file monitoring process
 	 * @throws ModelDefinitionException
 	 *             if something went wrong upon calling .getModelContext()
 	 * @throws FileNotFoundException
 	 *             if one of the package's files could not be parsed
+	 * @throws JavizzException
+	 *             if more than one booleans were provided as arguments
 	 */
-	public ProjectLink(String path) throws ModelDefinitionException, FileNotFoundException {
+	public ProjectLink(String path, boolean... monitoring) throws ModelDefinitionException, FileNotFoundException, JavizzException {
+
+		if (monitoring.length > 1)
+			throw new JavizzException("Error: ProjectLink constructor can only be called with 0 or 1 boolean");
 
 		// Instantiating attributes
 
@@ -85,6 +98,11 @@ public class ProjectLink {
 																			// package and its contents
 			packageLinks.add(packageLink);
 		}
+
+		// Initializing a watch service to track file changes on disk on a separate thread
+
+		if (monitoring.length == 1 && monitoring[0])
+			startFileSystemMonitoring();
 	}
 
 	/**
@@ -92,8 +110,9 @@ public class ProjectLink {
 	 * 
 	 * @throws ModelDefinitionException
 	 * @throws FileNotFoundException
+	 * @throws JavizzException
 	 */
-	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
+	public void updateModel() throws FileNotFoundException, ModelDefinitionException, JavizzException {
 
 		// Generating a new model based on the input file
 		ProjectLink projectLinkFile = new ProjectLink(path);
@@ -130,6 +149,38 @@ public class ProjectLink {
 		else {
 			throw new JavizzException("Failed to rename directory");
 		}
+	}
+
+	public static void startFileSystemMonitoring() {
+
+		Executor runner = Executors.newFixedThreadPool(1);
+		runner.execute(new Runnable() {
+
+			@Override
+			public void run() {
+
+				// Defining the folder we want to monitor as a FileObject
+				org.apache.commons.vfs2.FileObject listendir = null;
+				try {
+					FileSystemManager fsManager = VFS.getManager();
+					String relativePath = "src/main"; // the folder we want to monitor
+					String absolutePath = FileSystems.getDefault().getPath(relativePath).normalize().toAbsolutePath().toString();
+					listendir = fsManager.resolveFile(absolutePath);
+				} catch (org.apache.commons.vfs2.FileSystemException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				// Defining what will happen upon file change detection
+				DefaultFileMonitor fm = new DefaultFileMonitor(new CustomFileListener());
+
+				fm.setRecursive(true); // enables monitoring for subfolders
+				fm.addFile(listendir);
+				fm.setDelay(50); // we'll check the filesystem for changes every X milliseconds
+				fm.start(); // start monitoring
+
+			}
+		});
 	}
 
 	/**

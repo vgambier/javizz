@@ -6,16 +6,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.FileSystems;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.vfs2.FileSystemManager;
-import org.apache.commons.vfs2.VFS;
-import org.apache.commons.vfs2.impl.DefaultFileMonitor;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.factory.DeserializationPolicy;
@@ -44,8 +38,8 @@ import models.ProjectModel;
 @ImplementationClass(FileSystemBasedResourceCenter.FileSystemBasedResourceCenterImpl.class)
 public class Demonstration {
 
-	final static int WAITING_TIME = 20; // the number of milliseconds the program will stall after each file change to let the file
-										// monitoring thread enough time to run
+	final static int WAITING_TIME = 500; // the number of milliseconds the program will stall after each file change to let the file
+											// monitoring thread enough time to run
 	static boolean syncMode = false;
 
 	/**
@@ -148,42 +142,11 @@ public class Demonstration {
 
 	public static void main(String[] args) throws Exception {
 
-		// Initializing a watch service to track file changes on disk on a separate thread
-
-		Executor runner = Executors.newFixedThreadPool(1);
-		runner.execute(new Runnable() {
-
-			@Override
-			public void run() {
-
-				// Defining the folder we want to monitor as a FileObject
-				org.apache.commons.vfs2.FileObject listendir = null;
-				try {
-					FileSystemManager fsManager = VFS.getManager();
-					String relativePath = "src/main"; // the folder we want to monitor
-					String absolutePath = FileSystems.getDefault().getPath(relativePath).normalize().toAbsolutePath().toString();
-					listendir = fsManager.resolveFile(absolutePath);
-				} catch (org.apache.commons.vfs2.FileSystemException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				// Defining what will happen upon file change detection
-				DefaultFileMonitor fm = new DefaultFileMonitor(new CustomFileListener());
-
-				fm.setRecursive(true); // enables monitoring for subfolders
-				fm.addFile(listendir);
-				fm.setDelay(WAITING_TIME); // we'll check the filesystem for changes every X milliseconds
-				fm.start(); // start monitoring
-
-			}
-		});
-
 		// In a separate thread, run the demonstration
 
 		// Reading a test folder
 		String folderPath = "src/main/resources"; // a relative path, pointing to the resources directory included in the project
-		ProjectLink projectLink = new ProjectLink(folderPath);
+		ProjectLink projectLink = new ProjectLink(folderPath, true);
 
 		// Testing to see if the data was properly gathered
 

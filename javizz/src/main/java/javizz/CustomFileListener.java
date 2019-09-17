@@ -32,9 +32,12 @@ public class CustomFileListener implements FileListener {
 		String shortPath = fullPath.substring(fullPath.indexOf("main"));
 		System.out.println("\t" + shortPath + " changed.");
 
+		System.out.println("@@@@@@@@@@@@@@@@");
+
 		if (getSyncMode()) { // Upon noticing the change, we only act if "sync mode" has been enabled
 
 			System.out.println("Updating the model...");
+			// TODO call .updateModel
 
 		}
 	}
