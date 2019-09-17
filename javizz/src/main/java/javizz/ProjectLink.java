@@ -12,6 +12,8 @@ import java.util.concurrent.Executors;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
+import org.apache.commons.vfs2.FileChangeEvent;
+import org.apache.commons.vfs2.FileListener;
 import org.apache.commons.vfs2.FileSystemManager;
 import org.apache.commons.vfs2.VFS;
 import org.apache.commons.vfs2.impl.DefaultFileMonitor;
@@ -151,7 +153,7 @@ public class ProjectLink {
 		}
 	}
 
-	public static void startFileSystemMonitoring() {
+	public void startFileSystemMonitoring() {
 
 		Executor runner = Executors.newFixedThreadPool(1);
 		runner.execute(new Runnable() {
@@ -195,6 +197,59 @@ public class ProjectLink {
 	 */
 	public ProjectModel getProjectModel() {
 		return projectModel;
+	}
+
+	/**
+	 * @return the projectLink itself
+	 */
+	public ProjectLink getProjectLink() {
+		return this;
+	}
+
+	public class CustomFileListener implements FileListener {
+
+		@Override
+		public void fileDeleted(FileChangeEvent event) throws Exception {
+
+			// Code here will trigger whenever the file monitoring detects a file has been deleted
+			String fullPath = event.getFile().getName().getPath();
+			String shortPath = fullPath.substring(fullPath.indexOf("main"));
+			System.out.println("\t" + shortPath + " deleted.");
+		}
+
+		@Override
+		public void fileCreated(FileChangeEvent event) throws Exception {
+
+			// Code here will trigger whenever the file monitoring detects a file has been created
+			String fullPath = event.getFile().getName().getPath();
+			String shortPath = fullPath.substring(fullPath.indexOf("main"));
+			System.out.println("\t" + shortPath + " created.");
+		}
+
+		@Override
+		public void fileChanged(FileChangeEvent event) throws Exception {
+
+			// Code here will trigger whenever the file monitoring detects a file has been edited
+
+			String fullPath = event.getFile().getName().getPath();
+			String shortPath = fullPath.substring(fullPath.indexOf("main"));
+			System.out.println("\t" + shortPath + " changed.");
+
+			System.out.println("@@@@@@@@@@@@@@@@");
+
+			if (getSyncMode()) { // Upon noticing the change, we only act if "sync mode" has been enabled
+
+				System.out.println("Updating the model...");
+
+				getProjectLink().updateModel();
+
+			}
+		}
+
+		public boolean getSyncMode() {
+			return Demonstration.syncMode;
+		}
+
 	}
 
 }
