@@ -166,7 +166,7 @@ public class Demonstration {
 
 		// Reading a test folder
 		String folderPath = "src/main/resources"; // a relative path, pointing to the resources directory included in the project
-		ProjectLink projectLink = new ProjectLink(folderPath); // Instantiating ProjectLink, with file monitoring enabled
+		ProjectLink projectLink = new ProjectLink(folderPath, true, false); // Instantiating ProjectLink, with file monitoring enabled
 
 		// Testing to see if the data was properly gathered
 
@@ -320,8 +320,8 @@ public class Demonstration {
 
 		// Testing file writes
 
-		System.out.println("Testing file writes");
-		projectLink.setMonitoring(true); // Enabling real-time file monitoring
+		System.out.println("\nTesting file writes...");
+		projectLink.setSyncMode(true); // Enabling the file monitoring to change the model in real-time
 
 		System.out.println("\nUsing setNameInFile to edit the name of an attribute in the file...");
 		attributeLinkTarget.setNameInFile("attributeDefault");

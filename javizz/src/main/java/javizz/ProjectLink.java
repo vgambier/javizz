@@ -37,7 +37,7 @@ public class ProjectLink {
 	private ProjectModel projectModel; // the corresponding model
 	private String path; // the path where the project is located
 	private List<PackageLink> packageLinks; // the children PackageLink
-	private boolean monitoring = false; // if set to true, the file system will be monitored
+	private boolean syncMode = false; // if set to true, the monitoring will lead to automatic synchronization
 
 	/**
 	 * The constructor. Takes the path to a folder containing subfolders and .java files, and modelizes that folder. Links an instance of
@@ -46,21 +46,15 @@ public class ProjectLink {
 	 * 
 	 * @param path
 	 *            the path of the folder that is going to be parsed and modelized as a project
-	 * @param monitoring
-	 *            an optional boolean that when true, enables the file monitoring process
+	 * @param syncMode
+	 *            a boolean that when true, enables the file monitoring process to automatically update the models
 	 * @throws ModelDefinitionException
 	 *             if something went wrong upon calling .getModelContext()
 	 * @throws FileNotFoundException
 	 *             if one of the package's files could not be parsed
-	 * @throws JavizzException
-	 *             if more than one booleans were provided as arguments
 	 */
-	public ProjectLink(String path, boolean... monitoring) throws ModelDefinitionException, FileNotFoundException, JavizzException {
-
-		if (monitoring.length > 1)
-			throw new JavizzException("Error: ProjectLink constructor can only be called with 0 or 1 boolean");
-		else if (monitoring.length == 1 && monitoring[0])
-			this.monitoring = true;
+	public ProjectLink(String path, boolean startMonitoring, boolean syncMode)
+			throws ModelDefinitionException, FileNotFoundException, JavizzException {
 
 		// Instantiating attributes
 
@@ -105,7 +99,8 @@ public class ProjectLink {
 		}
 
 		// Initializing a watch service (on a separate thread) to track file changes on disk on a separate thread
-		startFileSystemMonitoring();
+		if (startMonitoring)
+			startFileSystemMonitoring();
 
 	}
 
@@ -119,7 +114,7 @@ public class ProjectLink {
 	public void updateModel() throws FileNotFoundException, ModelDefinitionException, JavizzException {
 
 		// Generating a new model based on the input file
-		ProjectLink projectLinkFile = new ProjectLink(path);
+		ProjectLink projectLinkFile = new ProjectLink(path, false, false);
 		ProjectModel projectModelFile = projectLinkFile.projectModel;
 
 		// Updating the model
@@ -192,17 +187,18 @@ public class ProjectLink {
 	}
 
 	/**
-	 * @return the monitoring
+	 * @return the syncMode
 	 */
-	public boolean getMonitoring() {
-		return monitoring;
+	public boolean isSyncMode() {
+		return syncMode;
 	}
-	
+
 	/**
-	 * @param monitoring the monitoring to set
+	 * @param syncMode
+	 *            the syncMode to set
 	 */
-	public void setMonitoring(boolean monitoring) {
-		this.monitoring = monitoring;
+	public void setSyncMode(boolean syncMode) {
+		this.syncMode = syncMode;
 	}
 
 	/**
@@ -241,7 +237,7 @@ public class ProjectLink {
 			String shortPath = fullPath.substring(fullPath.indexOf("main"));
 			System.out.println("\t" + shortPath + " changed.");
 
-			if (getMonitoring()) { // Upon noticing the change, we only act if "monitoring mode" has been enabled
+			if (isSyncMode()) { // Upon noticing the change, we only act if "sync mode" has been enabled
 				System.out.println("Updating the model...");
 				getProjectLink().updateModel();
 			}
