@@ -14,7 +14,7 @@ import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.pamela.factory.ModelFactory;
 
-import models.ProjectModel;
+import model.ProjectModel;
 
 /**
  * Instances of this class are used to maintain a link between the project existing on the disk and the corresponding model.

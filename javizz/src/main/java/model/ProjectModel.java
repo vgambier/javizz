@@ -1,4 +1,4 @@
-package models;
+package model;
 
 import java.util.List;
 
@@ -6,14 +6,15 @@ import org.openflexo.pamela.annotations.Adder;
 import org.openflexo.pamela.annotations.Embedded;
 import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.Getter.Cardinality;
+
+import model.ProjectModel.ProjectModelImpl;
+
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.Remover;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
-
-import models.ProjectModel.ProjectModelImpl;
 
 /**
  * Instances of this class represent a single project, i.e.: a collection of packages. For now that means a single folder (all packages are
