@@ -39,7 +39,7 @@ import models.ProjectModel;
 public class Demonstration {
 
 	final static int WAITING_TIME = 1000; // the number of milliseconds the program will stall after each file change to let the file
-											// monitoring thread enough time to run
+										// monitoring thread enough time to run. as such, this number should always be higher than the delay between each file system check
 
 	/**
 	 * Takes a path and returns the name of filename or folder that it points to, without the extension
