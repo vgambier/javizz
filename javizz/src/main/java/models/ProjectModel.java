@@ -42,14 +42,14 @@ public interface ProjectModel extends AbstractModelObject {
 	// A flag used to enable or disable the monitoring of projects
 	// When set to true, all changes applies to any of the models (AttributeModel, ClassModel, etc.)
 	// will result in a notification being sent.
-	String WATCHING = "isWatching";
+	String WATCHING = "watching";
 
 	@Getter(value = WATCHING, defaultValue = "false", isDerived = true) // isDerived flag is set so that updateModel doesn't overwrite
 																		// isWatching
-	boolean getIsWatching();
+	boolean isWatching();
 
 	@Setter(WATCHING)
-	void setIsWatching(boolean isWatching);
+	void setWatching(boolean isWatching);
 
 	// Attributes and methods regarding the children packages:
 

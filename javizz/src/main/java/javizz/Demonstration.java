@@ -274,11 +274,11 @@ public class Demonstration {
 		projectFactory.serialize(projectModelClone, fos2, SerializationPolicy.EXTENSIVE, true);
 		fos2.close();
 
-		Thread.sleep(WAITING_TIME); // TODO is this necessary?
+		Thread.sleep(WAITING_TIME);
 
 		/* Testing other methods */
 
-		projectModel.setIsWatching(true); // Enabling real-time model monitoring
+		projectModel.setWatching(true); // Enabling real-time model monitoring
 
 		// We first need to reference the various Links and Models we'll be working with
 
@@ -296,13 +296,11 @@ public class Demonstration {
 		}
 
 		ClassLink classLinkHello = null;
-		ClassModel classModelHello = null;
 		List<ClassLink> classLinksFirst = packageLinkFirst.getClassLinks();
 		for (ClassLink classLink : classLinksFirst) {
 			String className = classLink.getClassModel().getName();
 			if (className.equals("HelloWorld")) {
 				classLinkHello = classLink;
-				classModelHello = classLink.getClassModel();
 				break;
 			}
 		}
