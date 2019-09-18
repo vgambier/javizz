@@ -31,14 +31,14 @@ public class HelloWorldRemastered { // comment
 	private String name;
 	private int age;
     public long ssn;
-	long attributeDefault;
+	int attributeDefault;
 
     public static void main(String[] args) {
         // Prints "Hello World!" to the terminal window.
         System.out.println("Hello World!");
     }
 
-    public long veryFastMethod() {				// useless comment
+    public int veryFastMethod() {				// useless comment
         // does nothing of note
     }
 
@@ -52,7 +52,7 @@ public class HelloWorldRemastered { // comment
 
 }
 
-class VeryEmpty {
+class Empty {
 
     // This class intentionally left blank
 

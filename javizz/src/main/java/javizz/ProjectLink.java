@@ -119,6 +119,7 @@ public class ProjectLink {
 
 		// Updating the model
 		projectModel.updateWith(projectModelFile);
+
 	}
 
 	/**

@@ -38,7 +38,7 @@ import models.ProjectModel;
 @ImplementationClass(FileSystemBasedResourceCenter.FileSystemBasedResourceCenterImpl.class)
 public class Demonstration {
 
-	final static int WAITING_TIME = 500; // the number of milliseconds the program will stall after each file change to let the file
+	final static int WAITING_TIME = 800; // the number of milliseconds the program will stall after each file change to let the file
 											// monitoring thread enough time to run
 
 	/**
@@ -64,7 +64,7 @@ public class Demonstration {
 	 */
 	public static void editFileTest() throws IOException {
 
-		System.out.println("\nEditing file...");
+		System.out.println("\nEditing file (changing the names of one attribute and one class)...");
 
 		String editPath = "src/main/resources/firstPackage/HelloWorld.java"; // the file we'll modify
 
@@ -110,12 +110,32 @@ public class Demonstration {
 	/**
 	 * Displays an overview of the attributes stored in the input ClassModel
 	 * 
-	 * @param classModel
-	 *            the ClassModel whose attributes will be displayed
+	 * @param projectLink
+	 *            the ProjectLink in which the input ClassModel is modelized
+	 * @param classModelName
+	 *            the name of the ClassModel whose attributes will be displayed
 	 */
-	public static void showClassModelAttributes(ClassModel classModel) {
+	public static void showClassModelAttributes(ProjectLink projectLink, String classModelName) {
 
-		System.out.println("\nHere are the attributes as stored in the " + classModel.getName() + " ClassModel:");
+		// Retrieving the ClassModel
+
+		ClassModel classModel = null;
+
+		ProjectModel projectModel = projectLink.getProjectModel();
+		List<PackageModel> packages = projectModel.getPackages();
+		for (PackageModel packageModel : packages) {
+			List<ClassModel> classes = packageModel.getClasses();
+			for (ClassModel currentClassModel : classes) {
+				String className = currentClassModel.getName();
+				if (className.equals(classModelName))
+					classModel = currentClassModel;
+			}
+		}
+
+		// Displaying its attributes
+
+		System.out.println(
+				"\nHere are the attributes as stored in the " + classModel.getName() + " ClassModel (" + classModel.getClass() + "):");
 
 		List<AttributeModel> attributes = classModel.getAttributes();
 		for (AttributeModel attributeModel : attributes) {
@@ -126,12 +146,32 @@ public class Demonstration {
 	/**
 	 * Displays an overview of the methods stored in the input ClassModel
 	 * 
-	 * @param classModel
-	 *            the ClassModel whose methods will be displayed
+	 * @param projectLink
+	 *            the ProjectLink in which the input ClassModel is modelized
+	 * @param classModelName
+	 *            the name of the ClassModel whose methods will be displayed
 	 */
-	public static void showClassModelMethods(ClassModel classModel) {
+	public static void showClassModelMethods(ProjectLink projectLink, String classModelName) {
 
-		System.out.println("\nHere are the methods as stored in the " + classModel.getName() + " ClassModel:");
+		// Retrieving the ClassModel
+
+		ClassModel classModel = null;
+
+		ProjectModel projectModel = projectLink.getProjectModel();
+		List<PackageModel> packages = projectModel.getPackages();
+		for (PackageModel packageModel : packages) {
+			List<ClassModel> classes = packageModel.getClasses();
+			for (ClassModel currentClassModel : classes) {
+				String className = currentClassModel.getName();
+				if (className.equals(classModelName))
+					classModel = currentClassModel;
+			}
+		}
+
+		// Displaying its attributes
+
+		System.out.println(
+				"\nHere are the methods as stored in the " + classModel.getName() + " ClassModel (" + classModel.getClass() + "):");
 
 		List<MethodModel> methods = classModel.getMethods();
 		for (MethodModel methodModel : methods) {
@@ -229,7 +269,7 @@ public class Demonstration {
 
 		/* Testing all updateModel() methods */
 
-		System.out.println("Testing non-automatic updateModel methods...");
+		System.out.println("\nTesting non-automatic updateModel methods...");
 
 		projectModel.setIsWatching(true); // Enabling real-time model monitoring
 
@@ -296,62 +336,71 @@ public class Demonstration {
 		// For ProjectLink
 
 		editFileTest(); // Modifying the name of a class and an attribute
+		Thread.sleep(WAITING_TIME); // We wait in order to give time to the other thread to run and detect the changes on the file system
 		System.out.println("Updating the attributeModel via the parent ProjectLink...");
 		projectLink.updateModel();
-		showClassModelAttributes(classModelHello); // Showing that the model has changed
+		showClassModelAttributes(projectLink, "HelloWorld"); // Showing that the model has changed
 
-		Thread.sleep(WAITING_TIME); // We wait in order to give time to the other thread to run and detect the changes on the file system
-
-		// For other classes
+		// For PackageLink
 
 		editFileTest();
+		Thread.sleep(WAITING_TIME);
 		System.out.println("Updating the attributeModel via the parent PackageLink...");
 		packageLinkFirst.updateModel();
-		showClassModelAttributes(classModelHello);
-
-		Thread.sleep(WAITING_TIME);
-
-		editFileTest();
-		System.out.println("Updating the attributeModel via the parent ClassLink...");
-		classLinkHello.updateModel();
-		showClassModelAttributes(classModelHello);
-
-		Thread.sleep(WAITING_TIME);
+		showClassModelAttributes(projectLink, "HelloWorld");
 
 		// Testing file writes
 
 		System.out.println("\nTesting file writes...");
 		projectLink.setSyncMode(true); // Enabling the file monitoring to change the model in real-time
 
-		System.out.println("\nUsing setNameInFile to edit the name of an attribute in the file...");
+		System.out.println("\nUsing setNameInFile to edit the name of an attribute in the file to 'attributeDefault'...");
 		attributeLinkTarget.setNameInFile("attributeDefault");
-		showClassModelAttributes(classModelHello);
-
 		Thread.sleep(WAITING_TIME);
+		showClassModelAttributes(projectLink, "HelloWorld");
 
-		System.out.println("\nUsing setTypeInFile to edit the type of an attribute in the file...");
+		// Since we've updated the general model, there is a new up-to-date attributeLink, and attributeLinkTarget is still the old link.
+		// Therefore, we need to grab the relevant link once again.
+		// Note: it might not make a lot of sense for the Link to be updated and rendered obsolete when we update the model, but for now
+		// this has to happen as the AttributeLink and MethodLink contain a name attribute that is susceptible to change
+
+		for (AttributeLink attributeLink : attributeLinksHello) {
+			String attributeName = attributeLink.getAttributeModel().getName();
+			if (attributeName.equals("attributeDefault")) {
+				attributeLinkTarget = attributeLink;
+				break;
+			}
+		}
+
+		System.out.println("\nUsing setTypeInFile to edit the type of an attribute in the file to 'int'...");
 		attributeLinkTarget.setTypeInFile("int");
-		showClassModelAttributes(classModelHello);
-
 		Thread.sleep(WAITING_TIME);
+		showClassModelAttributes(projectLink, "HelloWorld");
 
-		showClassModelMethods(classModelHello);
-		System.out.println("\nUsing setNameInFile to edit the name of a method in the file...");
+		showClassModelMethods(projectLink, "HelloWorld");
+		System.out.println("\nUsing setNameInFile to edit the name of a method in the file to 'veryFastMethod'...");
 		methodLinkTarget.setNameInFile("veryFastMethod");
-		showClassModelMethods(classModelHello);
-
 		Thread.sleep(WAITING_TIME);
+		showClassModelMethods(projectLink, "HelloWorld");
 
-		System.out.println("\nUsing setTypeInFile to edit the type of a method in the file...");
+		for (MethodLink methodLink : methodLinks) {
+			String methodName = methodLink.getMethodModel().getName();
+			if (methodName.equals("uselessMethod")) {
+				methodLinkTarget = methodLink;
+				break;
+			}
+		}
+
+		System.out.println("\nUsing setTypeInFile to edit the type of a method in the file to 'int'...");
 		methodLinkTarget.setTypeInFile("int");
-		showClassModelMethods(classModelHello);
-
 		Thread.sleep(WAITING_TIME);
+		showClassModelMethods(projectLink, "HelloWorld");
 
 		// Testing setNameInFile for ClassLink
-		System.out.println("\nUsing setTypeInFile to edit the name of a class in the file...");
+		System.out.println("\nUsing setNameInFile to edit the name of a class in the file...");
 		classLinkHello.setNameInFile("HelloWorldRemastered");
 		Thread.sleep(WAITING_TIME);
+		// TODO: show the change
 
 		// Testing renameFolder for PackageLink
 		System.out.println("\nUsing renameFolder to edit the name of a package folder...");
