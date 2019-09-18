@@ -19,8 +19,8 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
 
-import models.AttributeModel;
-import models.ClassModel;
+import model.AttributeModel;
+import model.ClassModel;
 
 /**
  * Instances of this class are used to maintain a link between the attribute existing on the disk and the corresponding model.

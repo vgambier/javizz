@@ -23,8 +23,8 @@ import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
 
-import models.ClassModel;
-import models.PackageModel;
+import model.ClassModel;
+import model.PackageModel;
 
 /**
  * Instances of this class are used to maintain a link between the class existing on the disk and the corresponding model.

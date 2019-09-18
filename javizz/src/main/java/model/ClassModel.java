@@ -1,4 +1,4 @@
-package models;
+package model;
 
 import java.util.List;
 
@@ -73,7 +73,7 @@ public interface ClassModel extends TypeModel {
 
 	String METHODS = "methods";
 
-	@Getter(value = METHODS, cardinality = Cardinality.LIST)
+	@Getter(value = METHODS, cardinality = Cardinality.LIST, inverse = MethodModel.CLASS)
 	@Embedded
 	@XMLElement
 	public List<MethodModel> getMethods();

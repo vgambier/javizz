@@ -17,8 +17,8 @@ import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
 
-import models.ClassModel;
-import models.MethodModel;
+import model.ClassModel;
+import model.MethodModel;
 
 /**
  * Instances of this class are used to maintain a link between the method existing on the disk and the corresponding model.
@@ -64,7 +64,6 @@ public class MethodLink {
 		methodModel.setName(name);
 		methodModel.setType(type);
 		methodModel.setClazz(classModel);
-		methodModel.setMethodLink(this);
 
 		classModel.addMethod(methodModel);
 

@@ -1,4 +1,4 @@
-package models;
+package model;
 
 import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.ImplementationClass;
@@ -8,7 +8,7 @@ import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
 
 import javizz.MethodLink;
-import models.MethodModel.MethodModelImpl;
+import model.MethodModel.MethodModelImpl;
 
 /**
  * Instances of this class represent a single method.
@@ -32,16 +32,6 @@ public interface MethodModel extends AbstractModelObject {
 
 	@Setter(NAME)
 	void setName(String name);
-
-	// Attributes and methods regarding the corresponding MethodLink
-
-	String LINK = "link";
-
-	@Getter(LINK)
-	MethodLink getMethodLink();
-
-	@Setter(LINK)
-	void setMethodLink(MethodLink methodLink);
 
 	// Attributes and methods regarding the parent class
 

@@ -1,4 +1,4 @@
-package models;
+package model;
 
 import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.ImplementationClass;
@@ -7,7 +7,7 @@ import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
 
-import models.AttributeModel.AttributeModelImpl;
+import model.AttributeModel.AttributeModelImpl;
 
 /**
  * Instances of this class represent a single attribute.

@@ -1,4 +1,4 @@
-package models;
+package model;
 
 /**
  * Instances of this class represent a single type. Not yet implemented.

@@ -1,4 +1,4 @@
-package models;
+package model;
 
 import org.openflexo.pamela.annotations.Implementation;
 import org.openflexo.pamela.factory.AccessibleProxyObject;

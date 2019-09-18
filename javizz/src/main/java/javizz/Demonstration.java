@@ -32,11 +32,11 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
 
-import models.AttributeModel;
-import models.ClassModel;
-import models.MethodModel;
-import models.PackageModel;
-import models.ProjectModel;
+import model.AttributeModel;
+import model.ClassModel;
+import model.MethodModel;
+import model.PackageModel;
+import model.ProjectModel;
 
 /**
  * @author Victor Gambier
