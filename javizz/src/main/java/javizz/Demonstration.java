@@ -38,7 +38,7 @@ import models.ProjectModel;
 @ImplementationClass(FileSystemBasedResourceCenter.FileSystemBasedResourceCenterImpl.class)
 public class Demonstration {
 
-	final static int WAITING_TIME = 800; // the number of milliseconds the program will stall after each file change to let the file
+	final static int WAITING_TIME = 1000; // the number of milliseconds the program will stall after each file change to let the file
 											// monitoring thread enough time to run
 
 	/**
@@ -195,12 +195,21 @@ public class Demonstration {
 		}
 
 		// Copying the file template onto the file we'll be modifying for the demonstration
-		String templatePath = "src/main/resources/template";
+		String templatePath = "src/main/resources/firstPackage/HelloWorldTemplate";
 		String testPath = "src/main/resources/firstPackage/HelloWorld.java";
 		System.out.println("Copying the template onto HelloWorld.java...");
 		CompilationUnit cuTemplate = StaticJavaParser.parse(new File(templatePath));
 		LexicalPreservingPrinter.setup(cuTemplate);
 		BufferedWriter writer = new BufferedWriter(new FileWriter(testPath));
+		writer.write(LexicalPreservingPrinter.print(cuTemplate));
+		writer.close();
+
+		templatePath = "src/main/resources/secondPackage/GoodbyeWorldTemplate";
+		testPath = "src/main/resources/secondPackage/GoodbyeWorld.java";
+		System.out.println("Copying the template onto GoodbyeWorld.java...");
+		cuTemplate = StaticJavaParser.parse(new File(templatePath));
+		LexicalPreservingPrinter.setup(cuTemplate);
+		writer = new BufferedWriter(new FileWriter(testPath));
 		writer.write(LexicalPreservingPrinter.print(cuTemplate));
 		writer.close();
 
@@ -267,9 +276,7 @@ public class Demonstration {
 
 		Thread.sleep(WAITING_TIME); // TODO is this necessary?
 
-		/* Testing all updateModel() methods */
-
-		System.out.println("\nTesting non-automatic updateModel methods...");
+		/* Testing other methods */
 
 		projectModel.setIsWatching(true); // Enabling real-time model monitoring
 
@@ -311,15 +318,12 @@ public class Demonstration {
 		}
 
 		AttributeLink attributeLinkTarget = null;
-		AttributeLink attributeLinkSsn = null;
 		List<AttributeLink> attributeLinksHello = classLinkHello.getAttributeLinks();
 		for (AttributeLink attributeLink : attributeLinksHello) {
 			String attributeName = attributeLink.getAttributeModel().getName();
 			if (attributeName.equals("attributeDefault")) {
 				attributeLinkTarget = attributeLink;
-			}
-			else if (attributeName.equals("ssn")) {
-				attributeLinkSsn = attributeLink;
+				break;
 			}
 		}
 
@@ -332,6 +336,22 @@ public class Demonstration {
 				break;
 			}
 		}
+
+		AttributeLink attributeLinkSsn = null;
+		for (AttributeLink attributeLink : attributeLinksHello) {
+			String attributeName = attributeLink.getAttributeModel().getName();
+			if (attributeName.equals("ssn")) {
+				attributeLinkSsn = attributeLink;
+				break;
+			}
+		}
+
+		// Testing moveToNewClass
+		System.out.println("\nUsing moveToNewClass to move the ssn attribute to GoodbyeWorld...");
+		attributeLinkSsn.moveToNewClass(classLinkGoodbye);
+		Thread.sleep(WAITING_TIME);
+
+		System.out.println("\nTesting non-automatic updateModel methods...");
 
 		// For ProjectLink
 
@@ -400,7 +420,6 @@ public class Demonstration {
 		System.out.println("\nUsing setNameInFile to edit the name of a class in the file...");
 		classLinkHello.setNameInFile("HelloWorldRemastered");
 		Thread.sleep(WAITING_TIME);
-		// TODO: show the change
 
 		// Testing renameFolder for PackageLink
 		System.out.println("\nUsing renameFolder to edit the name of a package folder...");
@@ -410,15 +429,6 @@ public class Demonstration {
 		// Testing renameFolder for ProjectLink
 		System.out.println("\nUsing renameFolder to edit the name of a project folder...");
 		projectLink.renameFolder("testing");
-		Thread.sleep(WAITING_TIME);
-
-		// Testing moveToNewClass
-		/*
-		System.out.println("\nUsing moveToNewClass to move the ssn attribute to GoodbyeWorld...");
-		attributeLinkSsn.moveToNewClass(classLinkGoodbye);
-		Thread.sleep(WAITING_TIME);
-		*/
-
 		Thread.sleep(WAITING_TIME);
 
 		System.exit(0); // Terminating all threads

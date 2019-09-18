@@ -24,7 +24,5 @@ public class GoodbyeWorld { // comment
          return notAMainAttribute;
     }
     
-    public long ssn;
-
 }
 
