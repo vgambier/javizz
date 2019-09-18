@@ -33,21 +33,7 @@ public interface MethodModel extends AbstractModelObject {
 	@Setter(NAME)
 	void setName(String name);
 
-<<<<<<< HEAD:javizz/src/main/java/model/MethodModel.java
-	// Attributes and methods regarding the parent class
-=======
-	// Attributes and methods regarding the corresponding MethodLink
-
-	String LINK = "link";
-
-	@Getter(LINK)
-	MethodLink getMethodLink();
-
-	@Setter(LINK)
-	void setMethodLink(MethodLink methodLink);
-
 	// Attributes and methods regarding the parent file
->>>>>>> exp:javizz/src/main/java/models/MethodModel.java
 
 	String FILE = "file";
 

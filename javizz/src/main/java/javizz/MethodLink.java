@@ -64,7 +64,6 @@ public class MethodLink {
 		methodModel.setName(name);
 		methodModel.setType(type);
 		methodModel.setFile(fileModel);
-		methodModel.setMethodLink(this);
 
 		fileModel.addMethod(methodModel);
 
