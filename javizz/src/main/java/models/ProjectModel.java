@@ -40,7 +40,7 @@ public interface ProjectModel extends AbstractModelObject {
 	void setName(String name);
 
 	// A flag used to enable or disable the monitoring of projects
-	// When set to true, all changes applies to any of the models (AttributeModel, ClassModel, etc.)
+	// When set to true, all changes applies to any of the models (AttributeModel, FileModel, etc.)
 	// will result in a notification being sent.
 	String WATCHING = "watching";
 

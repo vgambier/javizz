@@ -17,7 +17,7 @@ import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
 
-import models.ClassModel;
+import models.FileModel;
 import models.MethodModel;
 
 /**
@@ -31,22 +31,22 @@ import models.MethodModel;
 public class MethodLink {
 
 	private MethodModel methodModel; // the corresponding model
-	private String name; // the name of the class
-	private ClassLink classLink; // the parent class
+	private String name; // the name of the file
+	private FileLink fileLink; // the parent file
 
 	/**
 	 * The constructor. Takes information about the method and modelizes it. Links an instance of MethodLink with an instance of MethodModel
 	 * 
-	 * @param classModel
-	 *            the parent class
+	 * @param fileModel
+	 *            the parent file
 	 * @param name
 	 *            the name of the method
 	 * @param type
 	 *            the type of the method
 	 */
-	public MethodLink(ClassLink classLink, String name, String type) {
+	public MethodLink(FileLink fileLink, String name, String type) {
 
-		ClassModel classModel = classLink.getClassModel();
+		FileModel fileModel = fileLink.getFileModel();
 
 		// We first need to define a factory to instantiate AttributeModel
 		ModelFactory factory = null;
@@ -59,14 +59,14 @@ public class MethodLink {
 
 		this.methodModel = factory.newInstance(MethodModel.class);
 		this.name = name;
-		this.classLink = classLink;
+		this.fileLink = fileLink;
 
 		methodModel.setName(name);
 		methodModel.setType(type);
-		methodModel.setClazz(classModel);
+		methodModel.setFile(fileModel);
 		methodModel.setMethodLink(this);
 
-		classModel.addMethod(methodModel);
+		fileModel.addMethod(methodModel);
 
 	}
 
@@ -77,7 +77,7 @@ public class MethodLink {
 	public void updateModel() {
 
 		// Generating a new model based on the input file
-		MethodLink methodLinkFile = new MethodLink(classLink, name, methodModel.getType());
+		MethodLink methodLinkFile = new MethodLink(fileLink, name, methodModel.getType());
 		MethodModel methodModelFile = methodLinkFile.methodModel;
 
 		// Updating the model
@@ -95,7 +95,7 @@ public class MethodLink {
 	 */
 	public void setNameInFile(String newName) throws IOException {
 
-		String path = methodModel.getClazz().getPath(); // Retrieving the path of the file where the attribute is located
+		String path = methodModel.getFile().getPath(); // Retrieving the path of the file where the attribute is located
 
 		// Initializing the compilation unit
 		CompilationUnit cu = StaticJavaParser.parse(new File(path));
@@ -133,7 +133,7 @@ public class MethodLink {
 	 */
 	public void setTypeInFile(String newType) throws IOException {
 
-		String path = methodModel.getClazz().getPath(); // Retrieving the path of the file where the attribute is located
+		String path = methodModel.getFile().getPath(); // Retrieving the path of the file where the attribute is located
 
 		// Initializing the compilation unit
 		CompilationUnit cu = StaticJavaParser.parse(new File(path));

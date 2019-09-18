@@ -34,7 +34,7 @@ public interface PackageModel extends AbstractModelObject {
 	@Setter(NAME)
 	void setName(String name);
 
-	// Attributes and methods regarding the parent class project
+	// Attributes and methods regarding the parent project
 
 	String PROJECT = "project";
 
@@ -44,19 +44,19 @@ public interface PackageModel extends AbstractModelObject {
 	@Setter(PROJECT)
 	void setProject(ProjectModel projectModel);
 
-	// Attributes and methods regarding the children classes:
+	// Attributes and methods regarding the children files::
 
-	String CLASSES = "classes";
+	String FILES = "files";
 
-	@Getter(value = CLASSES, cardinality = Cardinality.LIST, inverse = ClassModel.PACKAGE)
+	@Getter(value = FILES, cardinality = Cardinality.LIST, inverse = FileModel.PACKAGE)
 	@XMLElement
 	@Embedded
-	public List<ClassModel> getClasses();
+	public List<FileModel> getFiles();
 
-	@Adder(CLASSES)
-	public void addClass(ClassModel c);
+	@Adder(FILES)
+	public void addFiles(FileModel c);
 
-	@Remover(CLASSES)
-	public void removeClass(ClassModel c);
+	@Remover(FILES)
+	public void removeFiles(FileModel c);
 
 }

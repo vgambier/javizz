@@ -23,59 +23,59 @@ import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
 
-import models.ClassModel;
+import models.FileModel;
 import models.PackageModel;
 
 /**
- * Instances of this class are used to maintain a link between the class existing on the disk and the corresponding model.
+ * Instances of this class are used to maintain a link between the file existing on the disk and the corresponding model.
  * 
  * @author Victor Gambier
  *
  */
 
 @ModelEntity
-public class ClassLink {
+public class FileLink {
 
-	private ClassModel classModel; // the corresponding model
-	private String path; // the path where the class is located - uniquely defines the class within the file system
+	private FileModel fileModel; // the corresponding model
+	private String path; // the path where the file is located - uniquely defines the file within the file system
 	private List<AttributeLink> attributeLinks; // the children AttributeLink
 	private List<MethodLink> methodLinks; // the children methodLink
 	private PackageLink packageLink; // the parent package
 
 	/**
-	 * The constructor. Takes the path to a .java file, and modelizes that file. Links an instance of ClassLink with an instance of
-	 * ClassModel. Also calls the MethodModel and AttributeModel constructors to modelize the methods and attributes contained within the
-	 * class.
+	 * The constructor. Takes the path to a .java file, and modelizes that file. Links an instance of FileLink with an instance of
+	 * FileModel. Also calls the MethodModel and AttributeModel constructors to modelize the methods and attributes contained within the
+	 * file.
 	 * 
 	 * @param packageModel
 	 *            the parent package
 	 * @param path
-	 *            the path where the class is located
+	 *            the path where the file is located
 	 * @throws FileNotFoundException
-	 *             if the file containing the class could not be parsed
+	 *             if the file containing the file could not be parsed
 	 * @throws ModelDefinitionException
 	 *             if something went wrong upon calling .getModelContext()
 	 */
-	public ClassLink(PackageLink packageLink, String path) throws FileNotFoundException, ModelDefinitionException {
+	public FileLink(PackageLink packageLink, String path) throws FileNotFoundException, ModelDefinitionException {
 
 		PackageModel packageModel = packageLink.getPackageModel();
 
 		// Instantiating attributes
 
 		// We first need to define a factory to instantiate AttributeModel
-		ModelFactory factory = new ModelFactory(ModelContextLibrary.getModelContext(ClassModel.class));
+		ModelFactory factory = new ModelFactory(ModelContextLibrary.getModelContext(FileModel.class));
 
-		this.classModel = factory.newInstance(ClassModel.class);
+		this.fileModel = factory.newInstance(FileModel.class);
 		this.path = path;
 		attributeLinks = new ArrayList<AttributeLink>();
 		methodLinks = new ArrayList<MethodLink>();
 		this.packageLink = packageLink;
 
-		classModel.setName(Demonstration.pathToFilename(path));
-		classModel.setPath(path);
-		classModel.setPackage(packageModel);
+		fileModel.setName(Demonstration.pathToFilename(path));
+		fileModel.setPath(path);
+		fileModel.setPackage(packageModel);
 
-		packageModel.addClass(classModel);
+		packageModel.addFiles(fileModel);
 
 		// Looking for methods and attributes within the file
 
@@ -110,7 +110,7 @@ public class ClassLink {
 				String name = md.getNameAsString();
 				String type = md.getTypeAsString();
 				// This constructor will take care of modelizing the method and its contents
-				MethodLink methodLink = new MethodLink(getClassLink(), name, type);
+				MethodLink methodLink = new MethodLink(getFileLink(), name, type);
 				methodLinks.add(methodLink);
 
 			}
@@ -130,16 +130,16 @@ public class ClassLink {
 	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
 
 		// Generating a new model based on the input file
-		ClassLink classLinkFile = new ClassLink(packageLink, path);
-		ClassModel classModelFile = classLinkFile.classModel;
+		FileLink fileLinkFile = new FileLink(packageLink, path);
+		FileModel fileModelFile = fileLinkFile.fileModel;
 
 		// Updating the model
-		classModel.updateWith(classModelFile);
+		fileModel.updateWith(fileModelFile);
 	}
 
 	/**
-	 * Reads a .java file, and changes the name of the class to match the input argument. Changes the model accordingly. For now, only edits
-	 * the contents of the file and doesn't rename the filename. This may change in the future.
+	 * Reads a .java file, and changes the name of the primary class to match the input argument. Changes the model accordingly. For now, only edits
+	 * the contents of the file and doesn't rename the file. This may change in the future.
 	 * 
 	 * @param newName
 	 *            the new name of the class
@@ -154,7 +154,7 @@ public class ClassLink {
 		LexicalPreservingPrinter.setup(cu); // enables lexical preservation
 
 		// Retrieving the name of the current class
-		String name = classModel.getName();
+		String name = fileModel.getName();
 
 		// Editing the contents of the file
 		TypeDeclaration<?> primaryClass = cu.getClassByName(name).orElse(null);
@@ -168,10 +168,10 @@ public class ClassLink {
 	}
 
 	/**
-	 * @return the classModel
+	 * @return the fileModel
 	 */
-	public ClassModel getClassModel() {
-		return classModel;
+	public FileModel getFileModel() {
+		return fileModel;
 	}
 
 	/**
@@ -196,9 +196,9 @@ public class ClassLink {
 	}
 
 	/**
-	 * @return the ClassLink itself
+	 * @return the FileLink itself
 	 */
-	public ClassLink getClassLink() {
+	public FileLink getFileLink() {
 		return this;
 	}
 

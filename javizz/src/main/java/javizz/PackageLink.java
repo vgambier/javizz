@@ -29,12 +29,12 @@ public class PackageLink {
 
 	private PackageModel packageModel; // the corresponding model
 	private String path; // the path where the package is located
-	private List<ClassLink> classLinks; // the children ClassLink
+	private List<FileLink> fileLinks; // the children FileLink
 	private ProjectLink projectLink; // the parent project
 
 	/**
 	 * The constructor. Takes the path to a folder containing .java files, and modelizes that folder. Links an instance of PackageLink with
-	 * an instance of PackageModel. Also calls the ClassModel constructor to modelize the classes contained within the folders.
+	 * an instance of PackageModel. Also calls the FileModel constructor to modelize the files contained within the folders.
 	 * 
 	 * @param projectModel
 	 *            the parent project
@@ -56,7 +56,7 @@ public class PackageLink {
 
 		this.packageModel = factory.newInstance(PackageModel.class);
 		this.path = path;
-		classLinks = new ArrayList<ClassLink>();
+		fileLinks = new ArrayList<FileLink>();
 		this.projectLink = projectLink;
 
 		packageModel.setName(Demonstration.pathToFilename(path));
@@ -64,8 +64,7 @@ public class PackageLink {
 
 		projectModel.addPackage(packageModel);
 
-		// Looking for all classes
-		// A class is defined as a .java file (at least for now)
+		// Looking for all .java files
 		// TODO: this could be optimized, since we have already looked through the files in ProjectLink()
 
 		File folder = new File(path);
@@ -74,11 +73,11 @@ public class PackageLink {
 		for (File file : files) {
 			String filename = file.getName();
 			if (FilenameUtils.getExtension(filename).equals("java")) {
-				// If it is, then we assume the current file is a Java class
+				// If it is, then we assume the current file is a Java file
 				String filePath = file.getPath();
-				ClassLink classLink = new ClassLink(this, filePath); // This constructor will take care of modelizing the class and
+				FileLink fileLink = new FileLink(this, filePath); // This constructor will take care of modelizing the file and
 																		// its contents
-				classLinks.add(classLink);
+				fileLinks.add(fileLink);
 			}
 		}
 	}
@@ -125,10 +124,10 @@ public class PackageLink {
 	}
 
 	/**
-	 * @return the classLinks
+	 * @return the fileLinks
 	 */
-	public List<ClassLink> getClassLinks() {
-		return classLinks;
+	public List<FileLink> getFileLinks() {
+		return fileLinks;
 	}
 
 	/**
@@ -137,5 +136,4 @@ public class PackageLink {
 	public PackageModel getPackageModel() {
 		return packageModel;
 	}
-
 }
