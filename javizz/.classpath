@@ -6,17 +6,10 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" output="bin/test" path="src/test/java">
-		<attributes>
-			<attribute name="gradle_scope" value="test"/>
-			<attribute name="gradle_used_by_scope" value="test"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8/"/>
 	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
 	<classpathentry kind="src" path="/javaparser-core"/>
 	<classpathentry kind="src" path="/pamela-core"/>
-	<classpathentry kind="lib" path="/homes/v17gambi/Documents/stage-ete-2019/commons-vfs2-2.4.1.jar"/>
 	<classpathentry kind="src" path="/flexo-foundation"/>
 	<classpathentry kind="output" path="bin/default"/>
 </classpath>

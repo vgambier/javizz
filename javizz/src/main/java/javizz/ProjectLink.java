@@ -173,42 +173,6 @@ public class ProjectLink {
 		});
 	}
 
-	/**
-	 * @return the packageLinks
-	 */
-	public List<PackageLink> getPackageLinks() {
-		return packageLinks;
-	}
-
-	/**
-	 * @return the projectModel
-	 */
-	public ProjectModel getProjectModel() {
-		return projectModel;
-	}
-
-	/**
-	 * @return the syncMode
-	 */
-	public boolean isSyncMode() {
-		return syncMode;
-	}
-
-	/**
-	 * @param syncMode
-	 *            the syncMode to set
-	 */
-	public void setSyncMode(boolean syncMode) {
-		this.syncMode = syncMode;
-	}
-
-	/**
-	 * @return the projectLink itself
-	 */
-	public ProjectLink getProjectLink() {
-		return this;
-	}
-
 	public class CustomFileListener implements FileListener {
 
 		@Override
@@ -243,5 +207,41 @@ public class ProjectLink {
 				getProjectLink().updateModel();
 			}
 		}
+	}
+	
+	/**
+	 * @return the packageLinks
+	 */
+	public List<PackageLink> getPackageLinks() {
+		return packageLinks;
+	}
+
+	/**
+	 * @return the projectModel
+	 */
+	public ProjectModel getProjectModel() {
+		return projectModel;
+	}
+
+	/**
+	 * @return the syncMode
+	 */
+	public boolean isSyncMode() {
+		return syncMode;
+	}
+
+	/**
+	 * @param syncMode
+	 *            the syncMode to set
+	 */
+	public void setSyncMode(boolean syncMode) {
+		this.syncMode = syncMode;
+	}
+
+	/**
+	 * @return the projectLink itself
+	 */
+	public ProjectLink getProjectLink() {
+		return this;
 	}
 }
