@@ -25,9 +25,9 @@ import models.ProjectModel;
  */
 
 @ModelEntity
-public class PackageLink {
+public class PackageLink extends Link<PackageModel> {
 
-	private PackageModel packageModel; // the corresponding model
+	// private PackageModel packageModel; // the corresponding model
 	private String path; // the path where the package is located
 	private List<FileLink> fileLinks; // the children FileLink
 	private ProjectLink projectLink; // the parent project
@@ -47,22 +47,20 @@ public class PackageLink {
 	 */
 	public PackageLink(ProjectLink projectLink, String path) throws FileNotFoundException, ModelDefinitionException {
 
+		super(new ModelFactory(ModelContextLibrary.getModelContext(PackageModel.class)).newInstance(PackageModel.class));
+
 		ProjectModel projectModel = projectLink.getProjectModel();
 
 		// Instantiating attributes
 
-		// We first need to define a factory to instantiate PackageModel
-		ModelFactory factory = new ModelFactory(ModelContextLibrary.getModelContext(PackageModel.class));
-
-		this.packageModel = factory.newInstance(PackageModel.class);
 		this.path = path;
 		fileLinks = new ArrayList<FileLink>();
 		this.projectLink = projectLink;
 
-		packageModel.setName(Demonstration.pathToFilename(path));
-		packageModel.setProject(projectModel);
+		model.setName(Demonstration.pathToFilename(path));
+		model.setProject(projectModel);
 
-		projectModel.addPackage(packageModel);
+		projectModel.addPackage(model);
 
 		// Looking for all .java files
 		// TODO: this could be optimized, since we have already looked through the files in ProjectLink()
@@ -76,7 +74,7 @@ public class PackageLink {
 				// If it is, then we assume the current file is a Java file
 				String filePath = file.getPath();
 				FileLink fileLink = new FileLink(this, filePath); // This constructor will take care of modelizing the file and
-																		// its contents
+																	// its contents
 				fileLinks.add(fileLink);
 			}
 		}
@@ -86,22 +84,15 @@ public class PackageLink {
 	 * Reads a directory containing .java files, compares it to the existing model, and updates the model accordingly
 	 * 
 	 * @throws ModelDefinitionException
-	 *             if something went wrong during the constructor call
 	 * @throws FileNotFoundException
-	 *             if one of the files in the package could not be read during the constructor call
 	 * 
 	 */
-	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
 
-		// Generating a new model based on the input file
-		PackageLink packageLinkFile = new PackageLink(projectLink, path);
-		PackageModel packageModelFile = packageLinkFile.packageModel;
+	// TODO clean this up
 
-		// Updating the model
-		packageModel.updateWith(packageModelFile);
-
-		// TODO: The Link instance still has the old Model as an attribute
-
+	@Override
+	public PackageLink create() throws FileNotFoundException, ModelDefinitionException {
+		return new PackageLink(projectLink, path);
 	}
 
 	/**
@@ -134,6 +125,6 @@ public class PackageLink {
 	 * @return the packageModel
 	 */
 	public PackageModel getPackageModel() {
-		return packageModel;
+		return model;
 	}
 }
