@@ -29,7 +29,7 @@ public class PackageLink extends Link<PackageModel> {
 
 	// private PackageModel packageModel; // the corresponding model
 	private String path; // the path where the package is located
-	private List<FileLink> fileLinks; // the children FileLink
+	private List<CompilationUnitLink> compilationUnitLinks; // the children CompilationUnitLink
 	private ProjectLink projectLink; // the parent project
 
 	/**
@@ -54,7 +54,7 @@ public class PackageLink extends Link<PackageModel> {
 		// Instantiating attributes
 
 		this.path = path;
-		fileLinks = new ArrayList<FileLink>();
+		compilationUnitLinks = new ArrayList<CompilationUnitLink>();
 		this.projectLink = projectLink;
 
 		model.setName(Demonstration.pathToFilename(path));
@@ -73,9 +73,11 @@ public class PackageLink extends Link<PackageModel> {
 			if (FilenameUtils.getExtension(filename).equals("java")) {
 				// If it is, then we assume the current file is a Java file
 				String filePath = file.getPath();
-				FileLink fileLink = new FileLink(this, filePath); // This constructor will take care of modelizing the file and
-																	// its contents
-				fileLinks.add(fileLink);
+				CompilationUnitLink compilationUnitLink = new CompilationUnitLink(this, filePath); // This constructor will take care of
+																									// modelizing the
+				// file and
+				// its contents
+				compilationUnitLinks.add(compilationUnitLink);
 			}
 		}
 	}
@@ -115,10 +117,10 @@ public class PackageLink extends Link<PackageModel> {
 	}
 
 	/**
-	 * @return the fileLinks
+	 * @return the CompilationUnitLink list
 	 */
-	public List<FileLink> getFileLinks() {
-		return fileLinks;
+	public List<CompilationUnitLink> getCompilationUnitLinks() {
+		return compilationUnitLinks;
 	}
 
 	/**

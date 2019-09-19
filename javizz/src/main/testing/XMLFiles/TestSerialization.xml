@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ProjectModel id="0" name="resources">
   <PackageModel id="1" name="secondPackage">
-    <FileModel id="2" name="GoodbyeWorld">
+    <CompilationUnitModel id="2" name="GoodbyeWorld">
       <MethodModel id="3" name="main" type="void" />
       <MethodModel id="4" name="uselessMethod" type="void" />
       <MethodModel id="5" name="returnThree" type="int" />
       <AttributeModel id="6" name="address" type="String" />
       <AttributeModel id="7" name="relatives" type="LinkedList&lt;String&gt;" />
       <AttributeModel id="8" name="isTrue" type="boolean" />
-    </FileModel>
+    </CompilationUnitModel>
   </PackageModel>
   <PackageModel id="9" name="firstPackage">
-    <FileModel id="10" name="BrandNew" />
-    <FileModel id="11" name="HelloWorld">
+    <CompilationUnitModel id="10" name="BrandNew" />
+    <CompilationUnitModel id="11" name="HelloWorld">
       <MethodModel id="12" name="main" type="void" />
       <MethodModel id="13" name="uselessMethod" type="long" />
       <MethodModel id="14" name="returnTwo" type="int" />
@@ -20,8 +20,8 @@
       <AttributeModel id="16" name="age" type="int" />
       <AttributeModel id="17" name="ssn" type="long" />
       <AttributeModel id="18" name="attributeDefault" type="long" />
-    </FileModel>
-    <FileModel id="19" name="NoMethodsNoAttributes" />
-    <FileModel id="20" name="NoPackage" />
+    </CompilationUnitModel>
+    <CompilationUnitModel id="19" name="NoMethodsNoAttributes" />
+    <CompilationUnitModel id="20" name="NoPackage" />
   </PackageModel>
 </ProjectModel>

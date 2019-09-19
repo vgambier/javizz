@@ -25,10 +25,10 @@ import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
 
 import model.AttributeModel;
+import model.CompilationUnitModel;
 import model.MethodModel;
 import model.PackageModel;
 import model.ProjectModel;
-import model.FileModel;
 
 /**
  * @author Victor Gambier
@@ -112,69 +112,69 @@ public class Demonstration {
 	 * Displays an overview of the attributes stored in the input FileModel
 	 * 
 	 * @param projectLink
-	 *            the ProjectLink in which the input FileModel is modelized
-	 * @param fileModelName
-	 *            the name of the FileModel whose attributes will be displayed
+	 *            the ProjectLink in which the input CompilationUnitModel is modelized
+	 * @param compilationUnitModelName
+	 *            the name of the CompilationUnitModel whose attributes will be displayed
 	 */
-	public static void showFileModelAttributes(ProjectLink projectLink, String fileModelName) {
+	public static void showCompilationUnitModelAttributes(ProjectLink projectLink, String compilationUnitModelName) {
 
-		// Retrieving the fileModel
+		// Retrieving the CompilationUnitModel
 
-		FileModel fileModel = null;
+		CompilationUnitModel compilationUnitModel = null;
 
 		ProjectModel projectModel = projectLink.getProjectModel();
 		List<PackageModel> packages = projectModel.getPackages();
 		for (PackageModel packageModel : packages) {
-			List<FileModel> files = packageModel.getFiles();
-			for (FileModel currentFileModel : files) {
-				String fileName = currentFileModel.getName();
-				if (fileName.equals(fileModelName))
-					fileModel = currentFileModel;
+			List<CompilationUnitModel> compilationUnits = packageModel.getCompilationUnits();
+			for (CompilationUnitModel currentCompilationUnitModel : compilationUnits) {
+				String fileName = currentCompilationUnitModel.getName();
+				if (fileName.equals(compilationUnitModelName))
+					compilationUnitModel = currentCompilationUnitModel;
 			}
 		}
 
 		// Displaying its attributes
 
-		System.out.println(
-				"\nHere are the attributes as stored in the " + fileModel.getName() + " FileModel (" + fileModel.getClass() + "):");
+		System.out.println("\nHere are the attributes as stored in the " + compilationUnitModel.getName() + " FileModel ("
+				+ compilationUnitModel.getClass() + "):");
 
-		List<AttributeModel> attributes = fileModel.getAttributes();
+		List<AttributeModel> attributes = compilationUnitModel.getAttributes();
 		for (AttributeModel attributeModel : attributes) {
 			System.out.println("\t" + attributeModel.getType() + " " + attributeModel.getName());
 		}
 	}
 
 	/**
-	 * Displays an overview of the methods stored in the input FileModel
+	 * Displays an overview of the methods stored in the input CompilationUnitModel
 	 * 
 	 * @param projectLink
-	 *            the ProjectLink in which the input FileModel is modelized
-	 * @param fileModelName
-	 *            the name of the FileModel whose methods will be displayed
+	 *            the ProjectLink in which the input CompilationUnitModel is modelized
+	 * @param compilationUnitModelName
+	 *            the name of the CompilationUnitModel whose methods will be displayed
 	 */
-	public static void showFileModelMethods(ProjectLink projectLink, String fileModelName) {
+	public static void showCompilationUnitModelMethods(ProjectLink projectLink, String compilationUnitModelName) {
 
-		// Retrieving the FileModel
+		// Retrieving the CompilationUnitModel
 
-		FileModel fileModel = null;
+		CompilationUnitModel compilationUnitModel = null;
 
 		ProjectModel projectModel = projectLink.getProjectModel();
 		List<PackageModel> packages = projectModel.getPackages();
 		for (PackageModel packageModel : packages) {
-			List<FileModel> files = packageModel.getFiles();
-			for (FileModel currentFileModel : files) {
-				String fileName = currentFileModel.getName();
-				if (fileName.equals(fileModelName))
-					fileModel = currentFileModel;
+			List<CompilationUnitModel> compilationUnits = packageModel.getCompilationUnits();
+			for (CompilationUnitModel currentCompilationUnitModel : compilationUnits) {
+				String fileName = currentCompilationUnitModel.getName();
+				if (fileName.equals(compilationUnitModelName))
+					compilationUnitModel = currentCompilationUnitModel;
 			}
 		}
 
 		// Displaying its attributes
 
-		System.out
-				.println("\nHere are the methods as stored in the " + fileModel.getName() + " ClassModel (" + fileModel.getClass() + "):");
+		System.out.println("\nHere are the methods as stored in the " + compilationUnitModel.getName() + " ClassModel ("
+				+ compilationUnitModel.getClass() + "):");
 
-		List<MethodModel> methods = fileModel.getMethods();
+		List<MethodModel> methods = compilationUnitModel.getMethods();
 		for (MethodModel methodModel : methods) {
 			System.out.println("\t" + methodModel.getType() + " " + methodModel.getName());
 		}
@@ -227,16 +227,16 @@ public class Demonstration {
 		for (PackageModel packageModel : packages) {
 			System.out.println("\tpackage: " + packageModel.getName());
 
-			List<FileModel> files = packageModel.getFiles();
-			for (FileModel fileModel : files) {
-				System.out.println("\t\tfile: " + fileModel.getName());
+			List<CompilationUnitModel> compilationUnits = packageModel.getCompilationUnits();
+			for (CompilationUnitModel compilationUnitModel : compilationUnits) {
+				System.out.println("\t\tcompilation unit: " + compilationUnitModel.getName());
 
-				List<AttributeModel> attributes = fileModel.getAttributes();
+				List<AttributeModel> attributes = compilationUnitModel.getAttributes();
 				for (AttributeModel attributeModel : attributes) {
 					System.out.println("\t\t\tattribute: " + attributeModel.getType() + " " + attributeModel.getName());
 				}
 
-				List<MethodModel> methods = fileModel.getMethods();
+				List<MethodModel> methods = compilationUnitModel.getMethods();
 				for (MethodModel methodModel : methods) {
 					System.out.println("\t\t\tmethod: " + methodModel.getType() + " " + methodModel.getName());
 				}
@@ -296,28 +296,28 @@ public class Demonstration {
 			}
 		}
 
-		FileLink fileLinkHello = null;
-		List<FileLink> fileLinksFirst = packageLinkFirst.getFileLinks();
-		for (FileLink fileLink : fileLinksFirst) {
-			String fileName = fileLink.getFileModel().getName();
-			if (fileName.equals("HelloWorld")) {
-				fileLinkHello = fileLink;
+		CompilationUnitLink compilationUnitLinkHello = null;
+		List<CompilationUnitLink> compilationUnitLinksFirst = packageLinkFirst.getCompilationUnitLinks();
+		for (CompilationUnitLink compilationUnitLink : compilationUnitLinksFirst) {
+			String compilationUnitName = compilationUnitLink.getCompilationUnitModel().getName();
+			if (compilationUnitName.equals("HelloWorld")) {
+				compilationUnitLinkHello = compilationUnitLink;
 				break;
 			}
 		}
 
-		FileLink fileLinkGoodbye = null;
-		List<FileLink> fileLinksSecond = packageLinkSecond.getFileLinks();
-		for (FileLink fileLink : fileLinksSecond) {
-			String fileName = fileLink.getFileModel().getName();
-			if (fileName.equals("GoodbyeWorld")) {
-				fileLinkGoodbye = fileLink;
+		CompilationUnitLink compilationUnitLinkGoodbye = null;
+		List<CompilationUnitLink> compilationUnitLinksSecond = packageLinkSecond.getCompilationUnitLinks();
+		for (CompilationUnitLink compilationUnitLink : compilationUnitLinksSecond) {
+			String compilationUnitName = compilationUnitLink.getCompilationUnitModel().getName();
+			if (compilationUnitName.equals("GoodbyeWorld")) {
+				compilationUnitLinkGoodbye = compilationUnitLink;
 				break;
 			}
 		}
 
 		AttributeLink attributeLinkTarget = null;
-		List<AttributeLink> attributeLinksHello = fileLinkHello.getAttributeLinks();
+		List<AttributeLink> attributeLinksHello = compilationUnitLinkHello.getAttributeLinks();
 		for (AttributeLink attributeLink : attributeLinksHello) {
 			String attributeName = attributeLink.getAttributeModel().getName();
 			if (attributeName.equals("attributeDefault")) {
@@ -327,7 +327,7 @@ public class Demonstration {
 		}
 
 		MethodLink methodLinkTarget = null;
-		List<MethodLink> methodLinks = fileLinkHello.getMethodLinks();
+		List<MethodLink> methodLinks = compilationUnitLinkHello.getMethodLinks();
 		for (MethodLink methodLink : methodLinks) {
 			String methodName = methodLink.getMethodModel().getName();
 			if (methodName.equals("uselessMethod")) {
@@ -347,7 +347,7 @@ public class Demonstration {
 
 		// Testing moveToNewFile
 		System.out.println("\nUsing moveToNewFile to move the ssn attribute to GoodbyeWorld.java...");
-		attributeLinkSsn.moveToNewFile(fileLinkGoodbye);
+		attributeLinkSsn.moveToNewFile(compilationUnitLinkGoodbye);
 		Thread.sleep(WAITING_TIME);
 
 		System.out.println("\nTesting non-automatic updateModel methods...");
@@ -358,7 +358,7 @@ public class Demonstration {
 		Thread.sleep(WAITING_TIME); // We wait in order to give time to the other thread to run and detect the changes on the file system
 		System.out.println("Updating the attributeModel via the parent ProjectLink...");
 		projectLink.updateModel();
-		showFileModelAttributes(projectLink, "HelloWorld"); // Showing that the model has changed
+		showCompilationUnitModelAttributes(projectLink, "HelloWorld"); // Showing that the model has changed
 
 		// For PackageLink
 
@@ -366,7 +366,7 @@ public class Demonstration {
 		Thread.sleep(WAITING_TIME);
 		System.out.println("Updating the attributeModel via the parent PackageLink...");
 		packageLinkFirst.updateModel();
-		showFileModelAttributes(projectLink, "HelloWorld");
+		showCompilationUnitModelAttributes(projectLink, "HelloWorld");
 
 		// Testing file writes
 
@@ -376,7 +376,7 @@ public class Demonstration {
 		System.out.println("\nUsing setNameInFile to edit the name of an attribute in the file to 'attributeDefault'...");
 		attributeLinkTarget.setNameInFile("attributeDefault");
 		Thread.sleep(WAITING_TIME);
-		showFileModelAttributes(projectLink, "HelloWorld");
+		showCompilationUnitModelAttributes(projectLink, "HelloWorld");
 
 		// Since we've updated the general model, there is a new up-to-date attributeLink, and attributeLinkTarget is still the old link.
 		// Therefore, we need to grab the relevant link once again.
@@ -394,13 +394,13 @@ public class Demonstration {
 		System.out.println("\nUsing setTypeInFile to edit the type of an attribute in the file to 'int'...");
 		attributeLinkTarget.setTypeInFile("int");
 		Thread.sleep(WAITING_TIME);
-		showFileModelAttributes(projectLink, "HelloWorld");
+		showCompilationUnitModelAttributes(projectLink, "HelloWorld");
 
-		showFileModelMethods(projectLink, "HelloWorld");
+		showCompilationUnitModelMethods(projectLink, "HelloWorld");
 		System.out.println("\nUsing setNameInFile to edit the name of a method in the file to 'veryFastMethod'...");
 		methodLinkTarget.setNameInFile("veryFastMethod");
 		Thread.sleep(WAITING_TIME);
-		showFileModelMethods(projectLink, "HelloWorld");
+		showCompilationUnitModelMethods(projectLink, "HelloWorld");
 
 		for (MethodLink methodLink : methodLinks) {
 			String methodName = methodLink.getMethodModel().getName();
@@ -413,11 +413,11 @@ public class Demonstration {
 		System.out.println("\nUsing setTypeInFile to edit the type of a method in the file to 'int'...");
 		methodLinkTarget.setTypeInFile("int");
 		Thread.sleep(WAITING_TIME);
-		showFileModelMethods(projectLink, "HelloWorld");
+		showCompilationUnitModelMethods(projectLink, "HelloWorld");
 
 		// Testing setNameInFile for FileLink
 		System.out.println("\nUsing setNameInFile to edit the name of a class in the file...");
-		fileLinkHello.setNameInFile("HelloWorldRemastered");
+		compilationUnitLinkHello.setNameInFile("HelloWorldRemastered");
 		Thread.sleep(WAITING_TIME);
 
 		// Testing renameFolder for PackageLink

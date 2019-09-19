@@ -20,7 +20,7 @@ import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
 
 import model.AttributeModel;
-import model.FileModel;
+import model.CompilationUnitModel;
 
 /**
  * Instances of this class are used to maintain a link between the attribute existing on the disk and the corresponding model.
@@ -34,22 +34,22 @@ public class AttributeLink {
 
 	private AttributeModel attributeModel; // the corresponding model
 	private String name; // the name of the attribute
-	private FileLink fileLink; // the parent file
+	private CompilationUnitLink compilationUnitLink; // the parent compilation unit
 
 	/**
 	 * The constructor. Takes information about the attribute and modelizes it. Links an instance of AttributeLink with an instance of
 	 * AttributeModel
 	 * 
-	 * @param fileModel
-	 *            the parent file
+	 * @param compilationUnitModel
+	 *            the parent compilation unit
 	 * @param name
 	 *            the name of the attribute
 	 * @param type
 	 *            the type of the attribute
 	 */
-	public AttributeLink(FileLink fileLink, String name, String type) {
+	public AttributeLink(CompilationUnitLink compilationUnitLink, String name, String type) {
 
-		FileModel fileModel = fileLink.getFileModel();
+		CompilationUnitModel compilationUnitModel = compilationUnitLink.getCompilationUnitModel();
 
 		// Instantiating attributes
 
@@ -64,13 +64,13 @@ public class AttributeLink {
 
 		this.attributeModel = factory.newInstance(AttributeModel.class);
 		this.name = name;
-		this.fileLink = fileLink;
+		this.compilationUnitLink = compilationUnitLink;
 
 		attributeModel.setName(name);
 		attributeModel.setType(type);
-		attributeModel.setFile(fileModel);
+		attributeModel.setCompilationUnit(compilationUnitModel);
 
-		fileModel.addAttribute(attributeModel);
+		compilationUnitModel.addAttribute(attributeModel);
 
 	}
 
@@ -82,7 +82,7 @@ public class AttributeLink {
 	public void updateModel() {
 
 		// Generating a new model based on the existing file
-		AttributeLink attributeLinkFile = new AttributeLink(fileLink, name, attributeModel.getType());
+		AttributeLink attributeLinkFile = new AttributeLink(compilationUnitLink, name, attributeModel.getType());
 		AttributeModel attributeModelFile = attributeLinkFile.attributeModel;
 
 		// Updating the model
@@ -101,7 +101,7 @@ public class AttributeLink {
 	 */
 	public void setNameInFile(String newName) throws IOException {
 
-		String path = attributeModel.getFile().getPath(); // Retrieving the path of the file where the attribute is located
+		String path = attributeModel.getCompilationUnit().getPath(); // Retrieving the path of the file where the attribute is located
 
 		// Initializing the compilation unit
 		CompilationUnit cu = StaticJavaParser.parse(new File(path));
@@ -139,7 +139,7 @@ public class AttributeLink {
 
 	public void setTypeInFile(String newType) throws IOException {
 
-		String path = attributeModel.getFile().getPath(); // Retrieving the path of the file where the attribute is located
+		String path = attributeModel.getCompilationUnit().getPath(); // Retrieving the path of the file where the attribute is located
 
 		// Initializing the compilation unit
 		CompilationUnit cu = StaticJavaParser.parse(new File(path));
@@ -168,17 +168,17 @@ public class AttributeLink {
 	/**
 	 * Moves the attribute from its current file to another file. Uses lexical preservation?
 	 * 
-	 * @param newFile
-	 *            the FileLink corresponding to the file where the attribute will be moved
+	 * @param newCompilationUnit
+	 *            the CompilationUnitLink corresponding to the file where the attribute will be moved
 	 * @throws IOException
 	 *             if there was an issue during the file parsing or the file write
 	 */
 	// TODO: this method doesn't work properly if there are comments in the line where the attribute is declared
-	public void moveToNewFile(FileLink newFile) throws IOException {
+	public void moveToNewFile(CompilationUnitLink newCompilationUnit) throws IOException {
 
 		/* Retrieve and remove the attribute from the original file */
 
-		String pathOld = attributeModel.getFile().getPath(); // Retrieving the path of the file where the attribute is located
+		String pathOld = attributeModel.getCompilationUnit().getPath(); // Retrieving the path of the file where the attribute is located
 
 		// Initializing the compilation unit
 		CompilationUnit cuOld = StaticJavaParser.parse(new File(pathOld));
@@ -212,7 +212,7 @@ public class AttributeLink {
 
 		/* Retrieving the new file and adding the attribute to it */
 
-		String pathNew = newFile.getPath(); // Retrieving the path of the file where the attribute is located
+		String pathNew = newCompilationUnit.getPath(); // Retrieving the path of the file where the attribute is located
 
 		// Initializing the compilation unit
 		CompilationUnit cuNew = StaticJavaParser.parse(new File(pathNew));

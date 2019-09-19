@@ -44,19 +44,19 @@ public interface PackageModel extends AbstractModelObject {
 	@Setter(PROJECT)
 	void setProject(ProjectModel projectModel);
 
-	// Attributes and methods regarding the children files::
+	// Attributes and methods regarding the children compilation unit:
 
-	String FILES = "files";
+	String COMPILATION_UNIT = "compilationUnit";
 
-	@Getter(value = FILES, cardinality = Cardinality.LIST, inverse = FileModel.PACKAGE)
+	@Getter(value = COMPILATION_UNIT, cardinality = Cardinality.LIST, inverse = CompilationUnitModel.PACKAGE)
 	@XMLElement
 	@Embedded
-	public List<FileModel> getFiles();
+	public List<CompilationUnitModel> getCompilationUnits();
 
-	@Adder(FILES)
-	public void addFiles(FileModel c);
+	@Adder(COMPILATION_UNIT)
+	public void addCompilationUnits(CompilationUnitModel c);
 
-	@Remover(FILES)
-	public void removeFiles(FileModel c);
+	@Remover(COMPILATION_UNIT)
+	public void removeCompilationUnits(CompilationUnitModel c);
 
 }

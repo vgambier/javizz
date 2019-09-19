@@ -23,64 +23,63 @@ import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
 
-import model.FileModel;
+import model.CompilationUnitModel;
 import model.PackageModel;
 
-
 /**
- * Instances of this class are used to maintain a link between the file existing on the disk and the corresponding model.
+ * Instances of this class are used to maintain a link between the compilation unit/file existing on the disk and the corresponding model.
  * 
  * @author Victor Gambier
  *
  */
 
 @ModelEntity
-public class FileLink {
+public class CompilationUnitLink {
 
-	private FileModel fileModel; // the corresponding model
-	private String path; // the path where the file is located - uniquely defines the file within the file system
+	private CompilationUnitModel compilationUnitModel; // the corresponding model
+	private String path; // the path where the compilation unit is located - uniquely defines the file within the file system
 	private List<AttributeLink> attributeLinks; // the children AttributeLink
 	private List<MethodLink> methodLinks; // the children methodLink
 	private PackageLink packageLink; // the parent package
 
 	/**
-	 * The constructor. Takes the path to a .java file, and modelizes that file. Links an instance of FileLink with an instance of
-	 * FileModel. Also calls the MethodModel and AttributeModel constructors to modelize the methods and attributes contained within the
-	 * file.
+	 * The constructor. Takes the path to a .java file, and modelizes that compilation unit/file. Links an instance of CompilationUnitLink
+	 * with an instance of CompilationUnitModel. Also calls the MethodModel and AttributeModel constructors to modelize the methods and
+	 * attributes contained within the file.
 	 * 
 	 * @param packageModel
 	 *            the parent package
 	 * @param path
-	 *            the path where the file is located
+	 *            the path where the compilation unit is located
 	 * @throws FileNotFoundException
-	 *             if the file containing the file could not be parsed
+	 *             if the file containing the compilation unit could not be parsed
 	 * @throws ModelDefinitionException
 	 *             if something went wrong upon calling .getModelContext()
 	 */
-	public FileLink(PackageLink packageLink, String path) throws FileNotFoundException, ModelDefinitionException {
+	public CompilationUnitLink(PackageLink packageLink, String path) throws FileNotFoundException, ModelDefinitionException {
 
 		PackageModel packageModel = packageLink.getPackageModel();
 
 		// Instantiating attributes
 
 		// We first need to define a factory to instantiate AttributeModel
-		ModelFactory factory = new ModelFactory(ModelContextLibrary.getModelContext(FileModel.class));
+		ModelFactory factory = new ModelFactory(ModelContextLibrary.getModelContext(CompilationUnitModel.class));
 
-		this.fileModel = factory.newInstance(FileModel.class);
+		this.compilationUnitModel = factory.newInstance(CompilationUnitModel.class);
 		this.path = path;
 		attributeLinks = new ArrayList<AttributeLink>();
 		methodLinks = new ArrayList<MethodLink>();
 		this.packageLink = packageLink;
 
-		fileModel.setName(Demonstration.pathToFilename(path));
-		fileModel.setPath(path);
-		fileModel.setPackage(packageModel);
+		compilationUnitModel.setName(Demonstration.pathToFilename(path));
+		compilationUnitModel.setPath(path);
+		compilationUnitModel.setPackage(packageModel);
 
-		packageModel.addFiles(fileModel);
+		packageModel.addCompilationUnits(compilationUnitModel);
 
-		// Looking for methods and attributes within the file
+		// Looking for methods and attributes within the compilation unit
 
-		// Parsing the file into a compilation unit
+		// Parsing the file into a javaparser compilation unit
 		CompilationUnit cu = StaticJavaParser.parse(new File(path));
 
 		// Finding the attributes and initializing the models
@@ -111,7 +110,7 @@ public class FileLink {
 				String name = md.getNameAsString();
 				String type = md.getTypeAsString();
 				// This constructor will take care of modelizing the method and its contents
-				MethodLink methodLink = new MethodLink(getFileLink(), name, type);
+				MethodLink methodLink = new MethodLink(getCompilationUnitLink(), name, type);
 				methodLinks.add(methodLink);
 
 			}
@@ -131,16 +130,16 @@ public class FileLink {
 	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
 
 		// Generating a new model based on the input file
-		FileLink fileLinkFile = new FileLink(packageLink, path);
-		FileModel fileModelFile = fileLinkFile.fileModel;
+		CompilationUnitLink compilationUnitLinkFile = new CompilationUnitLink(packageLink, path);
+		CompilationUnitModel compilationUnitModelFile = compilationUnitLinkFile.compilationUnitModel;
 
 		// Updating the model
-		fileModel.updateWith(fileModelFile);
+		compilationUnitModel.updateWith(compilationUnitModelFile);
 	}
 
 	/**
-	 * Reads a .java file, and changes the name of the primary class to match the input argument. Changes the model accordingly. For now, only edits
-	 * the contents of the file and doesn't rename the file. This may change in the future.
+	 * Reads a .java file, and changes the name of the primary class to match the input argument. Changes the model accordingly. For now,
+	 * only edits the contents of the file and doesn't rename the file. This may change in the future.
 	 * 
 	 * @param newName
 	 *            the new name of the class
@@ -155,7 +154,7 @@ public class FileLink {
 		LexicalPreservingPrinter.setup(cu); // enables lexical preservation
 
 		// Retrieving the name of the current class
-		String name = fileModel.getName();
+		String name = compilationUnitModel.getName();
 
 		// Editing the contents of the file
 		TypeDeclaration<?> primaryClass = cu.getClassByName(name).orElse(null);
@@ -169,10 +168,10 @@ public class FileLink {
 	}
 
 	/**
-	 * @return the fileModel
+	 * @return the compilationUnitModel
 	 */
-	public FileModel getFileModel() {
-		return fileModel;
+	public CompilationUnitModel getCompilationUnitModel() {
+		return compilationUnitModel;
 	}
 
 	/**
@@ -197,9 +196,9 @@ public class FileLink {
 	}
 
 	/**
-	 * @return the FileLink itself
+	 * @return the CompilationUnitLink itself
 	 */
-	public FileLink getFileLink() {
+	public CompilationUnitLink getCompilationUnitLink() {
 		return this;
 	}
 

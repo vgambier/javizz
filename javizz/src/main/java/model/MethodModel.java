@@ -7,7 +7,6 @@ import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
 
-import javizz.MethodLink;
 import model.MethodModel.MethodModelImpl;
 
 /**
@@ -33,15 +32,15 @@ public interface MethodModel extends AbstractModelObject {
 	@Setter(NAME)
 	void setName(String name);
 
-	// Attributes and methods regarding the parent file
+	// Attributes and methods regarding the parent compilation unit
 
-	String FILE = "file";
+	String COMPILATION_UNIT = "compilationUnit";
 
-	@Getter(value = FILE, isDerived = true) // isDerived flag is set, otherwise updateModel would cause a stack overflow
-	FileModel getFile();
+	@Getter(value = COMPILATION_UNIT, isDerived = true) // isDerived flag is set, otherwise updateModel would cause a stack overflow
+	CompilationUnitModel getCompilationUnit();
 
-	@Setter(FILE)
-	void setFile(FileModel fileModel);
+	@Setter(COMPILATION_UNIT)
+	void setCompilationUnit(CompilationUnitModel fileModel);
 
 	// Attributes and methods regarding the type of the method:
 
@@ -58,7 +57,7 @@ public interface MethodModel extends AbstractModelObject {
 
 		@Override
 		public ProjectModel getProject() {
-			return getFile() == null ? null : getFile().getProject(); // returns the parent project
+			return getCompilationUnit() == null ? null : getCompilationUnit().getProject(); // returns the parent project
 		}
 	}
 }

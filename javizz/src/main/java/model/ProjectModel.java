@@ -6,15 +6,14 @@ import org.openflexo.pamela.annotations.Adder;
 import org.openflexo.pamela.annotations.Embedded;
 import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.Getter.Cardinality;
-
-import model.ProjectModel.ProjectModelImpl;
-
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.Remover;
 import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
+
+import model.ProjectModel.ProjectModelImpl;
 
 /**
  * Instances of this class represent a single project, i.e.: a collection of packages. For now that means a single folder (all packages are
@@ -41,7 +40,7 @@ public interface ProjectModel extends AbstractModelObject {
 	void setName(String name);
 
 	// A flag used to enable or disable the monitoring of projects
-	// When set to true, all changes applies to any of the models (AttributeModel, FileModel, etc.)
+	// When set to true, all changes applies to any of the models (AttributeModel, CompilationUnitModel, etc.)
 	// will result in a notification being sent.
 	String WATCHING = "watching";
 

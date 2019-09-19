@@ -13,7 +13,7 @@ import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.pamela.annotations.XMLElement;
 
 /**
- * Instances of this class represent a single file.
+ * Instances of this class represent a single compilation unit; the contents of a file.
  * 
  * @author Victor Gambier
  *
@@ -21,9 +21,9 @@ import org.openflexo.pamela.annotations.XMLElement;
 
 @ModelEntity
 @XMLElement
-public interface FileModel extends TypeModel {
+public interface CompilationUnitModel extends TypeModel {
 
-	// Attributes and methods regarding the name of the file
+	// Attributes and methods regarding the name of the compilation unit
 
 	String NAME = "name";
 
@@ -58,7 +58,7 @@ public interface FileModel extends TypeModel {
 
 	String ATTRIBUTES = "attributes";
 
-	@Getter(value = ATTRIBUTES, cardinality = Cardinality.LIST, inverse = AttributeModel.FILE)
+	@Getter(value = ATTRIBUTES, cardinality = Cardinality.LIST, inverse = AttributeModel.COMPILATION_UNIT)
 	@Embedded
 	@XMLElement
 	public List<AttributeModel> getAttributes();
@@ -84,7 +84,7 @@ public interface FileModel extends TypeModel {
 	@Remover(METHODS)
 	public void removeMethod(MethodModel c);
 
-	abstract class FileModelImpl extends AbstractModelObjectImpl implements FileModel {
+	abstract class FileModelImpl extends AbstractModelObjectImpl implements CompilationUnitModel {
 
 		@Override
 		public ProjectModel getProject() {
