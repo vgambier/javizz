@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ProjectModel id="0" name="resources">
   <PackageModel id="1" name="firstPackage">
-    <ClassModel id="2" name="BrandNew" />
-    <ClassModel id="3" name="HelloWorld">
+    <FileModel id="2" name="BrandNew" />
+    <FileModel id="3" name="HelloWorld">
       <MethodModel id="4" name="main" type="void" />
       <MethodModel id="5" name="uselessMethod" type="long" />
       <MethodModel id="6" name="returnTwo" type="int" />
@@ -10,18 +10,18 @@
       <AttributeModel id="8" name="age" type="int" />
       <AttributeModel id="9" name="ssn" type="long" />
       <AttributeModel id="10" name="attributeDefault" type="long" />
-    </ClassModel>
-    <ClassModel id="11" name="NoMethodsNoAttributes" />
-    <ClassModel id="12" name="NoPackage" />
+    </FileModel>
+    <FileModel id="11" name="NoMethodsNoAttributes" />
+    <FileModel id="12" name="NoPackage" />
   </PackageModel>
   <PackageModel id="13" name="secondPackage">
-    <ClassModel id="14" name="GoodbyeWorld">
+    <FileModel id="14" name="GoodbyeWorld">
       <MethodModel id="15" name="main" type="void" />
       <MethodModel id="16" name="uselessMethod" type="void" />
       <MethodModel id="17" name="returnThree" type="int" />
       <AttributeModel id="18" name="address" type="String" />
       <AttributeModel id="19" name="relatives" type="LinkedList&lt;String&gt;" />
       <AttributeModel id="20" name="isTrue" type="boolean" />
-    </ClassModel>
+    </FileModel>
   </PackageModel>
 </ProjectModel>

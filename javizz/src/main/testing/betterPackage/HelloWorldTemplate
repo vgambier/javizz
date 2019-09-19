@@ -52,7 +52,7 @@ public class HelloWorld { // comment
 
 }
 
-class VeryEmpty {
+class Empty {
 
     // This class intentionally left blank
 

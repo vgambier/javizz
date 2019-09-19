@@ -25,16 +25,16 @@ import model.ProjectModel;
  */
 
 @ModelEntity
-public class PackageLink {
+public class PackageLink extends Link<PackageModel> {
 
-	private PackageModel packageModel; // the corresponding model
+	// private PackageModel packageModel; // the corresponding model
 	private String path; // the path where the package is located
-	private List<ClassLink> classLinks; // the children ClassLink
+	private List<FileLink> fileLinks; // the children FileLink
 	private ProjectLink projectLink; // the parent project
 
 	/**
 	 * The constructor. Takes the path to a folder containing .java files, and modelizes that folder. Links an instance of PackageLink with
-	 * an instance of PackageModel. Also calls the ClassModel constructor to modelize the classes contained within the folders.
+	 * an instance of PackageModel. Also calls the FileModel constructor to modelize the files contained within the folders.
 	 * 
 	 * @param projectModel
 	 *            the parent project
@@ -47,25 +47,22 @@ public class PackageLink {
 	 */
 	public PackageLink(ProjectLink projectLink, String path) throws FileNotFoundException, ModelDefinitionException {
 
+		super(new ModelFactory(ModelContextLibrary.getModelContext(PackageModel.class)).newInstance(PackageModel.class));
+
 		ProjectModel projectModel = projectLink.getProjectModel();
 
 		// Instantiating attributes
 
-		// We first need to define a factory to instantiate PackageModel
-		ModelFactory factory = new ModelFactory(ModelContextLibrary.getModelContext(PackageModel.class));
-
-		this.packageModel = factory.newInstance(PackageModel.class);
 		this.path = path;
-		classLinks = new ArrayList<ClassLink>();
+		fileLinks = new ArrayList<FileLink>();
 		this.projectLink = projectLink;
 
-		packageModel.setName(Demonstration.pathToFilename(path));
-		packageModel.setProject(projectModel);
+		model.setName(Demonstration.pathToFilename(path));
+		model.setProject(projectModel);
 
-		projectModel.addPackage(packageModel);
+		projectModel.addPackage(model);
 
-		// Looking for all classes
-		// A class is defined as a .java file (at least for now)
+		// Looking for all .java files
 		// TODO: this could be optimized, since we have already looked through the files in ProjectLink()
 
 		File folder = new File(path);
@@ -74,11 +71,11 @@ public class PackageLink {
 		for (File file : files) {
 			String filename = file.getName();
 			if (FilenameUtils.getExtension(filename).equals("java")) {
-				// If it is, then we assume the current file is a Java class
+				// If it is, then we assume the current file is a Java file
 				String filePath = file.getPath();
-				ClassLink classLink = new ClassLink(this, filePath); // This constructor will take care of modelizing the class and
-																		// its contents
-				classLinks.add(classLink);
+				FileLink fileLink = new FileLink(this, filePath); // This constructor will take care of modelizing the file and
+																	// its contents
+				fileLinks.add(fileLink);
 			}
 		}
 	}
@@ -87,22 +84,15 @@ public class PackageLink {
 	 * Reads a directory containing .java files, compares it to the existing model, and updates the model accordingly
 	 * 
 	 * @throws ModelDefinitionException
-	 *             if something went wrong during the constructor call
 	 * @throws FileNotFoundException
-	 *             if one of the files in the package could not be read during the constructor call
 	 * 
 	 */
-	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
 
-		// Generating a new model based on the input file
-		PackageLink packageLinkFile = new PackageLink(projectLink, path);
-		PackageModel packageModelFile = packageLinkFile.packageModel;
+	// TODO clean this up
 
-		// Updating the model
-		packageModel.updateWith(packageModelFile);
-
-		// TODO: The Link instance still has the old Model as an attribute
-
+	@Override
+	public PackageLink create() throws FileNotFoundException, ModelDefinitionException {
+		return new PackageLink(projectLink, path);
 	}
 
 	/**
@@ -120,32 +110,21 @@ public class PackageLink {
 		String newPath = path.substring(0, path.lastIndexOf("/") + 1) + newName; // same path but with the folder at the end changed
 		File destFolder = new File(newPath);
 
-		if (sourceFolder.renameTo(destFolder)) { // This attempts to rename the folder, and returns true if the folder was renamed
-
-			// If the rename was successful, we can change the models accordingly
-
-			if (true) { // TODO: global attribute check - only change the model if "synch mode" is enabled
-				this.path = newPath;
-				packageModel.setName(newName);
-			}
-		}
-		else {
+		if (!sourceFolder.renameTo(destFolder)) // This attempts to rename the folder, and returns true if the folder was not renamed
 			throw new JavizzException("Failed to rename directory");
-		}
 	}
 
 	/**
-	 * @return the classLinks
+	 * @return the fileLinks
 	 */
-	public List<ClassLink> getClassLinks() {
-		return classLinks;
+	public List<FileLink> getFileLinks() {
+		return fileLinks;
 	}
 
 	/**
 	 * @return the packageModel
 	 */
 	public PackageModel getPackageModel() {
-		return packageModel;
+		return model;
 	}
-
 }

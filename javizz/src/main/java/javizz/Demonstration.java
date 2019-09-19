@@ -6,18 +6,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.FileSystems;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.vfs2.FileChangeEvent;
-import org.apache.commons.vfs2.FileListener;
-import org.apache.commons.vfs2.FileSystemManager;
-import org.apache.commons.vfs2.VFS;
-import org.apache.commons.vfs2.impl.DefaultFileMonitor;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.factory.DeserializationPolicy;
@@ -33,10 +25,10 @@ import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
 
 import model.AttributeModel;
-import model.ClassModel;
 import model.MethodModel;
 import model.PackageModel;
 import model.ProjectModel;
+import model.FileModel;
 
 /**
  * @author Victor Gambier
@@ -47,7 +39,8 @@ import model.ProjectModel;
 public class Demonstration {
 
 	final static int WAITING_TIME = 1000; // the number of milliseconds the program will stall after each file change to let the file
-											// monitoring thread enough time to run
+											// monitoring thread enough time to run. as such, this number should always be higher than the
+											// delay between each file system check
 
 	/**
 	 * Takes a path and returns the name of filename or folder that it points to, without the extension
@@ -72,7 +65,7 @@ public class Demonstration {
 	 */
 	public static void editFileTest() throws IOException {
 
-		System.out.println("\nEditing file...");
+		System.out.println("\nEditing file (changing the names of one attribute and one class)...");
 
 		String editPath = "src/main/resources/firstPackage/HelloWorld.java"; // the file we'll modify
 
@@ -116,32 +109,72 @@ public class Demonstration {
 	}
 
 	/**
-	 * Displays an overview of the attributes stored in the input ClassModel
+	 * Displays an overview of the attributes stored in the input FileModel
 	 * 
-	 * @param classModel
-	 *            the ClassModel whose attributes will be displayed
+	 * @param projectLink
+	 *            the ProjectLink in which the input FileModel is modelized
+	 * @param fileModelName
+	 *            the name of the FileModel whose attributes will be displayed
 	 */
-	public static void showClassModelAttributes(ClassModel classModel) {
+	public static void showFileModelAttributes(ProjectLink projectLink, String fileModelName) {
 
-		System.out.println("\nHere are the attributes as stored in the " + classModel.getName() + " ClassModel:");
+		// Retrieving the fileModel
 
-		List<AttributeModel> attributes = classModel.getAttributes();
+		FileModel fileModel = null;
+
+		ProjectModel projectModel = projectLink.getProjectModel();
+		List<PackageModel> packages = projectModel.getPackages();
+		for (PackageModel packageModel : packages) {
+			List<FileModel> files = packageModel.getFiles();
+			for (FileModel currentFileModel : files) {
+				String fileName = currentFileModel.getName();
+				if (fileName.equals(fileModelName))
+					fileModel = currentFileModel;
+			}
+		}
+
+		// Displaying its attributes
+
+		System.out.println(
+				"\nHere are the attributes as stored in the " + fileModel.getName() + " FileModel (" + fileModel.getClass() + "):");
+
+		List<AttributeModel> attributes = fileModel.getAttributes();
 		for (AttributeModel attributeModel : attributes) {
 			System.out.println("\t" + attributeModel.getType() + " " + attributeModel.getName());
 		}
 	}
 
 	/**
-	 * Displays an overview of the methods stored in the input ClassModel
+	 * Displays an overview of the methods stored in the input FileModel
 	 * 
-	 * @param classModel
-	 *            the ClassModel whose methods will be displayed
+	 * @param projectLink
+	 *            the ProjectLink in which the input FileModel is modelized
+	 * @param fileModelName
+	 *            the name of the FileModel whose methods will be displayed
 	 */
-	public static void showClassModelMethods(ClassModel classModel) {
+	public static void showFileModelMethods(ProjectLink projectLink, String fileModelName) {
 
-		System.out.println("\nHere are the methods as stored in the " + classModel.getName() + " ClassModel:");
+		// Retrieving the FileModel
 
-		List<MethodModel> methods = classModel.getMethods();
+		FileModel fileModel = null;
+
+		ProjectModel projectModel = projectLink.getProjectModel();
+		List<PackageModel> packages = projectModel.getPackages();
+		for (PackageModel packageModel : packages) {
+			List<FileModel> files = packageModel.getFiles();
+			for (FileModel currentFileModel : files) {
+				String fileName = currentFileModel.getName();
+				if (fileName.equals(fileModelName))
+					fileModel = currentFileModel;
+			}
+		}
+
+		// Displaying its attributes
+
+		System.out
+				.println("\nHere are the methods as stored in the " + fileModel.getName() + " ClassModel (" + fileModel.getClass() + "):");
+
+		List<MethodModel> methods = fileModel.getMethods();
 		for (MethodModel methodModel : methods) {
 			System.out.println("\t" + methodModel.getType() + " " + methodModel.getName());
 		}
@@ -149,66 +182,41 @@ public class Demonstration {
 
 	public static void main(String[] args) throws Exception {
 
-		// Initializing a watch service to track file changes on disk on a separate thread
+		// We need to rename two folders that may have been renamed during the last iteration of this
+		File firstFolder = new File("src/main/testing");
+		if (firstFolder.exists()) {
+			if (!firstFolder.renameTo(new File("src/main/resources"))) // Renaming the folder
+				throw new JavizzException("Failed to rename directory"); // Triggered if the renaming failed
+		}
 
-		Executor runner = Executors.newFixedThreadPool(1);
-		runner.execute(new Runnable() {
+		File secondFolder = new File("src/main/resources/betterPackage");
+		if (secondFolder.exists()) {
+			if (!secondFolder.renameTo(new File("src/main/resources/firstPackage")))
+				throw new JavizzException("Failed to rename directory");
+		}
 
-			@Override
-			public void run() {
+		// Copying the file template onto the file we'll be modifying for the demonstration
+		String templatePath = "src/main/resources/firstPackage/HelloWorldTemplate";
+		String testPath = "src/main/resources/firstPackage/HelloWorld.java";
+		System.out.println("Copying the template onto HelloWorld.java...");
+		CompilationUnit cuTemplate = StaticJavaParser.parse(new File(templatePath));
+		LexicalPreservingPrinter.setup(cuTemplate);
+		BufferedWriter writer = new BufferedWriter(new FileWriter(testPath));
+		writer.write(LexicalPreservingPrinter.print(cuTemplate));
+		writer.close();
 
-				// Defining the folder we want to monitor as a FileObject
-				org.apache.commons.vfs2.FileObject listendir = null;
-				try {
-					FileSystemManager fsManager = VFS.getManager();
-					String relativePath = "src/main"; // the folder we want to monitor
-					String absolutePath = FileSystems.getDefault().getPath(relativePath).normalize().toAbsolutePath().toString();
-					listendir = fsManager.resolveFile(absolutePath);
-				} catch (org.apache.commons.vfs2.FileSystemException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				// Defining what will happen upon file change detection
-				DefaultFileMonitor fm = new DefaultFileMonitor(new FileListener() {
-
-					@Override
-					public void fileDeleted(FileChangeEvent event) throws Exception {
-						// Code here will trigger whenever the file monitoring detects a file has been deleted
-						String fullPath = event.getFile().getName().getPath();
-						String shortPath = fullPath.substring(fullPath.indexOf("main"));
-						System.out.println("\t" + shortPath + " deleted.");
-					}
-
-					@Override
-					public void fileCreated(FileChangeEvent event) throws Exception {
-						// Code here will trigger whenever the file monitoring detects a file has been created
-						String fullPath = event.getFile().getName().getPath();
-						String shortPath = fullPath.substring(fullPath.indexOf("main"));
-						System.out.println("\t" + shortPath + " created.");
-					}
-
-					@Override
-					public void fileChanged(FileChangeEvent event) throws Exception {
-						// Code here will trigger whenever the file monitoring detects a file has been edited
-						String fullPath = event.getFile().getName().getPath();
-						String shortPath = fullPath.substring(fullPath.indexOf("main"));
-						System.out.println("\t" + shortPath + " changed.");
-					}
-				});
-
-				fm.setRecursive(true); // enables monitoring for subfolders
-				fm.addFile(listendir);
-				fm.start(); // start monitoring
-
-			}
-		});
-
-		// In a separate thread, run the demonstration
+		templatePath = "src/main/resources/secondPackage/GoodbyeWorldTemplate";
+		testPath = "src/main/resources/secondPackage/GoodbyeWorld.java";
+		System.out.println("Copying the template onto GoodbyeWorld.java...");
+		cuTemplate = StaticJavaParser.parse(new File(templatePath));
+		LexicalPreservingPrinter.setup(cuTemplate);
+		writer = new BufferedWriter(new FileWriter(testPath));
+		writer.write(LexicalPreservingPrinter.print(cuTemplate));
+		writer.close();
 
 		// Reading a test folder
 		String folderPath = "src/main/resources"; // a relative path, pointing to the resources directory included in the project
-		ProjectLink projectLink = new ProjectLink(folderPath);
+		ProjectLink projectLink = new ProjectLink(folderPath, true, false); // Instantiating ProjectLink, with file monitoring enabled
 
 		// Testing to see if the data was properly gathered
 
@@ -219,16 +227,16 @@ public class Demonstration {
 		for (PackageModel packageModel : packages) {
 			System.out.println("\tpackage: " + packageModel.getName());
 
-			List<ClassModel> classes = packageModel.getClasses();
-			for (ClassModel classModel : classes) {
-				System.out.println("\t\tclass: " + classModel.getName());
+			List<FileModel> files = packageModel.getFiles();
+			for (FileModel fileModel : files) {
+				System.out.println("\t\tfile: " + fileModel.getName());
 
-				List<AttributeModel> attributes = classModel.getAttributes();
+				List<AttributeModel> attributes = fileModel.getAttributes();
 				for (AttributeModel attributeModel : attributes) {
 					System.out.println("\t\t\tattribute: " + attributeModel.getType() + " " + attributeModel.getName());
 				}
 
-				List<MethodModel> methods = classModel.getMethods();
+				List<MethodModel> methods = fileModel.getMethods();
 				for (MethodModel methodModel : methods) {
 					System.out.println("\t\t\tmethod: " + methodModel.getType() + " " + methodModel.getName());
 				}
@@ -237,7 +245,7 @@ public class Demonstration {
 
 		// XML serialization
 
-		System.out.println("XML serialization...");
+		System.out.println("\nXML serialization...");
 
 		String xmlPath = "src/main/resources/XMLFiles/TestSerialization.xml";
 		File xmlFile = new File(xmlPath);
@@ -269,9 +277,9 @@ public class Demonstration {
 
 		Thread.sleep(WAITING_TIME);
 
-		/* Testing all updateModel() methods */
+		/* Testing other methods */
 
-		projectModel.setIsWatching(true); // Enabling real-time model monitoring
+		projectModel.setWatching(true); // Enabling real-time model monitoring
 
 		// We first need to reference the various Links and Models we'll be working with
 
@@ -288,43 +296,38 @@ public class Demonstration {
 			}
 		}
 
-		ClassLink classLinkHello = null;
-		ClassModel classModelHello = null;
-		List<ClassLink> classLinksFirst = packageLinkFirst.getClassLinks();
-		for (ClassLink classLink : classLinksFirst) {
-			String className = classLink.getClassModel().getName();
-			if (className.equals("HelloWorld")) {
-				classLinkHello = classLink;
-				classModelHello = classLink.getClassModel();
+		FileLink fileLinkHello = null;
+		List<FileLink> fileLinksFirst = packageLinkFirst.getFileLinks();
+		for (FileLink fileLink : fileLinksFirst) {
+			String fileName = fileLink.getFileModel().getName();
+			if (fileName.equals("HelloWorld")) {
+				fileLinkHello = fileLink;
 				break;
 			}
 		}
 
-		ClassLink classLinkGoodbye = null;
-		List<ClassLink> classLinksSecond = packageLinkSecond.getClassLinks();
-		for (ClassLink classLink : classLinksSecond) {
-			String className = classLink.getClassModel().getName();
-			if (className.equals("GoodbyeWorld")) {
-				classLinkGoodbye = classLink;
+		FileLink fileLinkGoodbye = null;
+		List<FileLink> fileLinksSecond = packageLinkSecond.getFileLinks();
+		for (FileLink fileLink : fileLinksSecond) {
+			String fileName = fileLink.getFileModel().getName();
+			if (fileName.equals("GoodbyeWorld")) {
+				fileLinkGoodbye = fileLink;
 				break;
 			}
 		}
 
 		AttributeLink attributeLinkTarget = null;
-		AttributeLink attributeLinkSsn = null;
-		List<AttributeLink> attributeLinksHello = classLinkHello.getAttributeLinks();
+		List<AttributeLink> attributeLinksHello = fileLinkHello.getAttributeLinks();
 		for (AttributeLink attributeLink : attributeLinksHello) {
 			String attributeName = attributeLink.getAttributeModel().getName();
 			if (attributeName.equals("attributeDefault")) {
 				attributeLinkTarget = attributeLink;
-			}
-			else if (attributeName.equals("ssn")) {
-				attributeLinkSsn = attributeLink;
+				break;
 			}
 		}
 
 		MethodLink methodLinkTarget = null;
-		List<MethodLink> methodLinks = classLinkHello.getMethodLinks();
+		List<MethodLink> methodLinks = fileLinkHello.getMethodLinks();
 		for (MethodLink methodLink : methodLinks) {
 			String methodName = methodLink.getMethodModel().getName();
 			if (methodName.equals("uselessMethod")) {
@@ -333,90 +336,98 @@ public class Demonstration {
 			}
 		}
 
+		AttributeLink attributeLinkSsn = null;
+		for (AttributeLink attributeLink : attributeLinksHello) {
+			String attributeName = attributeLink.getAttributeModel().getName();
+			if (attributeName.equals("ssn")) {
+				attributeLinkSsn = attributeLink;
+				break;
+			}
+		}
+
+		// Testing moveToNewFile
+		System.out.println("\nUsing moveToNewFile to move the ssn attribute to GoodbyeWorld.java...");
+		attributeLinkSsn.moveToNewFile(fileLinkGoodbye);
+		Thread.sleep(WAITING_TIME);
+
+		System.out.println("\nTesting non-automatic updateModel methods...");
+
 		// For ProjectLink
 
 		editFileTest(); // Modifying the name of a class and an attribute
+		Thread.sleep(WAITING_TIME); // We wait in order to give time to the other thread to run and detect the changes on the file system
 		System.out.println("Updating the attributeModel via the parent ProjectLink...");
 		projectLink.updateModel();
-		showClassModelAttributes(classModelHello); // Showing that the model has changed
+		showFileModelAttributes(projectLink, "HelloWorld"); // Showing that the model has changed
 
-		Thread.sleep(WAITING_TIME); // We wait in order to give time to the other thread to run and detect the changes on the file system
-
-		// For other classes
+		// For PackageLink
 
 		editFileTest();
+		Thread.sleep(WAITING_TIME);
 		System.out.println("Updating the attributeModel via the parent PackageLink...");
 		packageLinkFirst.updateModel();
-		showClassModelAttributes(classModelHello);
-
-		Thread.sleep(WAITING_TIME);
-
-		editFileTest();
-		System.out.println("Updating the attributeModel via the parent ClassLink...");
-		classLinkHello.updateModel();
-		showClassModelAttributes(classModelHello);
-
-		Thread.sleep(WAITING_TIME);
+		showFileModelAttributes(projectLink, "HelloWorld");
 
 		// Testing file writes
 
-		System.out.println("\nUsing setNameInFile to edit the name of an attribute in the file...");
+		System.out.println("\nTesting file writes...");
+		projectLink.setSyncMode(true); // Enabling the file monitoring to change the model in real-time
+
+		System.out.println("\nUsing setNameInFile to edit the name of an attribute in the file to 'attributeDefault'...");
 		attributeLinkTarget.setNameInFile("attributeDefault");
-		showClassModelAttributes(classModelHello);
-
 		Thread.sleep(WAITING_TIME);
+		showFileModelAttributes(projectLink, "HelloWorld");
 
-		System.out.println("\nUsing setTypeInFile to edit the type of an attribute in the file...");
+		// Since we've updated the general model, there is a new up-to-date attributeLink, and attributeLinkTarget is still the old link.
+		// Therefore, we need to grab the relevant link once again.
+		// Note: it might not make a lot of sense for the Link to be updated and rendered obsolete when we update the model, but for now
+		// this has to happen as the AttributeLink and MethodLink contain a name attribute that is susceptible to change
+
+		for (AttributeLink attributeLink : attributeLinksHello) {
+			String attributeName = attributeLink.getAttributeModel().getName();
+			if (attributeName.equals("attributeDefault")) {
+				attributeLinkTarget = attributeLink;
+				break;
+			}
+		}
+
+		System.out.println("\nUsing setTypeInFile to edit the type of an attribute in the file to 'int'...");
 		attributeLinkTarget.setTypeInFile("int");
-		showClassModelAttributes(classModelHello);
-		attributeLinkTarget.setTypeInFile("long"); // Reverting the change
-
 		Thread.sleep(WAITING_TIME);
+		showFileModelAttributes(projectLink, "HelloWorld");
 
-		showClassModelMethods(classModelHello);
-		System.out.println("\nUsing setNameInFile to edit the name of a method in the file...");
+		showFileModelMethods(projectLink, "HelloWorld");
+		System.out.println("\nUsing setNameInFile to edit the name of a method in the file to 'veryFastMethod'...");
 		methodLinkTarget.setNameInFile("veryFastMethod");
-		showClassModelMethods(classModelHello);
-
 		Thread.sleep(WAITING_TIME);
+		showFileModelMethods(projectLink, "HelloWorld");
 
-		System.out.println("\nUsing setTypeInFile to edit the type of a method in the file...");
+		for (MethodLink methodLink : methodLinks) {
+			String methodName = methodLink.getMethodModel().getName();
+			if (methodName.equals("uselessMethod")) {
+				methodLinkTarget = methodLink;
+				break;
+			}
+		}
+
+		System.out.println("\nUsing setTypeInFile to edit the type of a method in the file to 'int'...");
 		methodLinkTarget.setTypeInFile("int");
-		showClassModelMethods(classModelHello);
-
 		Thread.sleep(WAITING_TIME);
+		showFileModelMethods(projectLink, "HelloWorld");
 
-		// Reverting the changes
-		methodLinkTarget.setTypeInFile("long");
-		methodLinkTarget.setNameInFile("uselessMethod");
-
+		// Testing setNameInFile for FileLink
+		System.out.println("\nUsing setNameInFile to edit the name of a class in the file...");
+		fileLinkHello.setNameInFile("HelloWorldRemastered");
 		Thread.sleep(WAITING_TIME);
-
-		// Testing setNameInFile for ClassLink
-		System.out.println("\nUsing setTypeInFile to edit the name of a class in the file...");
-		classLinkHello.setNameInFile("HelloWorldRemastered");
-		Thread.sleep(WAITING_TIME);
-		classLinkHello.setNameInFile("HelloWorld"); // Reverting the change
 
 		// Testing renameFolder for PackageLink
 		System.out.println("\nUsing renameFolder to edit the name of a package folder...");
 		packageLinkFirst.renameFolder("betterPackage");
 		Thread.sleep(WAITING_TIME);
-		packageLinkFirst.renameFolder("firstPackage"); // Reverting the change
 
 		// Testing renameFolder for ProjectLink
 		System.out.println("\nUsing renameFolder to edit the name of a project folder...");
 		projectLink.renameFolder("testing");
-		Thread.sleep(WAITING_TIME);
-		projectLink.renameFolder("resources"); // Reverting the change
-
-		// Testing moveToNewClass
-		/*
-		System.out.println("\nUsing moveToNewClass to move the ssn attribute to GoodbyeWorld...");
-		attributeLinkSsn.moveToNewClass(classLinkGoodbye);
-		Thread.sleep(WAITING_TIME);
-		*/
-
 		Thread.sleep(WAITING_TIME);
 
 		System.exit(0); // Terminating all threads

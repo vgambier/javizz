@@ -33,15 +33,29 @@ public interface MethodModel extends AbstractModelObject {
 	@Setter(NAME)
 	void setName(String name);
 
+<<<<<<< HEAD:javizz/src/main/java/model/MethodModel.java
 	// Attributes and methods regarding the parent class
+=======
+	// Attributes and methods regarding the corresponding MethodLink
 
-	String CLASS = "class";
+	String LINK = "link";
 
-	@Getter(value = CLASS, isDerived = true) // isDerived flag is set, otherwise updateModel would cause a stack overflow
-	ClassModel getClazz();
+	@Getter(LINK)
+	MethodLink getMethodLink();
 
-	@Setter(CLASS)
-	void setClazz(ClassModel classModel);
+	@Setter(LINK)
+	void setMethodLink(MethodLink methodLink);
+
+	// Attributes and methods regarding the parent file
+>>>>>>> exp:javizz/src/main/java/models/MethodModel.java
+
+	String FILE = "file";
+
+	@Getter(value = FILE, isDerived = true) // isDerived flag is set, otherwise updateModel would cause a stack overflow
+	FileModel getFile();
+
+	@Setter(FILE)
+	void setFile(FileModel fileModel);
 
 	// Attributes and methods regarding the type of the method:
 
@@ -58,7 +72,7 @@ public interface MethodModel extends AbstractModelObject {
 
 		@Override
 		public ProjectModel getProject() {
-			return getClazz() == null ? null : getClazz().getProject(); // returns the parent project
+			return getFile() == null ? null : getFile().getProject(); // returns the parent project
 		}
 	}
 }

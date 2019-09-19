@@ -21,9 +21,9 @@ import org.openflexo.pamela.annotations.XMLElement;
 
 @ModelEntity
 @XMLElement
-public interface ClassModel extends TypeModel {
+public interface FileModel extends TypeModel {
 
-	// Attributes and methods regarding the name of the class
+	// Attributes and methods regarding the name of the file
 
 	String NAME = "name";
 
@@ -58,7 +58,7 @@ public interface ClassModel extends TypeModel {
 
 	String ATTRIBUTES = "attributes";
 
-	@Getter(value = ATTRIBUTES, cardinality = Cardinality.LIST, inverse = AttributeModel.CLASS)
+	@Getter(value = ATTRIBUTES, cardinality = Cardinality.LIST, inverse = AttributeModel.FILE)
 	@Embedded
 	@XMLElement
 	public List<AttributeModel> getAttributes();
@@ -73,7 +73,7 @@ public interface ClassModel extends TypeModel {
 
 	String METHODS = "methods";
 
-	@Getter(value = METHODS, cardinality = Cardinality.LIST, inverse = MethodModel.CLASS)
+	@Getter(value = METHODS, cardinality = Cardinality.LIST)
 	@Embedded
 	@XMLElement
 	public List<MethodModel> getMethods();
@@ -84,7 +84,7 @@ public interface ClassModel extends TypeModel {
 	@Remover(METHODS)
 	public void removeMethod(MethodModel c);
 
-	abstract class ClassModelImpl extends AbstractModelObjectImpl implements ClassModel {
+	abstract class FileModelImpl extends AbstractModelObjectImpl implements FileModel {
 
 		@Override
 		public ProjectModel getProject() {
