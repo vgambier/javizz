@@ -33,7 +33,6 @@ import model.CompilationUnitModel;
 public class ClassLink {
 
 	private ClassModel classModel; // the corresponding model
-	private String className; // the name of the class
 	private List<AttributeLink> attributeLinks; // the children AttributeLink
 	private List<MethodLink> methodLinks; // the children methodLink
 	private CompilationUnitLink compilationUnitLink; // the parent compilation unit
@@ -50,7 +49,6 @@ public class ClassLink {
 		ModelFactory factory = new ModelFactory(ModelContextLibrary.getModelContext(ClassModel.class));
 
 		this.classModel = factory.newInstance(ClassModel.class);
-		this.className = className;
 		attributeLinks = new ArrayList<AttributeLink>();
 		methodLinks = new ArrayList<MethodLink>();
 		this.compilationUnitLink = compilationUnitLink;
@@ -65,9 +63,10 @@ public class ClassLink {
 		// Parsing the file into a javaparser compilation unit
 		CompilationUnit cu = StaticJavaParser.parse(new File(compilationUnitLink.getPath()));
 
-		// Finding the attributes and initializing the models
-
+		// Retrieving the relevant class
 		TypeDeclaration<?> typeDec = cu.getClassByName(className).orElse(null);
+
+		// Finding the attributes and initializing the models
 
 		for (BodyDeclaration<?> member : typeDec.getMembers()) {
 			member.toFieldDeclaration().ifPresent(field -> {

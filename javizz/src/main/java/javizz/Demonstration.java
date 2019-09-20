@@ -244,7 +244,7 @@ public class Demonstration {
 
 					List<AttributeModel> attributes = classModel.getAttributes();
 					for (AttributeModel attributeModel : attributes) {
-						System.out.println("\t\t\ttattribute: " + attributeModel.getType() + " " + attributeModel.getName());
+						System.out.println("\t\t\t\tattribute: " + attributeModel.getType() + " " + attributeModel.getName());
 					}
 
 					List<MethodModel> methods = classModel.getMethods();
