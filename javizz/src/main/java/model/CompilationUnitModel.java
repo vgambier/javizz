@@ -21,7 +21,7 @@ import org.openflexo.pamela.annotations.XMLElement;
 
 @ModelEntity
 @XMLElement
-public interface CompilationUnitModel extends TypeModel {
+public interface CompilationUnitModel extends AbstractModelObject {
 
 	// Attributes and methods regarding the name of the compilation unit
 
@@ -44,37 +44,22 @@ public interface CompilationUnitModel extends TypeModel {
 	@Setter(PACKAGE)
 	void setPackage(PackageModel packageModel);
 
-	// Attributes and methods regarding the children attributes:
+	// Attributes and methods regarding the children classes
 
-	String ATTRIBUTES = "attributes";
+	String CLASSES = "classes";
 
-	@Getter(value = ATTRIBUTES, cardinality = Cardinality.LIST, inverse = AttributeModel.COMPILATION_UNIT)
+	@Getter(value = CLASSES, cardinality = Cardinality.LIST)
 	@Embedded
 	@XMLElement
-	public List<AttributeModel> getAttributes();
+	public List<ClassModel> getClasses();
 
-	@Adder(ATTRIBUTES)
-	public void addAttribute(AttributeModel c);
+	@Adder(CLASSES)
+	public void addClass(ClassModel c);
 
-	@Remover(ATTRIBUTES)
-	public void removeAttribute(AttributeModel c);
+	@Remover(CLASSES)
+	public void removeClass(ClassModel c);
 
-	// Attributes and methods regarding the children methods:
-
-	String METHODS = "methods";
-
-	@Getter(value = METHODS, cardinality = Cardinality.LIST)
-	@Embedded
-	@XMLElement
-	public List<MethodModel> getMethods();
-
-	@Adder(METHODS)
-	public void addMethod(MethodModel c);
-
-	@Remover(METHODS)
-	public void removeMethod(MethodModel c);
-
-	abstract class FileModelImpl extends AbstractModelObjectImpl implements CompilationUnitModel {
+	abstract class CompilationUnitModelImpl extends AbstractModelObjectImpl implements CompilationUnitModel {
 
 		@Override
 		public ProjectModel getProject() {

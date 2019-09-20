@@ -34,13 +34,13 @@ public interface MethodModel extends AbstractModelObject {
 
 	// Attributes and methods regarding the parent compilation unit
 
-	String COMPILATION_UNIT = "compilationUnit";
+	String CLASS = "class";
 
-	@Getter(value = COMPILATION_UNIT, isDerived = true) // isDerived flag is set, otherwise updateModel would cause a stack overflow
-	CompilationUnitModel getCompilationUnit();
+	@Getter(value = CLASS, isDerived = true) // isDerived flag is set, otherwise updateModel would cause a stack overflow
+	ClassModel getClazz();
 
-	@Setter(COMPILATION_UNIT)
-	void setCompilationUnit(CompilationUnitModel fileModel);
+	@Setter(CLASS)
+	void setClazz(ClassModel classModel);
 
 	// Attributes and methods regarding the type of the method:
 
@@ -57,7 +57,7 @@ public interface MethodModel extends AbstractModelObject {
 
 		@Override
 		public ProjectModel getProject() {
-			return getCompilationUnit() == null ? null : getCompilationUnit().getProject(); // returns the parent project
+			return getClazz() == null ? null : getClazz().getProject(); // returns the parent project
 		}
 	}
 }

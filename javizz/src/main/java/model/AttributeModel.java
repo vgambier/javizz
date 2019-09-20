@@ -43,21 +43,21 @@ public interface AttributeModel extends AbstractModelObject {
 	@Setter(TYPE)
 	void setType(String type);
 
-	// Attributes and methods regarding the parent compilation unit
+	// Attributes and methods regarding the parent class
 
-	String COMPILATION_UNIT = "compilationUnit";
+	String CLASS = "class";
 
-	@Getter(value = COMPILATION_UNIT, isDerived = true) // isDerived flag is set, otherwise updateModel would cause a stack overflow
-	CompilationUnitModel getCompilationUnit();
+	@Getter(value = CLASS, isDerived = true) // isDerived flag is set, otherwise updateModel would cause a stack overflow
+	ClassModel getClazz();
 
-	@Setter(COMPILATION_UNIT)
-	void setCompilationUnit(CompilationUnitModel compilationUnitModel);
+	@Setter(CLASS)
+	void setClazz(ClassModel classModel);
 
 	abstract class AttributeModelImpl extends AbstractModelObjectImpl implements AttributeModel {
 
 		@Override
 		public ProjectModel getProject() {
-			return getCompilationUnit() == null ? null : getCompilationUnit().getProject(); // returns the parent project
+			return getClazz() == null ? null : getClazz().getProject(); // returns the parent project
 		}
 	}
 }

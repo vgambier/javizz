@@ -15,12 +15,7 @@ import org.openflexo.pamela.factory.ModelFactory;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.body.BodyDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
-import com.github.javaparser.ast.body.VariableDeclarator;
-import com.github.javaparser.ast.visitor.VoidVisitor;
-import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
 
 import model.CompilationUnitModel;
@@ -38,8 +33,7 @@ public class CompilationUnitLink {
 
 	private CompilationUnitModel compilationUnitModel; // the corresponding model
 	private String path; // the path where the compilation unit is located - uniquely defines the file within the file system
-	private List<AttributeLink> attributeLinks; // the children AttributeLink
-	private List<MethodLink> methodLinks; // the children methodLink
+	private List<ClassLink> classLinks; // the children ClassLink
 	private PackageLink packageLink; // the parent package
 
 	/**
@@ -67,8 +61,7 @@ public class CompilationUnitLink {
 
 		this.compilationUnitModel = factory.newInstance(CompilationUnitModel.class);
 		this.path = path;
-		attributeLinks = new ArrayList<AttributeLink>();
-		methodLinks = new ArrayList<MethodLink>();
+		classLinks = new ArrayList<ClassLink>();
 		this.packageLink = packageLink;
 
 		compilationUnitModel.setName(Demonstration.pathToFilename(path));
@@ -81,43 +74,17 @@ public class CompilationUnitLink {
 		// Parsing the file into a javaparser compilation unit
 		CompilationUnit cu = StaticJavaParser.parse(new File(path));
 
-		// Finding the attributes and initializing the models
+		// Finding the classes
 
 		for (TypeDeclaration<?> typeDec : cu.getTypes()) {
-			for (BodyDeclaration<?> member : typeDec.getMembers()) {
-				member.toFieldDeclaration().ifPresent(field -> {
-					for (VariableDeclarator variable : field.getVariables()) {
-						// Retrieving relevant data
-						String name = variable.getNameAsString();
-						String type = variable.getTypeAsString();
-						// This constructor will take care of modelizing the attribute and its contents
-						AttributeLink attributeLink = new AttributeLink(this, name, type);
-						attributeLinks.add(attributeLink);
-					}
-				});
-			}
+
+			// Retrieving relevant data
+			String name = typeDec.getNameAsString();
+			// This constructor will take care of modelizing the class and its contents
+			ClassLink classLink = new ClassLink(this, name);
+			classLinks.add(classLink);
+
 		}
-
-		// Finding the attributes and initializing the methods
-
-		final class MethodNamePrinter extends VoidVisitorAdapter<Void> {
-			@Override
-			public void visit(MethodDeclaration md, Void arg) {
-				super.visit(md, arg);
-
-				// Grabbing relevant data
-				String name = md.getNameAsString();
-				String type = md.getTypeAsString();
-				// This constructor will take care of modelizing the method and its contents
-				MethodLink methodLink = new MethodLink(getCompilationUnitLink(), name, type);
-				methodLinks.add(methodLink);
-
-			}
-		}
-
-		VoidVisitor<?> methodNameVisitor = new MethodNamePrinter();
-		methodNameVisitor.visit(cu, null);
-
 	}
 
 	/**
@@ -174,20 +141,6 @@ public class CompilationUnitLink {
 	}
 
 	/**
-	 * @return the attributeLinks
-	 */
-	public List<AttributeLink> getAttributeLinks() {
-		return attributeLinks;
-	}
-
-	/**
-	 * @return the methodLinks
-	 */
-	public List<MethodLink> getMethodLinks() {
-		return methodLinks;
-	}
-
-	/**
 	 * @return the path
 	 */
 	public String getPath() {
@@ -199,6 +152,10 @@ public class CompilationUnitLink {
 	 */
 	public CompilationUnitLink getCompilationUnitLink() {
 		return this;
+	}
+
+	public List<ClassLink> getClassLinks() {
+		return classLinks;
 	}
 
 }

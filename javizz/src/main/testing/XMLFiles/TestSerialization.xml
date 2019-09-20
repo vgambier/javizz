@@ -2,26 +2,41 @@
 <ProjectModel id="0" name="resources">
   <PackageModel id="1" name="secondPackage">
     <CompilationUnitModel id="2" name="GoodbyeWorld">
-      <MethodModel id="3" name="main" type="void" />
-      <MethodModel id="4" name="uselessMethod" type="void" />
-      <MethodModel id="5" name="returnThree" type="int" />
-      <AttributeModel id="6" name="address" type="String" />
-      <AttributeModel id="7" name="relatives" type="LinkedList&lt;String&gt;" />
-      <AttributeModel id="8" name="isTrue" type="boolean" />
+      <ClassModel id="3" name="GoodbyeWorld">
+        <MethodModel id="4" name="main" type="void" />
+        <MethodModel id="5" name="uselessMethod" type="void" />
+        <MethodModel id="6" name="returnThree" type="int" />
+        <AttributeModel id="7" name="address" type="String" />
+        <AttributeModel id="8" name="relatives" type="LinkedList&lt;String&gt;" />
+        <AttributeModel id="9" name="isTrue" type="boolean" />
+      </ClassModel>
     </CompilationUnitModel>
   </PackageModel>
-  <PackageModel id="9" name="firstPackage">
-    <CompilationUnitModel id="10" name="BrandNew" />
-    <CompilationUnitModel id="11" name="HelloWorld">
-      <MethodModel id="12" name="main" type="void" />
-      <MethodModel id="13" name="uselessMethod" type="long" />
-      <MethodModel id="14" name="returnTwo" type="int" />
-      <AttributeModel id="15" name="name" type="String" />
-      <AttributeModel id="16" name="age" type="int" />
-      <AttributeModel id="17" name="ssn" type="long" />
-      <AttributeModel id="18" name="attributeDefault" type="long" />
+  <PackageModel id="10" name="firstPackage">
+    <CompilationUnitModel id="11" name="BrandNew">
+      <ClassModel id="12" name="BrandNew" />
     </CompilationUnitModel>
-    <CompilationUnitModel id="19" name="NoMethodsNoAttributes" />
-    <CompilationUnitModel id="20" name="NoPackage" />
+    <CompilationUnitModel id="13" name="HelloWorld">
+      <ClassModel id="14" name="HelloWorld">
+        <MethodModel id="15" name="main" type="void" />
+        <MethodModel id="16" name="uselessMethod" type="long" />
+        <MethodModel id="17" name="returnTwo" type="int" />
+        <AttributeModel id="18" name="name" type="String" />
+        <AttributeModel id="19" name="age" type="int" />
+        <AttributeModel id="20" name="ssn" type="long" />
+        <AttributeModel id="21" name="attributeDefault" type="long" />
+      </ClassModel>
+      <ClassModel id="22" name="Empty">
+        <MethodModel id="23" name="main" type="void" />
+        <MethodModel id="24" name="uselessMethod" type="long" />
+        <MethodModel id="25" name="returnTwo" type="int" />
+      </ClassModel>
+    </CompilationUnitModel>
+    <CompilationUnitModel id="26" name="NoMethodsNoAttributes">
+      <ClassModel id="27" name="NoMethodsNoAttributes" />
+    </CompilationUnitModel>
+    <CompilationUnitModel id="28" name="NoPackage">
+      <ClassModel id="29" name="NoPackage" />
+    </CompilationUnitModel>
   </PackageModel>
 </ProjectModel>
