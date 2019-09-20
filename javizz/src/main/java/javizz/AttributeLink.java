@@ -101,7 +101,7 @@ public class AttributeLink {
 	 */
 	public void setNameInFile(String newName) throws IOException {
 
-		String path = attributeModel.getCompilationUnit().getPath(); // Retrieving the path of the file where the attribute is located
+		String path = compilationUnitLink.getPath(); // Retrieving the path of the file where the attribute is located
 
 		// Initializing the compilation unit
 		CompilationUnit cu = StaticJavaParser.parse(new File(path));
@@ -139,7 +139,7 @@ public class AttributeLink {
 
 	public void setTypeInFile(String newType) throws IOException {
 
-		String path = attributeModel.getCompilationUnit().getPath(); // Retrieving the path of the file where the attribute is located
+		String path = compilationUnitLink.getPath(); // Retrieving the path of the file where the attribute is located
 
 		// Initializing the compilation unit
 		CompilationUnit cu = StaticJavaParser.parse(new File(path));
@@ -178,7 +178,7 @@ public class AttributeLink {
 
 		/* Retrieve and remove the attribute from the original file */
 
-		String pathOld = attributeModel.getCompilationUnit().getPath(); // Retrieving the path of the file where the attribute is located
+		String pathOld = compilationUnitLink.getPath(); // Retrieving the path of the file where the attribute is located
 
 		// Initializing the compilation unit
 		CompilationUnit cuOld = StaticJavaParser.parse(new File(pathOld));

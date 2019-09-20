@@ -72,7 +72,6 @@ public class CompilationUnitLink {
 		this.packageLink = packageLink;
 
 		compilationUnitModel.setName(Demonstration.pathToFilename(path));
-		compilationUnitModel.setPath(path);
 		compilationUnitModel.setPackage(packageModel);
 
 		packageModel.addCompilationUnits(compilationUnitModel);

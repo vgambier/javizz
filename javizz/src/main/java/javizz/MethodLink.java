@@ -94,7 +94,7 @@ public class MethodLink {
 	 */
 	public void setNameInFile(String newName) throws IOException {
 
-		String path = methodModel.getCompilationUnit().getPath(); // Retrieving the path of the file where the attribute is located
+		String path = compilationUnitLink.getPath(); // Retrieving the path of the file where the attribute is located
 
 		// Initializing the compilation unit
 		CompilationUnit cu = StaticJavaParser.parse(new File(path));
@@ -132,7 +132,7 @@ public class MethodLink {
 	 */
 	public void setTypeInFile(String newType) throws IOException {
 
-		String path = methodModel.getCompilationUnit().getPath(); // Retrieving the path of the file where the attribute is located
+		String path = compilationUnitLink.getPath(); // Retrieving the path of the file where the attribute is located
 
 		// Initializing the compilation unit
 		CompilationUnit cu = StaticJavaParser.parse(new File(path));
