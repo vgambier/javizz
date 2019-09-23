@@ -33,6 +33,7 @@ import model.CompilationUnitModel;
 public class ClassLink {
 
 	private ClassModel classModel; // the corresponding model
+	private String name; // the name of the class
 	private List<AttributeLink> attributeLinks; // the children AttributeLink
 	private List<MethodLink> methodLinks; // the children methodLink
 	private CompilationUnitLink compilationUnitLink; // the parent compilation unit
@@ -49,6 +50,7 @@ public class ClassLink {
 		ModelFactory factory = new ModelFactory(ModelContextLibrary.getModelContext(ClassModel.class));
 
 		this.classModel = factory.newInstance(ClassModel.class);
+		this.name = className;
 		attributeLinks = new ArrayList<AttributeLink>();
 		methodLinks = new ArrayList<MethodLink>();
 		this.compilationUnitLink = compilationUnitLink;
@@ -91,7 +93,6 @@ public class ClassLink {
 			MethodLink methodLink = new MethodLink(getClassLink(), name, type);
 			methodLinks.add(methodLink);
 		}
-
 	}
 
 	public ClassModel getClassModel() {
@@ -112,6 +113,10 @@ public class ClassLink {
 
 	public List<MethodLink> getMethodLinks() {
 		return methodLinks;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 }

@@ -348,16 +348,6 @@ public class Demonstration {
 			}
 		}
 
-		MethodLink methodLinkTarget = null;
-		List<MethodLink> methodLinks = classLinkTarget.getMethodLinks();
-		for (MethodLink methodLink : methodLinks) {
-			String methodName = methodLink.getMethodModel().getName();
-			if (methodName.equals("uselessMethod")) {
-				methodLinkTarget = methodLink;
-				break;
-			}
-		}
-
 		AttributeLink attributeLinkSsn = null;
 		for (AttributeLink attributeLink : attributeLinksHello) {
 			String attributeName = attributeLink.getAttributeModel().getName();
@@ -418,12 +408,8 @@ public class Demonstration {
 		Thread.sleep(WAITING_TIME);
 		showClassModelAttributes(projectLink, "HelloWorld");
 
-		showClassModelMethods(projectLink, "HelloWorld");
-		System.out.println("\nUsing setNameInFile to edit the name of a method in the file to 'veryFastMethod'...");
-		methodLinkTarget.setNameInFile("veryFastMethod");
-		Thread.sleep(WAITING_TIME);
-		showClassModelMethods(projectLink, "HelloWorld");
-
+		MethodLink methodLinkTarget = null;
+		List<MethodLink> methodLinks = classLinkTarget.getMethodLinks();
 		for (MethodLink methodLink : methodLinks) {
 			String methodName = methodLink.getMethodModel().getName();
 			if (methodName.equals("uselessMethod")) {
@@ -431,6 +417,14 @@ public class Demonstration {
 				break;
 			}
 		}
+
+		showClassModelMethods(projectLink, "HelloWorld");
+		System.out.println("\nUsing setNameInFile to edit the name of a method in the file to 'veryFastMethod'...");
+		methodLinkTarget.setNameInFile("veryFastMethod");
+		Thread.sleep(WAITING_TIME);
+		showClassModelMethods(projectLink, "HelloWorld");
+
+		methodLinkTarget.setName("veryFastMethod");
 
 		System.out.println("\nUsing setTypeInFile to edit the type of a method in the file to 'int'...");
 		methodLinkTarget.setTypeInFile("int");

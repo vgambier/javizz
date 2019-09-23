@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 import org.openflexo.pamela.ModelContextLibrary;
 import org.openflexo.pamela.annotations.ModelEntity;
@@ -12,10 +13,10 @@ import org.openflexo.pamela.factory.ModelFactory;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.visitor.VoidVisitor;
-import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
+import com.github.javaparser.symbolsolver.javaparser.Navigator;
 
 import model.ClassModel;
 import model.MethodModel;
@@ -100,20 +101,13 @@ public class MethodLink {
 		CompilationUnit cu = StaticJavaParser.parse(new File(path));
 		LexicalPreservingPrinter.setup(cu); // enables lexical preservation
 
-		final class MethodNamePrinter extends VoidVisitorAdapter<Void> {
-			@Override
-			public void visit(MethodDeclaration md, Void arg) {
-
-				super.visit(md, arg);
-				String oldName = md.getNameAsString();
-
-				if (oldName.equals(methodModel.getName()))
-					md.setName(newName);
-			}
+		ClassOrInterfaceDeclaration cls = Navigator.demandClassOrInterface(cu, classLink.getName());
+		List<MethodDeclaration> methods = cls.findAll(MethodDeclaration.class);
+		for (MethodDeclaration method : methods) {
+			String nameInFile = method.getNameAsString();
+			if (nameInFile.equals(name))
+				method.setName(newName);
 		}
-
-		VoidVisitor<?> methodNameVisitor = new MethodNamePrinter();
-		methodNameVisitor.visit(cu, null);
 
 		// Writing all changes to the original file
 		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
@@ -138,20 +132,14 @@ public class MethodLink {
 		CompilationUnit cu = StaticJavaParser.parse(new File(path));
 		LexicalPreservingPrinter.setup(cu); // enables lexical preservation
 
-		final class MethodNamePrinter extends VoidVisitorAdapter<Void> {
-			@Override
-			public void visit(MethodDeclaration md, Void arg) {
-
-				super.visit(md, arg);
-				String oldName = md.getNameAsString();
-
-				if (oldName.equals(methodModel.getName()))
-					md.setType(newType);
-			}
+		ClassOrInterfaceDeclaration cls = Navigator.demandClassOrInterface(cu, classLink.getName());
+		List<MethodDeclaration> methods = cls.findAll(MethodDeclaration.class);
+		for (MethodDeclaration method : methods) {
+			String nameInFile = method.getNameAsString();
+			System.out.println(nameInFile);
+			if (nameInFile.equals(name))
+				method.setType(newType);
 		}
-
-		VoidVisitor<?> methodNameVisitor = new MethodNamePrinter();
-		methodNameVisitor.visit(cu, null);
 
 		// Writing all changes to the original file
 		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
@@ -164,6 +152,10 @@ public class MethodLink {
 	 */
 	public MethodModel getMethodModel() {
 		return methodModel;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }
