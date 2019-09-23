@@ -13,11 +13,11 @@ import org.openflexo.pamela.factory.ModelFactory;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.BodyDeclaration;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
-import com.github.javaparser.ast.visitor.VoidVisitor;
-import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import com.github.javaparser.symbolsolver.javaparser.Navigator;
 
 import model.ClassModel;
 import model.CompilationUnitModel;
@@ -63,10 +63,10 @@ public class ClassLink {
 		// Parsing the file into a javaparser compilation unit
 		CompilationUnit cu = StaticJavaParser.parse(new File(compilationUnitLink.getPath()));
 
+		// Finding the attributes and initializing the models
+
 		// Retrieving the relevant class
 		TypeDeclaration<?> typeDec = cu.getClassByName(className).orElse(null);
-
-		// Finding the attributes and initializing the models
 
 		for (BodyDeclaration<?> member : typeDec.getMembers()) {
 			member.toFieldDeclaration().ifPresent(field -> {
@@ -82,25 +82,15 @@ public class ClassLink {
 		}
 
 		// Finding the attributes and initializing the methods
-		// TODO: this actually grabs all methods, not just the one from the class
 
-		final class MethodNamePrinter extends VoidVisitorAdapter<Void> {
-			@Override
-			public void visit(MethodDeclaration md, Void arg) {
-				super.visit(md, arg);
-
-				// Grabbing relevant data
-				String name = md.getNameAsString();
-				String type = md.getTypeAsString();
-				// This constructor will take care of modelizing the method and its contents
-				MethodLink methodLink = new MethodLink(getClassLink(), name, type);
-				methodLinks.add(methodLink);
-
-			}
+		ClassOrInterfaceDeclaration cls = Navigator.demandClassOrInterface(cu, className);
+		List<MethodDeclaration> methods = cls.findAll(MethodDeclaration.class);
+		for (MethodDeclaration method : methods) {
+			String name = method.getNameAsString();
+			String type = method.getTypeAsString();
+			MethodLink methodLink = new MethodLink(getClassLink(), name, type);
+			methodLinks.add(methodLink);
 		}
-
-		VoidVisitor<?> methodNameVisitor = new MethodNamePrinter();
-		methodNameVisitor.visit(cu, null);
 
 	}
 

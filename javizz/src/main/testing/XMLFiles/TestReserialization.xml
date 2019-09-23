@@ -26,17 +26,13 @@
         <AttributeModel id="20" name="ssn" type="long" />
         <AttributeModel id="21" name="attributeDefault" type="long" />
       </ClassModel>
-      <ClassModel id="22" name="Empty">
-        <MethodModel id="23" name="main" type="void" />
-        <MethodModel id="24" name="uselessMethod" type="long" />
-        <MethodModel id="25" name="returnTwo" type="int" />
-      </ClassModel>
+      <ClassModel id="22" name="Empty" />
     </CompilationUnitModel>
-    <CompilationUnitModel id="26" name="NoMethodsNoAttributes">
-      <ClassModel id="27" name="NoMethodsNoAttributes" />
+    <CompilationUnitModel id="23" name="NoMethodsNoAttributes">
+      <ClassModel id="24" name="NoMethodsNoAttributes" />
     </CompilationUnitModel>
-    <CompilationUnitModel id="28" name="NoPackage">
-      <ClassModel id="29" name="NoPackage" />
+    <CompilationUnitModel id="25" name="NoPackage">
+      <ClassModel id="26" name="NoPackage" />
     </CompilationUnitModel>
   </PackageModel>
 </ProjectModel>
