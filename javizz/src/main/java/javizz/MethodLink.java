@@ -2,6 +2,7 @@ package javizz;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
@@ -29,9 +30,8 @@ import model.MethodModel;
  */
 
 @ModelEntity
-public class MethodLink {
+public class MethodLink extends Link<MethodModel> {
 
-	private MethodModel methodModel; // the corresponding model
 	private String name; // the name of the method
 	private ClassLink classLink; // the parent class
 
@@ -44,44 +44,28 @@ public class MethodLink {
 	 *            the name of the method
 	 * @param type
 	 *            the type of the method
+	 * @throws ModelDefinitionException
 	 */
-	public MethodLink(ClassLink classLink, String name, String type) {
+	public MethodLink(ClassLink classLink, String name, String type) throws ModelDefinitionException {
 
-		ClassModel classModel = classLink.getClassModel();
+		super(new ModelFactory(ModelContextLibrary.getModelContext(MethodModel.class)).newInstance(MethodModel.class));
 
-		// We first need to define a factory to instantiate AttributeModel
-		ModelFactory factory = null;
-		try {
-			factory = new ModelFactory(ModelContextLibrary.getModelContext(MethodModel.class));
-		} catch (ModelDefinitionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		ClassModel classModel = classLink.getModel();
 
-		this.methodModel = factory.newInstance(MethodModel.class);
 		this.name = name;
 		this.classLink = classLink;
 
-		methodModel.setName(name);
-		methodModel.setType(type);
-		methodModel.setClazz(classModel);
+		model.setName(name);
+		model.setType(type);
+		model.setClazz(classModel);
 
-		classModel.addMethod(methodModel);
+		classModel.addMethod(model);
 
 	}
 
-	/**
-	 * Reads a .java file, compares it to the existing model, and updates the model accordingly
-	 * 
-	 */
-	public void updateModel() {
-
-		// Generating a new model based on the input file
-		MethodLink methodLinkFile = new MethodLink(classLink, name, methodModel.getType());
-		MethodModel methodModelFile = methodLinkFile.methodModel;
-
-		// Updating the model
-		methodModel.updateWith(methodModelFile);
+	@Override
+	public MethodLink create() throws FileNotFoundException, ModelDefinitionException {
+		return new MethodLink(classLink, name, model.getType());
 	}
 
 	/**
@@ -145,13 +129,6 @@ public class MethodLink {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
 		writer.write(LexicalPreservingPrinter.print(cu));
 		writer.close();
-	}
-
-	/**
-	 * @return the methodModel
-	 */
-	public MethodModel getMethodModel() {
-		return methodModel;
 	}
 
 	public void setName(String name) {

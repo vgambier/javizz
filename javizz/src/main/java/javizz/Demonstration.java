@@ -299,7 +299,7 @@ public class Demonstration {
 		PackageLink packageLinkSecond = null;
 		List<PackageLink> packageLinks = projectLink.getPackageLinks();
 		for (PackageLink packageLink : packageLinks) {
-			String packageName = packageLink.getPackageModel().getName();
+			String packageName = packageLink.getModel().getName();
 			if (packageName.equals("firstPackage")) {
 				packageLinkFirst = packageLink;
 			}
@@ -311,7 +311,7 @@ public class Demonstration {
 		CompilationUnitLink compilationUnitLinkHello = null;
 		List<CompilationUnitLink> compilationUnitLinksFirst = packageLinkFirst.getCompilationUnitLinks();
 		for (CompilationUnitLink compilationUnitLink : compilationUnitLinksFirst) {
-			String compilationUnitName = compilationUnitLink.getCompilationUnitModel().getName();
+			String compilationUnitName = compilationUnitLink.getModel().getName();
 			if (compilationUnitName.equals("HelloWorld")) {
 				compilationUnitLinkHello = compilationUnitLink;
 				break;
@@ -321,7 +321,7 @@ public class Demonstration {
 		CompilationUnitLink compilationUnitLinkGoodbye = null;
 		List<CompilationUnitLink> compilationUnitLinksSecond = packageLinkSecond.getCompilationUnitLinks();
 		for (CompilationUnitLink compilationUnitLink : compilationUnitLinksSecond) {
-			String compilationUnitName = compilationUnitLink.getCompilationUnitModel().getName();
+			String compilationUnitName = compilationUnitLink.getModel().getName();
 			if (compilationUnitName.equals("GoodbyeWorld")) {
 				compilationUnitLinkGoodbye = compilationUnitLink;
 				break;
@@ -331,7 +331,7 @@ public class Demonstration {
 		ClassLink classLinkTarget = null;
 		List<ClassLink> classLinksHello = compilationUnitLinkHello.getClassLinks();
 		for (ClassLink classLink : classLinksHello) {
-			String className = classLink.getClassModel().getName();
+			String className = classLink.getModel().getName();
 			if (className.equals("HelloWorld")) {
 				classLinkTarget = classLink;
 				break;
@@ -341,7 +341,7 @@ public class Demonstration {
 		AttributeLink attributeLinkTarget = null;
 		List<AttributeLink> attributeLinksHello = classLinkTarget.getAttributeLinks();
 		for (AttributeLink attributeLink : attributeLinksHello) {
-			String attributeName = attributeLink.getAttributeModel().getName();
+			String attributeName = attributeLink.getModel().getName();
 			if (attributeName.equals("attributeDefault")) {
 				attributeLinkTarget = attributeLink;
 				break;
@@ -350,7 +350,7 @@ public class Demonstration {
 
 		AttributeLink attributeLinkSsn = null;
 		for (AttributeLink attributeLink : attributeLinksHello) {
-			String attributeName = attributeLink.getAttributeModel().getName();
+			String attributeName = attributeLink.getModel().getName();
 			if (attributeName.equals("ssn")) {
 				attributeLinkSsn = attributeLink;
 				break;
@@ -396,7 +396,7 @@ public class Demonstration {
 		// this has to happen as the AttributeLink and MethodLink contain a name attribute that is susceptible to change
 
 		for (AttributeLink attributeLink : attributeLinksHello) {
-			String attributeName = attributeLink.getAttributeModel().getName();
+			String attributeName = attributeLink.getModel().getName();
 			if (attributeName.equals("attributeDefault")) {
 				attributeLinkTarget = attributeLink;
 				break;
@@ -411,7 +411,7 @@ public class Demonstration {
 		MethodLink methodLinkTarget = null;
 		List<MethodLink> methodLinks = classLinkTarget.getMethodLinks();
 		for (MethodLink methodLink : methodLinks) {
-			String methodName = methodLink.getMethodModel().getName();
+			String methodName = methodLink.getModel().getName();
 			if (methodName.equals("uselessMethod")) {
 				methodLinkTarget = methodLink;
 				break;

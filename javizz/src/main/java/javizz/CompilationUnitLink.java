@@ -29,9 +29,8 @@ import model.PackageModel;
  */
 
 @ModelEntity
-public class CompilationUnitLink {
+public class CompilationUnitLink extends Link<CompilationUnitModel> {
 
-	private CompilationUnitModel compilationUnitModel; // the corresponding model
 	private String path; // the path where the compilation unit is located - uniquely defines the file within the file system
 	private List<ClassLink> classLinks; // the children ClassLink
 	private PackageLink packageLink; // the parent package
@@ -52,22 +51,20 @@ public class CompilationUnitLink {
 	 */
 	public CompilationUnitLink(PackageLink packageLink, String path) throws FileNotFoundException, ModelDefinitionException {
 
-		PackageModel packageModel = packageLink.getPackageModel();
+		super(new ModelFactory(ModelContextLibrary.getModelContext(CompilationUnitModel.class)).newInstance(CompilationUnitModel.class));
+
+		PackageModel packageModel = packageLink.getModel();
 
 		// Instantiating attributes
 
-		// We first need to define a factory to instantiate AttributeModel
-		ModelFactory factory = new ModelFactory(ModelContextLibrary.getModelContext(CompilationUnitModel.class));
-
-		this.compilationUnitModel = factory.newInstance(CompilationUnitModel.class);
 		this.path = path;
 		classLinks = new ArrayList<ClassLink>();
 		this.packageLink = packageLink;
 
-		compilationUnitModel.setName(Demonstration.pathToFilename(path));
-		compilationUnitModel.setPackage(packageModel);
+		model.setName(Demonstration.pathToFilename(path));
+		model.setPackage(packageModel);
 
-		packageModel.addCompilationUnits(compilationUnitModel);
+		packageModel.addCompilationUnits(model);
 
 		// Looking for methods and attributes within the compilation unit
 
@@ -87,20 +84,9 @@ public class CompilationUnitLink {
 		}
 	}
 
-	/**
-	 * Reads a .java file, compares it to the existing model, and updates the model accordingly
-	 * 
-	 * @throws ModelDefinitionException
-	 * @throws FileNotFoundException
-	 */
-	public void updateModel() throws FileNotFoundException, ModelDefinitionException {
-
-		// Generating a new model based on the input file
-		CompilationUnitLink compilationUnitLinkFile = new CompilationUnitLink(packageLink, path);
-		CompilationUnitModel compilationUnitModelFile = compilationUnitLinkFile.compilationUnitModel;
-
-		// Updating the model
-		compilationUnitModel.updateWith(compilationUnitModelFile);
+	@Override
+	public CompilationUnitLink create() throws FileNotFoundException, ModelDefinitionException {
+		return new CompilationUnitLink(packageLink, path);
 	}
 
 	/**
@@ -120,7 +106,7 @@ public class CompilationUnitLink {
 		LexicalPreservingPrinter.setup(cu); // enables lexical preservation
 
 		// Retrieving the name of the current class
-		String name = compilationUnitModel.getName();
+		String name = model.getName();
 
 		// Editing the contents of the file
 		TypeDeclaration<?> primaryClass = cu.getClassByName(name).orElse(null);
@@ -131,13 +117,6 @@ public class CompilationUnitLink {
 		writer.write(LexicalPreservingPrinter.print(cu));
 		writer.close();
 
-	}
-
-	/**
-	 * @return the compilationUnitModel
-	 */
-	public CompilationUnitModel getCompilationUnitModel() {
-		return compilationUnitModel;
 	}
 
 	/**

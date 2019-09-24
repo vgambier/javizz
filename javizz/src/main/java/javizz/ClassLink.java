@@ -30,9 +30,8 @@ import model.CompilationUnitModel;
  */
 
 @ModelEntity
-public class ClassLink {
+public class ClassLink extends Link<ClassModel> {
 
-	private ClassModel classModel; // the corresponding model
 	private String name; // the name of the class
 	private List<AttributeLink> attributeLinks; // the children AttributeLink
 	private List<MethodLink> methodLinks; // the children methodLink
@@ -42,23 +41,21 @@ public class ClassLink {
 
 	public ClassLink(CompilationUnitLink compilationUnitLink, String className) throws FileNotFoundException, ModelDefinitionException {
 
-		CompilationUnitModel compilationUnitModel = compilationUnitLink.getCompilationUnitModel();
+		super(new ModelFactory(ModelContextLibrary.getModelContext(ClassModel.class)).newInstance(ClassModel.class));
+
+		CompilationUnitModel compilationUnitModel = compilationUnitLink.getModel();
 
 		// Instantiating attributes
 
-		// We first need to define a factory to instantiate AttributeModel
-		ModelFactory factory = new ModelFactory(ModelContextLibrary.getModelContext(ClassModel.class));
-
-		this.classModel = factory.newInstance(ClassModel.class);
 		this.name = className;
 		attributeLinks = new ArrayList<AttributeLink>();
 		methodLinks = new ArrayList<MethodLink>();
 		this.compilationUnitLink = compilationUnitLink;
 
-		classModel.setName(className);
-		classModel.setCompilationUnit(compilationUnitModel);
+		model.setName(className);
+		model.setCompilationUnit(compilationUnitModel);
 
-		compilationUnitModel.addClass(classModel);
+		compilationUnitModel.addClass(model);
 
 		// Looking for methods and attributes within the compilation unit
 
@@ -77,7 +74,15 @@ public class ClassLink {
 					String name = variable.getNameAsString();
 					String type = variable.getTypeAsString();
 					// This constructor will take care of modelizing the attribute and its contents
-					AttributeLink attributeLink = new AttributeLink(this, name, type);
+
+					AttributeLink attributeLink = null;
+					try {
+						attributeLink = new AttributeLink(this, name, type);
+					} catch (ModelDefinitionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
 					attributeLinks.add(attributeLink);
 				}
 			});
@@ -95,8 +100,9 @@ public class ClassLink {
 		}
 	}
 
-	public ClassModel getClassModel() {
-		return classModel;
+	@Override
+	public ClassLink create() throws FileNotFoundException, ModelDefinitionException {
+		return new ClassLink(compilationUnitLink, name);
 	}
 
 	public CompilationUnitLink getCompilationUnitLink() {

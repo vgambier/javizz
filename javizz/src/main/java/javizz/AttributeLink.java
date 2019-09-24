@@ -2,6 +2,7 @@ package javizz;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Iterator;
@@ -30,9 +31,8 @@ import model.ClassModel;
  */
 
 @ModelEntity
-public class AttributeLink {
+public class AttributeLink extends Link<AttributeModel> {
 
-	private AttributeModel attributeModel; // the corresponding model
 	private String name; // the name of the attribute
 	private ClassLink classLink; // the parent class
 
@@ -46,48 +46,30 @@ public class AttributeLink {
 	 *            the name of the attribute
 	 * @param type
 	 *            the type of the attribute
+	 * @throws ModelDefinitionException
 	 */
-	public AttributeLink(ClassLink classLink, String name, String type) {
+	public AttributeLink(ClassLink classLink, String name, String type) throws ModelDefinitionException {
 
-		ClassModel classModel = classLink.getClassModel();
+		super(new ModelFactory(ModelContextLibrary.getModelContext(AttributeModel.class)).newInstance(AttributeModel.class));
+
+		ClassModel classModel = classLink.getModel();
 
 		// Instantiating attributes
 
-		// We first need to define a factory to instantiate AttributeModel
-		ModelFactory factory = null;
-		try {
-			factory = new ModelFactory(ModelContextLibrary.getModelContext(AttributeModel.class));
-		} catch (ModelDefinitionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		this.attributeModel = factory.newInstance(AttributeModel.class);
 		this.name = name;
 		this.classLink = classLink;
 
-		attributeModel.setName(name);
-		attributeModel.setType(type);
-		attributeModel.setClazz(classModel);
+		model.setName(name);
+		model.setType(type);
+		model.setClazz(classModel);
 
-		classModel.addAttribute(attributeModel);
+		classModel.addAttribute(model);
 
 	}
 
-	/**
-	 * Reads a .java file, compares it to the existing model, and updates the model accordingly
-	 * 
-	 */
-
-	public void updateModel() {
-
-		// Generating a new model based on the existing file
-		AttributeLink attributeLinkFile = new AttributeLink(classLink, name, attributeModel.getType());
-		AttributeModel attributeModelFile = attributeLinkFile.attributeModel;
-
-		// Updating the model
-		attributeModel.updateWith(attributeModelFile);
-
+	@Override
+	public AttributeLink create() throws FileNotFoundException, ModelDefinitionException {
+		return new AttributeLink(classLink, name, model.getType());
 	}
 
 	/**
@@ -114,7 +96,7 @@ public class AttributeLink {
 					for (VariableDeclarator variable : field.getVariables()) {
 
 						String oldName = variable.getName().asString();
-						if (oldName.equals(attributeModel.getName()))
+						if (oldName.equals(model.getName()))
 							variable.setName(newName);
 					}
 				});
@@ -152,7 +134,7 @@ public class AttributeLink {
 					for (VariableDeclarator variable : field.getVariables()) {
 
 						String oldName = variable.getNameAsString();
-						if (oldName.equals(attributeModel.getName()))
+						if (oldName.equals(model.getName()))
 							variable.setType(newType);
 					}
 				});
@@ -227,12 +209,4 @@ public class AttributeLink {
 		writerNew.close();
 
 	}
-
-	/**
-	 * @return the attributeModel
-	 */
-	public AttributeModel getAttributeModel() {
-		return attributeModel;
-	}
-
 }

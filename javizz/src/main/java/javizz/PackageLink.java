@@ -27,7 +27,6 @@ import model.ProjectModel;
 @ModelEntity
 public class PackageLink extends Link<PackageModel> {
 
-	// private PackageModel packageModel; // the corresponding model
 	private String path; // the path where the package is located
 	private List<CompilationUnitLink> compilationUnitLinks; // the children CompilationUnitLink
 	private ProjectLink projectLink; // the parent project
@@ -74,23 +73,11 @@ public class PackageLink extends Link<PackageModel> {
 				// If it is, then we assume the current file is a Java file
 				String filePath = file.getPath();
 				CompilationUnitLink compilationUnitLink = new CompilationUnitLink(this, filePath); // This constructor will take care of
-																									// modelizing the
-				// file and
-				// its contents
+																									// modelizing the file and its contents
 				compilationUnitLinks.add(compilationUnitLink);
 			}
 		}
 	}
-
-	/**
-	 * Reads a directory containing .java files, compares it to the existing model, and updates the model accordingly
-	 * 
-	 * @throws ModelDefinitionException
-	 * @throws FileNotFoundException
-	 * 
-	 */
-
-	// TODO clean this up
 
 	@Override
 	public PackageLink create() throws FileNotFoundException, ModelDefinitionException {
@@ -123,10 +110,4 @@ public class PackageLink extends Link<PackageModel> {
 		return compilationUnitLinks;
 	}
 
-	/**
-	 * @return the packageModel
-	 */
-	public PackageModel getPackageModel() {
-		return model;
-	}
 }
