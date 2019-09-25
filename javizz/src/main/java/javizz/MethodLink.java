@@ -120,7 +120,6 @@ public class MethodLink extends Link<MethodModel> {
 		List<MethodDeclaration> methods = cls.findAll(MethodDeclaration.class);
 		for (MethodDeclaration method : methods) {
 			String nameInFile = method.getNameAsString();
-			System.out.println(nameInFile);
 			if (nameInFile.equals(name))
 				method.setType(newType);
 		}
