@@ -250,6 +250,11 @@ public class Demonstration {
 			for (CompilationUnitModel compilationUnitModel : compilationUnits) {
 				System.out.println("\t\tcompilation unit: " + compilationUnitModel.getName());
 
+				List<String> imports = compilationUnitModel.getImports();
+				for (String import_ : imports) {
+					System.out.println("\t\t\timport: " + import_);
+				}
+
 				List<ClassModel> classes = compilationUnitModel.getClasses();
 				for (ClassModel classModel : classes) {
 					System.out.println("\t\t\tclass: " + classModel.getName());
@@ -457,6 +462,8 @@ public class Demonstration {
 		System.out.println("\nUsing renameFolder to edit the name of a project folder...");
 		projectLink.renameFolder("testing");
 		Thread.sleep(WAITING_TIME);
+
+		// TODO: test imports
 
 		System.exit(0); // Terminating all threads
 

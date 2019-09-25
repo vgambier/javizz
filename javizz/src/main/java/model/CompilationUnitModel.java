@@ -59,6 +59,20 @@ public interface CompilationUnitModel extends AbstractModelObject {
 	@Remover(CLASSES)
 	public void removeClass(ClassModel c);
 
+	// Attributes and methods regarding the import statements
+
+	String IMPORTS = "imports";
+
+	@Getter(value = IMPORTS, cardinality = Cardinality.LIST)
+	@Embedded
+	public List<String> getImports();
+
+	@Adder(IMPORTS)
+	public void addImport(String c);
+
+	@Remover(IMPORTS)
+	public void removeImport(String c);
+
 	abstract class CompilationUnitModelImpl extends AbstractModelObjectImpl implements CompilationUnitModel {
 
 		@Override

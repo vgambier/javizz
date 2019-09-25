@@ -15,6 +15,7 @@ import org.openflexo.pamela.factory.ModelFactory;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
 
@@ -66,10 +67,17 @@ public class CompilationUnitLink extends Link<CompilationUnitModel> {
 
 		packageModel.addCompilationUnits(model);
 
-		// Looking for methods and attributes within the compilation unit
+		// Looking for import statements and classes within the compilation unit
 
 		// Parsing the file into a javaparser compilation unit
 		CompilationUnit cu = StaticJavaParser.parse(new File(path));
+
+		// Finding the import statements
+
+		for (ImportDeclaration importDec : cu.getImports()) {
+			String importName = importDec.getNameAsString();
+			model.addImport(importName);
+		}
 
 		// Finding the classes
 
