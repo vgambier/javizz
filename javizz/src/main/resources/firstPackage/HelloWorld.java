@@ -56,3 +56,12 @@ class Empty {
     // This class intentionally left blank
 
 }
+
+class NotEmpty {
+
+    private int importantNumber;
+
+    public int getImportantNumber() {
+        return importantNumber;
+    }
+}

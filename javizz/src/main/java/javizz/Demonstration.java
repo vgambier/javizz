@@ -114,24 +114,33 @@ public class Demonstration {
 	 * 
 	 * @param projectLink
 	 *            the ProjectLink in which the input CompilationUnitModel is modelized
-	 * @param className
+	 * @param wantedClassName
 	 *            the name of the CompilationUnitModel whose attributes will be displayed
 	 */
-	public static void showClassModelAttributes(ProjectLink projectLink, String className) {
+	public static void showClassModelAttributes(ProjectLink projectLink, String wantedClassName) {
 
-		// Retrieving the ClassModel
+		// Retrieving the CompilationUnitModel
 
 		CompilationUnitModel compilationUnitModel = null;
-
 		ProjectModel projectModel = projectLink.getProjectModel();
 		List<PackageModel> packages = projectModel.getPackages();
 		for (PackageModel packageModel : packages) {
 			List<CompilationUnitModel> compilationUnits = packageModel.getCompilationUnits();
 			for (CompilationUnitModel currentCompilationUnitModel : compilationUnits) {
-				String fileName = currentCompilationUnitModel.getName();
-				if (fileName.equals(className))
+				String cuName = currentCompilationUnitModel.getName();
+				if (cuName.equals(wantedClassName))
 					compilationUnitModel = currentCompilationUnitModel;
 			}
+		}
+
+		// Retrieving the ClassModel
+
+		ClassModel classModel = null;
+		List<ClassModel> classes = compilationUnitModel.getClasses();
+		for (ClassModel currentClassModel : classes) {
+			String className = currentClassModel.getName();
+			if (className.equals(wantedClassName))
+				classModel = currentClassModel;
 		}
 
 		// Displaying its attributes
@@ -139,12 +148,9 @@ public class Demonstration {
 		System.out.println("\nHere are the attributes as stored in the " + compilationUnitModel.getName() + " ClassModel ("
 				+ compilationUnitModel.getClass() + "):");
 
-		List<ClassModel> classes = compilationUnitModel.getClasses();
-		for (ClassModel classModel : classes) {
-			List<AttributeModel> attributes = classModel.getAttributes();
-			for (AttributeModel attributeModel : attributes) {
-				System.out.println("\t" + attributeModel.getType() + " " + attributeModel.getName());
-			}
+		List<AttributeModel> attributes = classModel.getAttributes();
+		for (AttributeModel attributeModel : attributes) {
+			System.out.println("\t" + attributeModel.getType() + " " + attributeModel.getName());
 		}
 	}
 
@@ -153,24 +159,33 @@ public class Demonstration {
 	 * 
 	 * @param projectLink
 	 *            the ProjectLink in which the input CompilationUnitModel is modelized
-	 * @param className
+	 * @param wantedClassName
 	 *            the name of the CompilationUnitModel whose methods will be displayed
 	 */
-	public static void showClassModelMethods(ProjectLink projectLink, String className) {
+	public static void showClassModelMethods(ProjectLink projectLink, String wantedClassName) {
 
-		// Retrieving the ClasstModel
+		// Retrieving the CompilationUnitModel
 
 		CompilationUnitModel compilationUnitModel = null;
-
 		ProjectModel projectModel = projectLink.getProjectModel();
 		List<PackageModel> packages = projectModel.getPackages();
 		for (PackageModel packageModel : packages) {
 			List<CompilationUnitModel> compilationUnits = packageModel.getCompilationUnits();
 			for (CompilationUnitModel currentCompilationUnitModel : compilationUnits) {
-				String fileName = currentCompilationUnitModel.getName();
-				if (fileName.equals(className))
+				String cuName = currentCompilationUnitModel.getName();
+				if (cuName.equals(wantedClassName))
 					compilationUnitModel = currentCompilationUnitModel;
 			}
+		}
+
+		// Retrieving the ClassModel
+
+		ClassModel classModel = null;
+		List<ClassModel> classes = compilationUnitModel.getClasses();
+		for (ClassModel currentClassModel : classes) {
+			String className = currentClassModel.getName();
+			if (className.equals(wantedClassName))
+				classModel = currentClassModel;
 		}
 
 		// Displaying its attributes
@@ -178,12 +193,9 @@ public class Demonstration {
 		System.out.println("\nHere are the methods as stored in the " + compilationUnitModel.getName() + " ClassModel ("
 				+ compilationUnitModel.getClass() + "):");
 
-		List<ClassModel> classes = compilationUnitModel.getClasses();
-		for (ClassModel classModel : classes) {
-			List<MethodModel> attributes = classModel.getMethods();
-			for (MethodModel methodModel : attributes) {
-				System.out.println("\t" + methodModel.getType() + " " + methodModel.getName());
-			}
+		List<MethodModel> attributes = classModel.getMethods();
+		for (MethodModel methodModel : attributes) {
+			System.out.println("\t" + methodModel.getType() + " " + methodModel.getName());
 		}
 	}
 

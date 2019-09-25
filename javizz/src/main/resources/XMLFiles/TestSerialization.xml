@@ -27,12 +27,16 @@
         <AttributeModel id="21" name="attributeDefault" type="long" />
       </ClassModel>
       <ClassModel id="22" name="Empty" />
+      <ClassModel id="23" name="NotEmpty">
+        <MethodModel id="24" name="getImportantNumber" type="int" />
+        <AttributeModel id="25" name="importantNumber" type="int" />
+      </ClassModel>
     </CompilationUnitModel>
-    <CompilationUnitModel id="23" name="NoMethodsNoAttributes">
-      <ClassModel id="24" name="NoMethodsNoAttributes" />
+    <CompilationUnitModel id="26" name="NoMethodsNoAttributes">
+      <ClassModel id="27" name="NoMethodsNoAttributes" />
     </CompilationUnitModel>
-    <CompilationUnitModel id="25" name="NoPackage">
-      <ClassModel id="26" name="NoPackage" />
+    <CompilationUnitModel id="28" name="NoPackage">
+      <ClassModel id="29" name="NoPackage" />
     </CompilationUnitModel>
   </PackageModel>
 </ProjectModel>
