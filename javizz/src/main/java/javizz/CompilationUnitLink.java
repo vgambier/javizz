@@ -75,7 +75,8 @@ public class CompilationUnitLink extends Link<CompilationUnitModel> {
 		// Finding the import statements
 
 		for (ImportDeclaration importDec : cu.getImports()) {
-			String importName = importDec.getNameAsString();
+			String importName = importDec.getNameAsString(); // the name does not include the asterisk or the static keyword
+			importName = importDec.isAsterisk() ? importName + ".*" : importName;
 			model.addImport(importName);
 		}
 
