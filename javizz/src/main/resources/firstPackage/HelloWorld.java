@@ -29,7 +29,7 @@
 import java.io.File;
 import org.apache.commons.io.FileUtils;
 import com.github.javaparser.*;
-import model.AttributeModel;
+import secondPackage.GoodbyeWorld;
 
 public class HelloWorldRemastered { // comment
 	

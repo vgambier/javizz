@@ -95,9 +95,8 @@ public class Demonstration {
 						if (variableName.equals("attributeAlpha")) {
 							variable.setName("attributeBeta");
 						}
-						else if (variableName.equals("attributeBeta") || variableName.equals("attributeDefault")) {
+						else if (variableName.equals("attributeBeta") || variableName.equals("attributeDefault"))
 							variable.setName("attributeAlpha");
-						}
 					}
 				});
 			}
@@ -250,9 +249,14 @@ public class Demonstration {
 			for (CompilationUnitModel compilationUnitModel : compilationUnits) {
 				System.out.println("\t\tcompilation unit: " + compilationUnitModel.getName());
 
-				List<String> imports = compilationUnitModel.getImports();
-				for (String import_ : imports) {
-					System.out.println("\t\t\timport: " + import_);
+				List<String> externalImports = compilationUnitModel.getExternalImports();
+				for (String externalImport : externalImports) {
+					System.out.println("\t\t\timport: " + externalImport);
+				}
+
+				List<CompilationUnitModel> internalImports = compilationUnitModel.getInternalImports();
+				for (CompilationUnitModel internalImport : internalImports) {
+					System.out.println("\t\t\timport: " + internalImport);
 				}
 
 				List<ClassModel> classes = compilationUnitModel.getClasses();

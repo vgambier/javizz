@@ -75,9 +75,45 @@ public class CompilationUnitLink extends Link<CompilationUnitModel> {
 		// Finding the import statements
 
 		for (ImportDeclaration importDec : cu.getImports()) {
+
 			String importName = importDec.getNameAsString(); // the name does not include the asterisk or the static keyword
-			importName = importDec.isAsterisk() ? importName + ".*" : importName;
-			model.addImport(importName);
+			importName = importDec.isAsterisk() ? importName + ".*" : importName; // the name now includes the asterisk
+
+			// We want to check if this is an internal import
+
+			boolean found = false;
+
+			String importNameBeginning = importName.substring(0, importName.indexOf(".")); // only the part before the first "." which
+																							// should be the package name
+
+			List<PackageLink> packageLinks = packageLink.getProjectLink().getPackageLinks();
+			for (PackageLink currentPackage : packageLinks) {
+				String currentPackageName = currentPackage.getModel().getName();
+				if (currentPackageName.equals(importNameBeginning)) {
+
+					// We have found the package
+					// We now need to find the compilationUnit (that corresponds to the import statement)
+
+					String importNameEnd = importName.substring(importName.indexOf(".") + 1);
+
+					List<CompilationUnitLink> compilationUnitLinks = currentPackage.getCompilationUnitLinks();
+					for (CompilationUnitLink currentCU : compilationUnitLinks) {
+						String currentCUName = currentCU.getModel().getName();
+						if (currentCUName.equals(importNameEnd)) {
+
+							// We have found the import
+							found = true;
+
+							// Adding it to the list of internal imports
+							model.addInternalImport(currentCU.getModel());
+						}
+					}
+				}
+			}
+
+			// We have just went through all compilation units in the project
+			if (!found) // if it's not an internal import, then it's external
+				model.addExternalImport(importName);
 		}
 
 		// Finding the classes

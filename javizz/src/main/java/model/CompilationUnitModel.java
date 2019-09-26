@@ -59,19 +59,33 @@ public interface CompilationUnitModel extends AbstractModelObject {
 	@Remover(CLASSES)
 	public void removeClass(ClassModel c);
 
-	// Attributes and methods regarding the import statements
+	// Attributes and methods regarding the external import statements
 
-	String IMPORTS = "imports";
+	String EXTERNAL_IMPORTS = "externalImports";
 
-	@Getter(value = IMPORTS, cardinality = Cardinality.LIST)
+	@Getter(value = EXTERNAL_IMPORTS, cardinality = Cardinality.LIST)
 	@Embedded
-	public List<String> getImports();
+	public List<String> getExternalImports();
 
-	@Adder(IMPORTS)
-	public void addImport(String c);
+	@Adder(EXTERNAL_IMPORTS)
+	public void addExternalImport(String externalImport);
 
-	@Remover(IMPORTS)
-	public void removeImport(String c);
+	@Remover(EXTERNAL_IMPORTS)
+	public void removeExternalImport(String externalImport);
+
+	// Attributes and methods regarding the internal import statements
+
+	String INTERNAL_IMPORTS = "internalImports";
+
+	@Getter(value = INTERNAL_IMPORTS, cardinality = Cardinality.LIST)
+	@Embedded
+	public List<CompilationUnitModel> getInternalImports();
+
+	@Adder(INTERNAL_IMPORTS)
+	public void addInternalImport(CompilationUnitModel internalImport);
+
+	@Remover(INTERNAL_IMPORTS)
+	public void removeInternalImport(CompilationUnitModel internalImport);
 
 	abstract class CompilationUnitModelImpl extends AbstractModelObjectImpl implements CompilationUnitModel {
 
@@ -79,5 +93,11 @@ public interface CompilationUnitModel extends AbstractModelObject {
 		public ProjectModel getProject() {
 			return getPackage().getProject(); // returns the parent project
 		}
+
+		@Override
+		public String toString() {
+			return getPackage().getName() + "." + getName();
+		}
+
 	}
 }

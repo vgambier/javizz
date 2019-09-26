@@ -110,4 +110,8 @@ public class PackageLink extends Link<PackageModel> {
 		return compilationUnitLinks;
 	}
 
+	public ProjectLink getProjectLink() {
+		return projectLink;
+	}
+
 }
