@@ -13,7 +13,7 @@
 
 
 // this comment doesn't move!
- notVeryGoodPackage                                             ; 			// this comment doesn't move!
+ firstPackage                                             ; 			// this comment doesn't move!
 
 
 

@@ -35,7 +35,7 @@
     <CompilationUnitModel id="26" name="NoMethodsNoAttributes">
       <ClassModel id="27" name="NoMethodsNoAttributes" />
     </CompilationUnitModel>
-    <CompilationUnitModel id="28" name="NoPackage">
+    <CompilationUnitModel id="28" name="OnlyPackage">
       <ClassModel id="29" name="NoPackage" />
     </CompilationUnitModel>
   </PackageModel>
