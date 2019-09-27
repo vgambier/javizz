@@ -32,7 +32,7 @@ import model.ProjectModel;
  */
 
 @ModelEntity
-public class ProjectLink {
+public class ProjectLink { // extends Link<ProjectModel> {
 
 	private ProjectModel projectModel; // the corresponding model
 	private String path; // the path where the project is located
@@ -103,6 +103,13 @@ public class ProjectLink {
 			startFileSystemMonitoring();
 
 	}
+
+	/*
+	@Override
+	public ProjectLink create() throws FileNotFoundException, ModelDefinitionException {
+		return new ProjectLink(path, ?);
+	}
+	*/
 
 	/**
 	 * Reads a directory containing .java files, compares it to the existing model, and updates the model

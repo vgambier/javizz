@@ -467,8 +467,6 @@ public class Demonstration {
 		projectLink.renameFolder("testing");
 		Thread.sleep(WAITING_TIME);
 
-		// TODO: test imports
-
 		System.exit(0); // Terminating all threads
 
 	}

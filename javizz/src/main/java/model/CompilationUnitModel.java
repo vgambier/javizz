@@ -65,6 +65,7 @@ public interface CompilationUnitModel extends AbstractModelObject {
 
 	@Getter(value = EXTERNAL_IMPORTS, cardinality = Cardinality.LIST)
 	@Embedded
+	// TODO Ajouter une annotation @XMLElement ici résulte en une erreur Pamela
 	public List<String> getExternalImports();
 
 	@Adder(EXTERNAL_IMPORTS)
@@ -79,6 +80,7 @@ public interface CompilationUnitModel extends AbstractModelObject {
 
 	@Getter(value = INTERNAL_IMPORTS, cardinality = Cardinality.LIST)
 	@Embedded
+	@XMLElement
 	public List<CompilationUnitModel> getInternalImports();
 
 	@Adder(INTERNAL_IMPORTS)
