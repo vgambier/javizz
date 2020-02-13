@@ -141,7 +141,7 @@ public class ProjectLink { // extends Link<ProjectModel> {
 	public void renameFolder(String newName) throws JavizzException {
 
 		File sourceFolder = new File(path);
-		String newPath = path.substring(0, path.lastIndexOf("/") + 1) + newName; // same path but with the folder at the end changed
+		String newPath = path.substring(0, path.lastIndexOf(File.separator) + 1) + newName; // same path but with the folder at the end changed
 		File destFolder = new File(newPath);
 
 		if (!sourceFolder.renameTo(destFolder)) // This attempts to rename the folder, and returns true if the folder was renamed

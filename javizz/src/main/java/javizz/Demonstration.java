@@ -51,7 +51,7 @@ public class Demonstration {
 	 * @return the name of the file or folder that the path points to, as a String
 	 */
 	public static String pathToFilename(String path) {
-		String filenameWithExt = path.substring(path.lastIndexOf("/") + 1);
+		String filenameWithExt = path.substring(path.lastIndexOf(File.separator) + 1);
 		return FilenameUtils.removeExtension(filenameWithExt);
 	}
 
@@ -214,7 +214,7 @@ public class Demonstration {
 		}
 
 		// Copying the file template onto the file we'll be modifying for the demonstration
-		String templatePath = "src/main/resources/firstPackage/HelloWorldTemplate";
+		String templatePath = "src/main/resources/firstPackage/HelloWorldTemplate.java";
 		String testPath = "src/main/resources/firstPackage/HelloWorld.java";
 		System.out.println("Copying the template onto HelloWorld.java...");
 		CompilationUnit cuTemplate = StaticJavaParser.parse(new File(templatePath));
@@ -223,7 +223,7 @@ public class Demonstration {
 		writer.write(LexicalPreservingPrinter.print(cuTemplate));
 		writer.close();
 
-		templatePath = "src/main/resources/secondPackage/GoodbyeWorldTemplate";
+		templatePath = "src/main/resources/secondPackage/GoodbyeWorldTemplate.java";
 		testPath = "src/main/resources/secondPackage/GoodbyeWorld.java";
 		System.out.println("Copying the template onto GoodbyeWorld.java...");
 		cuTemplate = StaticJavaParser.parse(new File(templatePath));
