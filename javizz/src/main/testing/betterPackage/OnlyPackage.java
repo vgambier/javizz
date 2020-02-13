@@ -1,3 +1,0 @@
-package firstPackage;
-
-class NoPackage { }
