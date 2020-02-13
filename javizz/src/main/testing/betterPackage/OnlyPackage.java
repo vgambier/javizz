@@ -1,0 +1,3 @@
+package firstPackage;
+
+class NoPackage { }

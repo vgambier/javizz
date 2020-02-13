@@ -233,7 +233,7 @@ public class Demonstration {
 		writer.close();
 
 		// Reading a test folder
-		String folderPath = "src/main/resources"; // a relative path, pointing to the resources directory included in the project
+		String folderPath = "src" + File.separator + "main" + File.separator+"resources"; // a relative path, pointing to the resources directory included in the project
 		ProjectLink projectLink = new ProjectLink(folderPath, true, false); // Instantiating ProjectLink, with file monitoring enabled
 
 		// Testing to see if the data was properly gathered
